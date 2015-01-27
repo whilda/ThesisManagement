@@ -64,6 +64,9 @@
 	</nav>
 	<div class="container" style="height:1000px; margin-top:60px;">
 		test
+		<?php
+			echo 'test php from laravel';
+		?>
 	</div>
 </body>
 </html>

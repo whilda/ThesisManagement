@@ -13,7 +13,11 @@
 
 Route::get('/', function()
 {
-	return View::make('bootstrap');
+	return View::make('login');
+});
+Route::get('signup', function()
+{
+	return View::make('signup');
 });
 
 Route::get('test', function(){ 
@@ -26,4 +30,40 @@ Route::get('users/{id}','UserController@ShowProfile');
 Route::get('users',function()
 { 
 	return View::make('users');
+});
+Route::get('home',function()
+{ 
+	return View::make('user/dashboard');
+});
+Route::get('code',function()
+{ 
+	return View::make('user/code');
+});
+Route::get('supervisorList',function()
+{ 
+	return View::make('user/supervisorList');
+});
+Route::get('supervisor',function()
+{ 
+	return View::make('user/supervisor');
+});
+Route::get('report',function()
+{ 
+	return View::make('user/report');
+});
+Route::get('edit',function()
+{ 
+	return View::make('user/editProfile');
+});
+Route::get('profile',function()
+{ 
+	return View::make('user/profile');
+});
+Route::get('thesis',function()
+{ 
+	return View::make('user/thesis');
+});
+Route::get('timeline',function()
+{ 
+	return View::make('user/timeline');
 });
