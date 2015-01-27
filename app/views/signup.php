@@ -64,7 +64,7 @@
 			<li><a href="#supervisor" data-toggle="tab" aria-controls="profile">Supervisor</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content" style="padding:0">
-			  <div class="tab-pane active" id="student">
+			  <div class="tab-pane fade in active" id="student">
 				<form>
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
@@ -74,13 +74,9 @@
 					<input type="text" name="address" id="address" class="span12" placeholder="Address">
 					<input type="text" name="handphone" id="handphone" class="span12" placeholder="Handphone">
 					<input type="text" name="email" id="email" class="span12" placeholder="Email">
-					<div class="form-actions">
-						<a href="." class="btn btn-success pull-right">Sign Up</a><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
-						<div class="clearfix"></div>
-					</div>
 				</form>
 				</div>
-			  <div class="tab-pane" id="supervisor">
+			  <div class="tab-pane fade" id="supervisor">
 				<form>
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
@@ -90,12 +86,12 @@
 					<input type="text" name="address" id="address" class="span12" placeholder="Address">
 					<input type="text" name="handphone" id="handphone" class="span12" placeholder="Handphone">
 					<input type="text" name="email" id="email" class="span12" placeholder="Email">
-					<div class="form-actions">
-						<a href="." class="btn btn-success pull-right">Sign Up</a><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
-						<div class="clearfix"></div>
-					</div>
 				</form>
 			  </div>
+			</div>
+			<div class="form-actions" style="margin:0">
+				<a href="." class="btn btn-success pull-right" onclick="/*fungsi()*/">Sign Up</a><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
+				<div class="clearfix"></div>
 			</div>
         </div>
     </div>
