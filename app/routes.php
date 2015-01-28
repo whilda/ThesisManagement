@@ -15,6 +15,10 @@ Route::get('/', function()
 {
 	return View::make('login');
 });
+Route::get('coba', function()
+{
+	return View::make('coba');
+});
 Route::get('signup', function()
 {
 	return View::make('signup');
