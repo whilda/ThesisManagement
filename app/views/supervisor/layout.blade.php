@@ -14,7 +14,7 @@
 
     <!-- For sample logo only-->
     <!--Remove if you no longer need this font-->
-    <link rel="stylesheet" type="text/css" href="lib/AquafinaFont.css">
+    <link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/lib/AquafinaFont.css">
     <!--For sample logo only-->
 
 
@@ -22,23 +22,22 @@
 
 
 
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
-    <script src="lib/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="javascripts/site.js" type="text/javascript"></script>
-	@yield('addResource')
-	<link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
+    <link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/lib/font-awesome/css/font-awesome.css">
+    <script src="{{ URL::to('/') }}/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="{{ URL::to('/') }}/javascripts/site.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/stylesheets/theme.css">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="assets/dinus.png">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="{{ URL::to('/') }}assets/dinus.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ URL::to('/') }}/../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ URL::to('/') }}/../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ URL::to('/') }}/../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{{ URL::to('/') }}/../assets/ico/apple-touch-icon-57-precomposed.png">
   </head>
 
   <!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
@@ -61,7 +60,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="profile">Profile</a></li>
+                            <li><a tabindex="-1" href="detail">Detail</a></li>
                             <li class="divider"></li>
                             <li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
                             <li class="divider visible-phone"></li>
@@ -70,7 +69,7 @@
                     </li>
                     
                 </ul>
-                <a class="brand" href="index.html">Student Dashboard</a>
+                <a class="brand" href="{{ URL::to('/supervisor/home') }}">Supervisor Dashboard</a>
         </div>
     </div>
 
@@ -81,33 +80,25 @@
                 
                 <option value="home" @yield('dashboard.nav')> Dashboard</option>
                     
-                <option value="thesis" @yield('thesis.nav')> Thesis</option>
+                <option value="template" @yield('template.nav')> Task Template</option>
                     
-                <option value="supervisorList" @yield('super.nav')> Supervisor List</option>
+                <option value="studentList" @yield('student.nav')> Student List</option>
                     
-                <option value="code" @yield('code.nav')> Input Code</option>
+                <option value="field" @yield('field.nav')> Field List</option>
                     
-                <option value="timeline" @yield('timeline.nav')> Time Line</option>
+                <option value="proposal" @yield('proposal.nav')> Student Proposal</option>
                     
-                <option value="report" @yield('report.nav')>Final Report</option>
-                    
-                <option value="profile" @yield('profile.nav')>Profile</option>
+                <option value="detail" @yield('detail.nav')>Detail</option>
                     
             </select>
         </div>
 
         <ul class="nav nav-tabs">
             <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
-			<li class="@yield('thesis.menu') "><a href="thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
-			<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i> Supervisor <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-					<li class=" "><a href="supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
-					<li class=" "><a href="code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
-                </ul>
-            </li>
-            <li class="@yield('timeline.menu') "><a href="timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
-            <li class="@yield('report.menu') "><a href="report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
+			<li class="@yield('template.menu') "><a href="template"><i class="icon-book"></i> <span>Task Template</span></a></li>
+			<li class="@yield('student.menu') "><a href="studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
+			<li class="@yield('field.menu') "><a href="field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
+            <li class="@yield('proposal.menu') "><a href="proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
         </ul>
     </div>
     
@@ -119,22 +110,19 @@
             <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
             
 			
-            <li class="@yield('thesis.menu') "><a href="thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
+            <li class="@yield('template.menu') "><a href="template"><i class="icon-book"></i> <span>Task Template</span></a></li>
 			
             
-            <li class="@yield('super.menu') "><a href="supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
+            <li class="@yield('student.menu') "><a href="studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
             
             
-			<li class="@yield('code.menu') "><a href="code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
+			<li class="@yield('field.menu') "><a href="field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
 			            
             
-            <li class="@yield('timeline.menu') "><a href="timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
+            <li class="@yield('proposal.menu') "><a href="proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
             
             
-            <li class="@yield('report.menu') "><a href="report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
-            
-            
-            <li class="@yield('profile.menu') "><a href="profile"><i class="icon-user"></i> <span>Profile</span></a></li>
+            <li class="@yield('detail.menu') "><a href="detail"><i class="icon-user"></i> <span>Detail</span></a></li>
         </ul>
     </div>
     
@@ -154,17 +142,13 @@
         </div>
     </div>
     
-    <script src="lib/bootstrap/js/bootstrap.js"></script>
+    <script src="{{ URL::to('/') }}/lib/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript">
         $("[rel=tooltip]").tooltip();
         $(function() {
             $('.demo-cancel-click').click(function(){return false;});
         });
     </script>
-    
+    @yield('addResource')
   </body>
 </html>
-
-
-
-<html>

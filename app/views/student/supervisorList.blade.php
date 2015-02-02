@@ -1,4 +1,4 @@
-@extends('user/layout')
+@extends('student/layout')
 
 @section('pageTitle')
 	Supervisor List
@@ -17,7 +17,7 @@
         <h4><strong><a href="#">Nama Supervisor</a></strong></h4>
         <div class="row-fluid">
             <a href="#" class="thumbnail pull-left">
-                <img src="images/blog/442256_20337880.jpg" alt="">
+                <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
             </a>
             <div class="post-summary">      
                 <p>
@@ -40,7 +40,7 @@
         <h4><strong><a href="#">Nama Supervisor</a></strong></h4>
         <div class="row-fluid">
             <a href="#" class="thumbnail pull-left">
-                <img src="images/blog/442256_20337880.jpg" alt="">
+                <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
             </a>
             <div class="post-summary">      
                 <p>

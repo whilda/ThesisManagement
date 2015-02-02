@@ -35,39 +35,84 @@ Route::get('users',function()
 { 
 	return View::make('users');
 });
-Route::get('home',function()
-{ 
-	return View::make('user/dashboard');
-});
-Route::get('code',function()
-{ 
-	return View::make('user/code');
-});
-Route::get('supervisorList',function()
-{ 
-	return View::make('user/supervisorList');
-});
-Route::get('supervisor',function()
-{ 
-	return View::make('user/supervisor');
-});
-Route::get('report',function()
-{ 
-	return View::make('user/report');
-});
-Route::get('edit',function()
-{ 
-	return View::make('user/editProfile');
-});
-Route::get('profile',function()
-{ 
-	return View::make('user/profile');
-});
-Route::get('thesis',function()
-{ 
-	return View::make('user/thesis');
-});
-Route::get('timeline',function()
-{ 
-	return View::make('user/timeline');
-});
+	Route::get('home',function()
+	{ 
+		return View::make('student/dashboard');
+	});
+	Route::get('code',function()
+	{ 
+		return View::make('student/code');
+	});
+	Route::get('supervisorList',function()
+	{ 
+		return View::make('student/supervisorList');
+	});
+	Route::get('supervisor',function()
+	{ 
+		return View::make('student/supervisor');
+	});
+	Route::get('report',function()
+	{ 
+		return View::make('student/report');
+	});
+	Route::get('edit',function()
+	{ 
+		return View::make('student/editProfile');
+	});
+	Route::get('profile',function()
+	{ 
+		return View::make('student/profile');
+	});
+	Route::get('thesis',function()
+	{ 
+		return View::make('student/thesis');
+	});
+	Route::get('timeline',function()
+	{ 
+		return View::make('student/timeline');
+	});
+	
+	Route::get('supervisor/home',function()
+	{ 
+		return View::make('supervisor/dashboard');
+	});
+	Route::get('supervisor/proposal',function()
+	{ 
+		return View::make('supervisor/proposal');
+	});
+	Route::get('supervisor/studentList',function()
+	{ 
+		return View::make('supervisor/studentList');
+	});
+	Route::get('supervisor/supervisor',function()
+	{ 
+		return View::make('supervisor/supervisor');
+	});
+	Route::get('supervisor/report',function()
+	{ 
+		return View::make('supervisor/report');
+	});
+	Route::get('supervisor/edit',function()
+	{ 
+		return View::make('supervisor/editProfile');
+	});
+	Route::get('supervisor/detail',function()
+	{ 
+		return View::make('supervisor/detail');
+	});
+	Route::get('supervisor/template',function()
+	{ 
+		return View::make('supervisor/taskTemplate');
+	});
+	Route::get('supervisor/addTemplate',function()
+	{ 
+		return View::make('supervisor/insertTemplate');
+	});
+	Route::get('supervisor/editTemplate',function()
+	{ 
+		return View::make('supervisor/insertTemplate');
+	});
+	Route::get('supervisor/field',function()
+	{ 
+		return View::make('supervisor/field');
+	});

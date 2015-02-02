@@ -14,7 +14,7 @@
 
     <!-- For sample logo only-->
     <!--Remove if you no longer need this font-->
-    <link rel="stylesheet" type="text/css" href="lib/AquafinaFont.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo URL::to('/'); ?>/lib/AquafinaFont.css">
     <!--For sample logo only-->
 
 
@@ -22,12 +22,12 @@
 
 
 
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
-    <script src="lib/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="javascripts/site.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo URL::to('/'); ?>/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo URL::to('/'); ?>/lib/font-awesome/css/font-awesome.css">
+    <script src="<?php echo URL::to('/'); ?>/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="<?php echo URL::to('/'); ?>/javascripts/site.js" type="text/javascript"></script>
     
-    <link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo URL::to('/'); ?>/stylesheets/theme.css">
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -36,11 +36,11 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="assets/dinus.png">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="<?php echo URL::to('/'); ?>/assets/dinus.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo URL::to('/'); ?>/../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo URL::to('/'); ?>/../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo URL::to('/'); ?>/../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo URL::to('/'); ?>/../assets/ico/apple-touch-icon-57-precomposed.png">
   </head>
 
   <!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->

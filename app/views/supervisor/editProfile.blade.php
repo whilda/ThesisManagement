@@ -1,38 +1,38 @@
-@extends('user/layout')
+@extends('supervisor/layout')
 
 @section('pageTitle')
-	Thesis
+	Edit Profile
 @stop
 
-@section('thesis.nav') selected="selected" @stop
-@section('thesis.menu') active @stop
+@section('profile.nav') selected="selected" @stop
+@section('profile.menu') active @stop
 
 @section('content')
-    <h2>Edit Thesis</h2>
+    <h2>Edit Profile</h2>
   <form class="form-horizontal">
     <fieldset>
 		<div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="topic">Topic</label>
+          <label class="control-label" for="alamat">Alamat</label>
           <div class="controls">
-            <input type="text" name="topic" id="topic" class="input-xlarge" value="kosong/topik lama">
+            <textarea name="alamat" id="alamat" class="input-xlarge">Alamat Lama</textarea>
           </div>
         </div>
 		<div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="title">Title</label>
+          <label class="control-label" for="hp">No. Handphone</label>
           <div class="controls">
-            <input type="text" name="title" id="title" class="input-xlarge" value="Judul Lama">
+            <input type="text" name="hp" id="hp" class="input-xlarge" value="HP lama">
           </div>
         </div>
 		<div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="abstract">Abstract</label>
+          <label class="control-label" for="email">Email</label>
           <div class="controls">
-            <textarea type="text" name="abstract" id="abstract" class="input-xlarge">Abstract Lama</textarea>
+            <input type="text" name="email" id="email" class="input-xlarge" value="email@lama">
           </div>
         </div>
 		<div class="control-group">

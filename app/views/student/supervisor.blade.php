@@ -1,4 +1,4 @@
-@extends('user/layout')
+@extends('student/layout')
 
 @section('pageTitle')
 	Nama Supervisor
@@ -16,7 +16,7 @@
         <center><h4 style="font-size:25px"><strong>Nama Supervisor</strong></h4></center><br/>
         <div class="row-fluid">
 			<div class="offset2 span2 thumbnail">
-                <img src="images/blog/442256_20337880.jpg" alt="">
+                <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
 			</div>
 			<div class="span5">
 			<ul class="item-summary">

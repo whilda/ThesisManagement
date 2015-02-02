@@ -1,11 +1,11 @@
-@extends('user/layout')
+@extends('supervisor/layout')
 
 @section('pageTitle')
-	Nama Student
+	Nama Supervisor
 @stop
 
-@section('profile.nav') selected="selected" @stop
-@section('profile.menu') active @stop
+@section('super.nav') selected="selected" @stop
+@section('super.menu') active @stop
 
 @section('content')
 
@@ -13,7 +13,7 @@
 
     <div class="row-fluid">
       <div class="span12">
-        <center><h4 style="font-size:25px"><strong>Nama Student</strong></h4></center><br/>
+        <center><h4 style="font-size:25px"><strong>Nama Supervisor</strong></h4></center><br/>
         <div class="row-fluid">
 			<div class="offset2 span2 thumbnail">
                 <img src="images/blog/442256_20337880.jpg" alt="">
@@ -22,14 +22,7 @@
 			<ul class="item-summary">
 				<li class="clearfix">
 				  <!-- Text input-->
-				  <div class="span4">Username :</div>
-				  <div class="span8">
-					asdf
-				  </div>
-				</li>
-				<li class="clearfix">
-				  <!-- Text input-->
-				  <div class="span4">NIM :</div>
+				  <div class="span4">NIP :</div>
 				  <div class="span8">
 					12312312312
 				  </div>
@@ -59,13 +52,23 @@
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
-				  <div class="span4">Supervisor :</div>
+				  <div class="span4">Mahasiswa :</div>
 				  <div class="span8">
-					-
+					30
 				  </div>
 				</li>
 				<li class="clearfix">
-				<a class="btn btn-mini" href="edit">Edit</a>
+				  <!-- Text input-->
+				  <div class="span4">Expertise :</div>
+				  <div class="span8">
+					<a href="#"><span class="label label-info">A</span></a> 
+					<a href="#"><span class="label label-info">B</span></a> 
+					<a href="#"><span class="label label-info">C</span></a> 
+					<a href="#"><span class="label label-info">D</span></a>
+				  </div>
+				</li>
+				<li class="clearfix">
+				<a class="btn btn-mini" href="#">Pilih Supervisor</a> <button class="btn btn-mini" onclick="window.history.go(-1)">Kembali</button>
 				</li>
 			</ul>
 			</div>
