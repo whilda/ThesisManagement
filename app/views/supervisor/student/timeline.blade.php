@@ -1,4 +1,4 @@
-@extends('student/layout')
+@extends('supervisor/student/layout')
 
 @section('pageTitle')
 	Time Line

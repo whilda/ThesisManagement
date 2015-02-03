@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{ URL::to('/') }}/lib/font-awesome/css/font-awesome.css">
     <script src="{{ URL::to('/') }}/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="{{ URL::to('/') }}/javascripts/site.js" type="text/javascript"></script>
+	@yield('addResourceTop')
 	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/stylesheets/theme.css">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

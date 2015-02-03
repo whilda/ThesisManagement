@@ -35,41 +35,74 @@ Route::get('users',function()
 { 
 	return View::make('users');
 });
-	Route::get('home',function()
+	Route::get('student/home',function()
 	{ 
 		return View::make('student/dashboard');
 	});
-	Route::get('code',function()
+	Route::get('student/code',function()
 	{ 
 		return View::make('student/code');
 	});
-	Route::get('supervisorList',function()
+	Route::get('student/supervisorList',function()
 	{ 
 		return View::make('student/supervisorList');
 	});
-	Route::get('supervisor',function()
+	Route::get('student/supervisor',function()
 	{ 
 		return View::make('student/supervisor');
 	});
-	Route::get('report',function()
+	Route::get('student/report',function()
 	{ 
 		return View::make('student/report');
 	});
-	Route::get('edit',function()
+	Route::get('student/edit',function()
 	{ 
 		return View::make('student/editProfile');
 	});
-	Route::get('profile',function()
+	Route::get('student/profile',function()
 	{ 
 		return View::make('student/profile');
 	});
-	Route::get('thesis',function()
+	Route::get('student/thesis',function()
 	{ 
 		return View::make('student/thesis');
 	});
-	Route::get('timeline',function()
+	Route::get('student/timeline',function()
 	{ 
 		return View::make('student/timeline');
+	});
+	
+	Route::get('student/{name}/',function($name)
+	{ 
+		return Redirect::to('student/'.$name.'/profile')->with('name',$name);
+	});
+	Route::get('student/{name}/tasks',function($name)
+	{ 
+		return View::make('supervisor/student/tasks')->with('name',$name);
+	});
+	Route::get('student/{name}/addTask',function($name)
+	{ 
+		return View::make('supervisor/student/addTask')->with('name',$name);
+	});
+	Route::get('student/{name}/thesis',function($name)
+	{ 
+		return View::make('supervisor/student/thesis')->with('name',$name);
+	});
+	Route::get('student/{name}/timeline',function($name)
+	{ 
+		return View::make('supervisor/student/timeline')->with('name',$name);
+	});
+	Route::get('student/{name}/report',function($name)
+	{ 
+		return View::make('supervisor/student/report')->with('name',$name);
+	});
+	Route::get('student/{name}/profile',function($name)
+	{ 
+		return View::make('supervisor/student/profile')->with('name',$name);
+	});
+	Route::get('student/{name}/view/{taskname}',function($name)
+	{ 
+		return View::make('supervisor/student/viewTask')->with('name',$name);
 	});
 	
 	Route::get('supervisor/home',function()
@@ -84,9 +117,9 @@ Route::get('users',function()
 	{ 
 		return View::make('supervisor/studentList');
 	});
-	Route::get('supervisor/supervisor',function()
+	Route::get('supervisor/student',function()
 	{ 
-		return View::make('supervisor/supervisor');
+		return View::make('supervisor/student');
 	});
 	Route::get('supervisor/report',function()
 	{ 
@@ -116,3 +149,5 @@ Route::get('users',function()
 	{ 
 		return View::make('supervisor/field');
 	});
+	
+	

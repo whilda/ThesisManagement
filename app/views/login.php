@@ -54,7 +54,7 @@
     
     <div class="row-fluid login">
     <div class="dialog">
-        <p class="brand" href="index.html">Awesome.</p>
+        <p class="brand" href=".">Awesome.</p>
         <div class="block">
             <div class="block-header">
                 <h2>Log In</h2>
@@ -67,7 +67,7 @@
                     <label class="remember-me"><input type="checkbox"> Remember Me</label>
 					Don't have account? <a href="signup">Sign Up here</a>
                 <div class="form-actions">
-                    <a href="home" class="btn btn-success pull-right">Log In</a>
+                    <a href="student/home" class="btn btn-success pull-right">Log In</a>
                     <div class="clearfix"></div>
                 </div>
             </form>

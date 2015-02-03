@@ -14,7 +14,7 @@
 
     <div class="row-fluid blog-post">
       <div class="span12">
-        <h4><strong><a href="#">Nama Student</a></strong></h4>
+        <h4><strong><a href="{{ URL::to('/') }}/student/namastudent">Nama Student</a></strong></h4>
         <div class="row-fluid">
             <a href="#" class="thumbnail pull-left">
                 <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
@@ -23,7 +23,7 @@
                 <p>
                   NIM: A11.2012.0????<br/>
                 </p>
-                <p><a class="btn btn-mini" href="supervisor">Lihat Detail</a></p>
+                <p><a class="btn btn-mini" href="{{ URL::to('/') }}/student/namastudent">Lihat Detail</a></p>
             </div>
         </div>
         <div class="row-fluid details">
@@ -36,7 +36,7 @@
     </div>
     <div class="row-fluid blog-post">
       <div class="span12">
-        <h4><strong><a href="#">Nama Student</a></strong></h4>
+        <h4><strong><a href="{{ URL::to('/') }}/student/namastudent">Nama Student</a></strong></h4>
         <div class="row-fluid">
             <a href="#" class="thumbnail pull-left">
                 <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
@@ -45,7 +45,7 @@
                 <p>
                   NIM: A11.2012.0????<br/>
                 </p>
-                <p><a class="btn btn-mini" href="supervisor">Lihat Detail</a></p>
+                <p><a class="btn btn-mini" href="student">Lihat Detail</a></p>
             </div>
         </div>
         <div class="row-fluid details">
@@ -67,7 +67,7 @@
                 <p>
                   NIM: A11.2012.0????<br/>
                 </p>
-                <p><a class="btn btn-mini" href="supervisor">Lihat Detail</a></p>
+                <p><a class="btn btn-mini" href="student">Lihat Detail</a></p>
             </div>
         </div>
         <div class="row-fluid details">

@@ -1,7 +1,7 @@
-@extends('supervisor/layout')
+@extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Task Template
+	Add Task
 @stop
 
 @section('addResource')
@@ -46,29 +46,13 @@ function delTask(){
 </script>
 @stop
 
-@section('template.nav') selected="selected" @stop
-@section('template.menu') active @stop
+@section('task.nav') selected="selected" @stop
+@section('task.menu') active @stop
 
 @section('content')
-    <h2>Tambah Template</h2>
+    <h2>Tambah Task</h2>
   <form class="form-horizontal">
     <fieldset>
-		<div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="name">Name</label>
-          <div class="controls">
-            <input type="text" name="name" id="name" class="input-xlarge" value="Nama template">
-          </div>
-        </div>
-		<div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="description">Description</label>
-          <div class="controls">
-            <textarea name="description" id="description" class="input-xlarge">Deskripsi Template</textarea>
-          </div>
-        </div>
 		<div class="control-group" id="tasks">
 			<div class="control-group">
 			  <div class="control-label"><b>Task#1</b></div>
@@ -89,12 +73,6 @@ function delTask(){
 				<div class="control-label">Duration</div>
 				  <div class="controls">
 					<input type="text" name="tDur[]" id="tDur" maxlength="3" class="input-small"> hari
-				  </div>
-			  </div>
-			  <div class="control-group">
-				<div class="control-label">File</div>
-				  <div class="controls">
-					<input type="file" name="tFile[]" id="tFile" maxlength="3" class="input-medium" multiple>
 				  </div>
 			  </div>
 			</div>
