@@ -61,7 +61,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="detail">Detail</a></li>
+                            <li><a tabindex="-1" href="{{ URL::to('/') }}/supervisor/detail">Detail</a></li>
                             <li class="divider"></li>
                             <li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
                             <li class="divider visible-phone"></li>
@@ -79,27 +79,27 @@
         <div id="phone-navigation">
             <select class="selectnav" id="phone-menu">
                 
-                <option value="home" @yield('dashboard.nav')> Dashboard</option>
+                <option value="{{ URL::to('/') }}/supervisor/home" @yield('dashboard.nav')> Dashboard</option>
                     
-                <option value="template" @yield('template.nav')> Task Template</option>
+                <option value="{{ URL::to('/') }}/supervisor/template" @yield('template.nav')> Task Template</option>
                     
-                <option value="studentList" @yield('student.nav')> Student List</option>
+                <option value="{{ URL::to('/') }}/supervisor/studentList" @yield('student.nav')> Student List</option>
                     
-                <option value="field" @yield('field.nav')> Field List</option>
+                <option value="{{ URL::to('/') }}/supervisor/field" @yield('field.nav')> Field List</option>
                     
-                <option value="proposal" @yield('proposal.nav')> Student Proposal</option>
+                <option value="{{ URL::to('/') }}/supervisor/proposal" @yield('proposal.nav')> Student Proposal</option>
                     
-                <option value="detail" @yield('detail.nav')>Detail</option>
+                <option value="{{ URL::to('/') }}/supervisor/detail" @yield('detail.nav')>Detail</option>
                     
             </select>
         </div>
 
         <ul class="nav nav-tabs">
-            <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
-			<li class="@yield('template.menu') "><a href="template"><i class="icon-book"></i> <span>Task Template</span></a></li>
-			<li class="@yield('student.menu') "><a href="studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
-			<li class="@yield('field.menu') "><a href="field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
-            <li class="@yield('proposal.menu') "><a href="proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
+            <li class="@yield('dashboard.menu') "><a href="{{ URL::to('/') }}/supervisor/home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
+			<li class="@yield('template.menu') "><a href="{{ URL::to('/') }}/supervisor/template"><i class="icon-book"></i> <span>Task Template</span></a></li>
+			<li class="@yield('student.menu') "><a href="{{ URL::to('/') }}/supervisor/studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
+			<li class="@yield('field.menu') "><a href="{{ URL::to('/') }}/supervisor/field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
+            <li class="@yield('proposal.menu') "><a href="{{ URL::to('/') }}/supervisor/proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
         </ul>
     </div>
     
@@ -108,22 +108,22 @@
         
         <ul id="dashboard-menu" class="nav nav-list">
             
-            <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
+            <li class="@yield('dashboard.menu') "><a href="{{ URL::to('/') }}/supervisor/home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
             
 			
-            <li class="@yield('template.menu') "><a href="template"><i class="icon-book"></i> <span>Task Template</span></a></li>
+            <li class="@yield('template.menu') "><a href="{{ URL::to('/') }}/supervisor/template"><i class="icon-book"></i> <span>Task Template</span></a></li>
 			
             
-            <li class="@yield('student.menu') "><a href="studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
+            <li class="@yield('student.menu') "><a href="{{ URL::to('/') }}/supervisor/studentList"><i class="icon-group"></i> <span>Student List</span></a></li>
             
             
-			<li class="@yield('field.menu') "><a href="field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
+			<li class="@yield('field.menu') "><a href="{{ URL::to('/') }}/supervisor/field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
 			            
             
-            <li class="@yield('proposal.menu') "><a href="proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
+            <li class="@yield('proposal.menu') "><a href="{{ URL::to('/') }}/supervisor/proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
             
             
-            <li class="@yield('detail.menu') "><a href="detail"><i class="icon-user"></i> <span>Detail</span></a></li>
+            <li class="@yield('detail.menu') "><a href="{{ URL::to('/') }}/supervisor/detail"><i class="icon-user"></i> <span>Detail</span></a></li>
         </ul>
     </div>
     

@@ -22,8 +22,11 @@
                   ...........<br/>
 				  .................<br/>
                 </p>
-                <p><a class="btn btn-mini" href="editTemplate">Edit</a> <a class="btn btn-mini" href="supervisor">Delete</a></p>
+                <p><a class="btn btn-mini" href="template/name/edit">Edit</a> <a class="btn btn-mini" href="supervisor">Delete</a></p>
             </div>
+        </div>
+		<div class="row-fluid details">
+            <i class="icon-tasks"></i> Tasks: 0
         </div>
       </div>
     </div>
@@ -39,6 +42,9 @@
                 </p>
                 <p><a class="btn btn-mini" href="editTemplate">Edit</a> <a class="btn btn-mini" href="supervisor">Delete</a></p>
             </div>
+        </div>
+		<div class="row-fluid details">
+            <i class="icon-tasks"></i> Tasks: 2
         </div>
       </div>
     </div>

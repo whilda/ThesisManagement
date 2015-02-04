@@ -4,89 +4,93 @@
 	Add Task
 @stop
 
-@section('addResource')
-<script>
-var taskNum=1;
-function addTask(){
-	taskNum++;
-	var element=document.createElement("div");
-	element.className="control-group";
-	element.id="task"+taskNum;
-	$(element).append("<div class=\"control-label\"><b>Task#"+taskNum+"</b></div>");
-	$(element).append("<div class=\"clearfix\"></div>");
-	var element2=document.createElement("div");
-	element2.className="control-group";
-	var element3=document.createElement("div");
-	element3.className="controls";
-	$(element3).append("<input type=\"text\" name=\"tName[]\" id=\"tName\" class=\"input-xlarge\" value=\"\">");
-	$(element2).append("<div class=\"control-label\">Name</div>",element3);
-	$(element).append(element2);
-	element2=document.createElement("div");
-	element2.className="control-group";
-	element3=document.createElement("div");
-	element3.className="controls";
-	$(element3).append("<textarea name=\"tDesc[]\" id=\"tDesc\" class=\"input-xlarge\"></textarea>");
-	$(element2).append("<div class=\"control-label\">Description</div>",element3);
-	$(element).append(element2);
-	element2=document.createElement("div");
-	element2.className="control-group";
-	element3=document.createElement("div");
-	element3.className="controls";
-	$(element3).append("<input type=\"text\" name=\"tDur[]\" id=\"tDur\" maxlength=\"3\" class=\"input-small\"> hari");
-	$(element2).append("<div class=\"control-label\">Duration</div>",element3);
-	$(element).append(element2);
-	$('#tasks').append(element);
-}
-function delTask(){
-	if(taskNum>1){
-		$("#task"+taskNum).remove();
-		taskNum--;
-	}
-}
-</script>
-@stop
-
 @section('task.nav') selected="selected" @stop
 @section('task.menu') active @stop
 
+@section('addResourceTop')
+<link rel="stylesheet" href="{{ URL::to('/') }}/app-css/task.css">
+@stop
+
+@section('addResource')
+<script src="{{ URL::to('/') }}/javascripts/overlay.js" type="text/javascript"></script>
+<script src="{{ URL::to('/') }}/javascripts/task.js" type="text/javascript"></script>
+@stop
+
 @section('content')
+	<div id="overlay" style="display:none"></div>
+	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
+		<div class="alert alert-warning notif">
+			<center>
+				<b id="confirmText"></b><br/>
+				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
+				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
+			</center>
+		</div>
+	</div>
     <h2>Tambah Task</h2>
   <form class="form-horizontal">
     <fieldset>
-		<div class="control-group" id="tasks">
 			<div class="control-group">
-			  <div class="control-label"><b>Task#1</b></div>
-			  <div class="clearfix"></div>
-			  <div class="control-group">
-				<div class="control-label">Name</div>
+
+				  <!-- Text input-->
+				  <label class="control-label" for="taskName">Name</label>
 				  <div class="controls">
-					<input type="text" name="tName[]" id="tName" class="input-xlarge" value="">
+					<input type="text" name="taskName" id="taskName" class="input-xlarge" value="Nama task">
+					<input type="hidden" name="oldName" value="Nama task">
+					<input type="hidden" name="type" value="1">
 				  </div>
-			  </div>
-			  <div class="control-group">
-				<div class="control-label">Description</div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="taskDesc">Description</label>
 				  <div class="controls">
-					<textarea name="tDesc[]" id="tDesc" class="input-xlarge"></textarea>
+					<textarea name="taskDesc" id="taskDesc" class="input-xlarge"></textarea>
 				  </div>
-			  </div>
-			  <div class="control-group">
-				<div class="control-label">Duration</div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="taskDur">Duration</label>
 				  <div class="controls">
-					<input type="text" name="tDur[]" id="tDur" maxlength="3" class="input-small"> hari
+					<input type="text" maxlength="3" name="taskDur" id="taskDur" class="input-small"> hari
 				  </div>
-			  </div>
-			</div>
-        </div>
-		<div class="control-group">
-			<div class="controls">
-				<input type="button" class="btn" value="+" onclick="addTask()"/> <input type="button" class="btn" value="-" onclick="delTask()"/>
-			</div>
-		</div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <div class="control-label">Files</div>
+				  <div id="delFile"></div>
+				  <div class="controls" id="fileContainer">
+					<div>
+						<div class="input-prepend">
+							<span class="add-on">asd.png</span>
+						</div><div class="input-append">
+							<span class="add-on"><a href="javascript:void(0)" taskFile="1" onclick="confirmDelFile(this)"><i class="icon-remove"></i></a></span>
+						</div>
+					</div>
+					<div>
+						<div class="input-prepend">
+							<span class="add-on">def.pdf</span>
+						</div><div class="input-append">
+							<span class="add-on"><a href="javascript:void(0)" taskFile="2" onclick="confirmDelFile(this)"><i class="icon-remove"></i></a></span>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="file">File</label>
+				  <div class="controls">
+					<input type="file"name="file" id="file" class="input-xlarge" multiple>
+				  </div>
+				</div>
 
     <div class="control-group">
           <!-- Button -->
           <div class="controls">
-            <input type="submit" class="btn btn-success" value="Masukkan"/>
+            <input type="submit" class="btn btn-success" value="Tambahkan"/>
 			<input type="button" class="btn btn-info" value="Kembali" onclick="window.history.go(-1)"/>
           </div>
         </div>

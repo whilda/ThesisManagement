@@ -52,8 +52,7 @@
 				<div class="input-prepend">
 					<input type="hidden" name="field[]" value="asd"/>
 					<span class="add-on">asd</span>
-				</div>
-				<div class="input-append">
+				</div><div class="input-append">
 					<span class="add-on"><a href="javascript:void(0)"><i class="icon-remove"></i></a></span>
 				</div>
 			</div>
@@ -61,8 +60,7 @@
 				<div class="input-prepend">
 					<input type="hidden" name="field[]" value="def"/>
 					<span class="add-on">def</span>
-				</div>
-				<div class="input-append">
+				</div><div class="input-append">
 					<span class="add-on"><a href="javascript:void(0)"><i class="icon-remove"></i></a></span>
 				</div>
 			</div>

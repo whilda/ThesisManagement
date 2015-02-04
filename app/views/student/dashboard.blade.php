@@ -74,5 +74,6 @@
             
             </ul>
         </div>
+	</div>
 </div>
 @stop

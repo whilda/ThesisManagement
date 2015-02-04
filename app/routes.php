@@ -141,9 +141,9 @@ Route::get('users',function()
 	{ 
 		return View::make('supervisor/insertTemplate');
 	});
-	Route::get('supervisor/editTemplate',function()
+	Route::get('supervisor/template/{name}/edit',function($name)
 	{ 
-		return View::make('supervisor/insertTemplate');
+		return View::make('supervisor/editTemplate');
 	});
 	Route::get('supervisor/field',function()
 	{ 
