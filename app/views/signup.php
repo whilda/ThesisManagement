@@ -54,18 +54,18 @@
     
     <div class="row-fluid login">
     <div class="dialog">
-        <p class="brand" href="index.html">Awesome.</p>
+        <p class="brand" href="index.html">Thesis Management.</p>
         <div class="block">
             <div class="block-header">
                 <h2>Sign Up</h2>
             </div>
 			<ul id="myTab" class="nav nav-tabs" role="tablist">
-			<li class="active"><a href="#student" role="tab" data-toggle="tab" aria-controls="home">Student</a></li>
-			<li><a href="#supervisor" data-toggle="tab" aria-controls="profile">Supervisor</a></li>
+			<li dataReg="1" class="active"><a href="#student" role="tab" data-toggle="tab" aria-controls="home">Student</a></li>
+			<li dataReg="2"><a href="#supervisor" data-toggle="tab" aria-controls="profile">Supervisor</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content" style="padding:0">
 			  <div class="tab-pane fade in active" id="student">
-				<form>
+				<form action="signup/student" method="post" name="student">
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
 					<input type="password" name="repass" id="repass" class="span12" placeholder="Retype Password">
@@ -77,7 +77,7 @@
 				</form>
 				</div>
 			  <div class="tab-pane fade" id="supervisor">
-				<form>
+				<form action="signup/supervisor" method="post" name="supervisor">
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
 					<input type="password" name="repass" id="repass" class="span12" placeholder="Retype Password">
@@ -90,7 +90,7 @@
 			  </div>
 			</div>
 			<div class="form-actions" style="margin:0">
-				<a href="." class="btn btn-success pull-right" onclick="/*fungsi()*/">Sign Up</a><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
+				<input type="button" class="btn btn-success pull-right" onclick="register()" value="Sign Up"><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
 				<div class="clearfix"></div>
 			</div>
         </div>
@@ -101,6 +101,18 @@
 
     
     <script src="lib/bootstrap/js/bootstrap.js"></script>
+	<script>
+	var destination="1";
+	$("#myTab").children("li").on("click",function(){
+		destination=$(this).attr("dataReg");
+	});
+	function register(){
+		if(destination==1)
+			document.student.submit();
+		else if(destination==2)
+			document.supervisor.submit();
+	}
+	</script>
     <script type="text/javascript">
         $("[rel=tooltip]").tooltip();
         $(function() {

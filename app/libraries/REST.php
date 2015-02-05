@@ -1,10 +1,10 @@
 <?php
 class REST{
 	public static $url = "http://localhost:8080/RESTfulWS/rest/"; 
-	public static $appkey = "kEIYWArRKhqxPGIfWnsS6wu5YADmsg";
+	public static $appkey = "P0DyxGkgKComHAz0AhJJ";
  
-	static function POSTRequest($path, $data){
-		$data_string = json_encode($data);
+	static function POSTRequest($path, $data_string){
+		//$data_string = json_encode($data);
 		$ch = curl_init(REST::$url.$path);                                                                      
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  

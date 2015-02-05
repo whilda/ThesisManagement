@@ -19,10 +19,9 @@ Route::get('coba', function()
 {
 	return View::make('coba');
 });
-Route::get('signup', function()
-{
-	return View::make('signup');
-});
+Route::get('signup', 'AuthController@Signup');
+Route::post('signup/student', 'AuthController@SignupStudent');
+Route::post('signup/supervisor', 'AuthController@SignupSupervisor');
 
 Route::get('test', function(){ 
 	return 'testRoute!';
