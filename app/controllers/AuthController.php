@@ -133,7 +133,7 @@ class AuthController extends Controller {
 				Session::put('token',Input::get('name'));
 				Session::put('role','supervisor');
 			}else{
-				return "Login gagal";
+				return Redirect::to('/');
 			}
 			return Redirect::to("/".Session::get('role')."/home");
 		}else{

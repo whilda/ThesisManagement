@@ -11,17 +11,22 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('login');
+//grup non-login
+Route::group(array('before'=>'guest'), function(){
+	Route::get('/', function()
+	{
+		return View::make('login');
+	});
+	Route::get('signup', 'AuthController@Signup');
+	Route::post('signup/student', 'AuthController@SignupStudent');
+	Route::post('signup/supervisor', 'AuthController@SignupSupervisor');
+	Route::post('doAuth','AuthController@Auth');
 });
+
 Route::get('coba', function()
 {
 	return View::make('coba');
 });
-Route::get('signup', 'AuthController@Signup');
-Route::post('signup/student', 'AuthController@SignupStudent');
-Route::post('signup/supervisor', 'AuthController@SignupSupervisor');
 
 Route::get('test', function(){ 
 	return 'testRoute!';
@@ -34,6 +39,9 @@ Route::get('users',function()
 { 
 	return View::make('users');
 });
+
+//khusus student
+Route::group(array('before'=>'student'), function(){
 	Route::get('student/home',function()
 	{ 
 		return View::make('student/dashboard');
@@ -70,7 +78,10 @@ Route::get('users',function()
 	{ 
 		return View::make('student/timeline');
 	});
-	
+});
+
+//khusus supervisor
+Route::group(array('before'=>'supervisor'), function(){
 	Route::get('student/{name}/',function($name)
 	{ 
 		return Redirect::to('student/'.$name.'/profile')->with('name',$name);
@@ -148,5 +159,4 @@ Route::get('users',function()
 	{ 
 		return View::make('supervisor/field');
 	});
-	
-	
+});

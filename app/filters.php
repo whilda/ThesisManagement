@@ -32,7 +32,7 @@ App::after(function($request, $response)
 | integrates HTTP Basic authentication for quick, simple checking.
 |
 */
-
+/*
 Route::filter('auth', function()
 {
 	if (Auth::guest())
@@ -47,8 +47,7 @@ Route::filter('auth', function()
 		}
 	}
 });
-
-
+*/
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();
@@ -64,12 +63,12 @@ Route::filter('auth.basic', function()
 | response will be issued if they are, which you may freely change.
 |
 */
-
+/*
 Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
 });
-
+*/
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter
@@ -87,4 +86,14 @@ Route::filter('csrf', function()
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}
+});
+
+Route::filter('guest', function(){
+	if(Session::has('role')) return Redirect::to(Session::get('role').'/home');
+});
+Route::filter('student', function(){
+	if(Session::get('role')!="student") return Redirect::to('/');
+});
+Route::filter('supervisor', function(){
+	if(Session::get('role')!="supervisor") return Redirect::to('/');
 });

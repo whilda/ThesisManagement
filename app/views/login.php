@@ -55,19 +55,20 @@
     <div class="row-fluid login">
     <div class="dialog">
         <p class="brand" href=".">Awesome.</p>
+		<div id="errMsg" class="alert alert-error" style="display:none" onclick="errMsg()"></div>
         <div class="block">
             <div class="block-header">
                 <h2>Log In</h2>
             </div>
-            <form>
+            <form name="login" method="post" action="<?php echo URL::to('/'); ?>/doAuth">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" class="span12">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="span12">
-                    <label class="remember-me"><input type="checkbox"> Remember Me</label>
+                    <label class="remember-me"><input type="checkbox" name="remember"> Remember Me</label>
 					Don't have account? <a href="signup">Sign Up here</a>
                 <div class="form-actions">
-                    <a href="student/home" class="btn btn-success pull-right">Log In</a>
+                    <input type="button" class="btn btn-success pull-right" value="Log In" onclick="auth()">
                     <div class="clearfix"></div>
                 </div>
             </form>
@@ -79,6 +80,29 @@
 
     
     <script src="lib/bootstrap/js/bootstrap.js"></script>
+	<script>
+		function auth(){
+			var error="";
+			var username=document.login.username.value;
+			var password=document.login.password.value;
+			if(username==""){
+				error+="<li>Username tidak boleh kosong</li>";
+			}
+			if(password==""){
+				error+="<li>Password tidak boleh kosong</li>";
+			}
+			if(error==""){
+				document.login.submit();
+			}else{
+				$("#errMsg").hide();
+				$("#errMsg").html("<ul>"+error+"</ul>");
+				$("#errMsg").slideDown();
+			}
+		}
+	function errMsg(){
+		$("#errMsg").slideUp();
+	}
+	</script>
     <script type="text/javascript">
         $("[rel=tooltip]").tooltip();
         $(function() {

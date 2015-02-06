@@ -55,6 +55,7 @@
     <div class="row-fluid login">
     <div class="dialog">
         <p class="brand" href="index.html">Thesis Management.</p>
+		<div id="errMsg" class="alert alert-error" style="display:none" onclick="errMsg()"></div>
         <div class="block">
             <div class="block-header">
                 <h2>Sign Up</h2>
@@ -65,25 +66,25 @@
 			</ul>
 			<div id="myTabContent" class="tab-content" style="padding:0">
 			  <div class="tab-pane fade in active" id="student">
-				<form action="signup/student" method="post" name="student">
+				<form action="<?php echo URL::to('/'); ?>/signup/student" method="post" name="student">
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
 					<input type="password" name="repass" id="repass" class="span12" placeholder="Retype Password">
 					<input type="text" name="nim" id="nim" class="span12" placeholder="NIM">
 					<input type="text" name="name" id="name" class="span12" placeholder="Name">
-					<input type="text" name="address" id="address" class="span12" placeholder="Address">
+					<textarea name="address" id="address" class="span12" placeholder="Address"></textarea>
 					<input type="text" name="handphone" id="handphone" class="span12" placeholder="Handphone">
 					<input type="text" name="email" id="email" class="span12" placeholder="Email">
 				</form>
 				</div>
 			  <div class="tab-pane fade" id="supervisor">
-				<form action="signup/supervisor" method="post" name="supervisor">
+				<form action="<?php echo URL::to('/'); ?>/signup/supervisor" method="post" name="supervisor">
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
 					<input type="password" name="repass" id="repass" class="span12" placeholder="Retype Password">
 					<input type="text" name="nip" id="nip" class="span12" placeholder="NIP">
 					<input type="text" name="name" id="name" class="span12" placeholder="Name">
-					<input type="text" name="address" id="address" class="span12" placeholder="Address">
+					<textarea name="address" id="address" class="span12" placeholder="Address"></textarea>
 					<input type="text" name="handphone" id="handphone" class="span12" placeholder="Handphone">
 					<input type="text" name="email" id="email" class="span12" placeholder="Email">
 				</form>
@@ -107,10 +108,108 @@
 		destination=$(this).attr("dataReg");
 	});
 	function register(){
-		if(destination==1)
-			document.student.submit();
-		else if(destination==2)
-			document.supervisor.submit();
+		var error="";
+		if(destination==1){
+			var username=document.student.username.value;
+			var password=document.student.password.value;
+			var repass=document.student.repass.value;
+			var nim=document.student.nim.value;
+			var name=document.student.name.value;
+			var address=document.student.address.value;
+			var handphone=document.student.handphone.value;
+			var email=document.student.email.value;
+			if(username==""){
+				error+="<li>Username tidak boleh kosong</li>";
+			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
+				error+="<li>Username tidak valid</li>";
+			}
+			if(password==""){
+				error+="<li>Password tidak boleh kosong</li>";
+			}
+			if(repass!=password){
+				error+="<li>Retype Password tidak sama dengan Password</li>";
+			}
+			if(nim==""){
+				error+="<li>NIM tidak boleh kosong</li>";
+			}else if(!/^[A-Za-z][0-9]{2}\.[0-9]{4}\.[0-9]{5}$/.test(nim)){
+				error+="<li>Format nim salah</li>";
+			}
+			if(name==""){
+				error+="<li>Nama tidak boleh kosong</li>";
+			}
+			if(address==""){
+				error+="<li>Address tidak boleh kosong</li>";
+			}
+			if(handphone==""){
+				error+="<li>Handphone tidak boleh kosong</li>";
+			}else if(!/^[0-9]{7,12}$/.test(handphone)){
+				error+="<li>Format Handphone salah</li>";
+			}
+			if(email==""){
+				error+="<li>Email tidak boleh kosong</li>";
+			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
+				error+="<li>Format Email tidak valid</li>";
+			}
+			if(error==""){
+				document.student.submit();
+			}else{
+				$("#errMsg").hide();
+				$("#errMsg").html("<ul>"+error+"</ul>");
+				$("#errMsg").slideDown();
+			}
+		}
+		else if(destination==2){
+			var username=document.supervisor.username.value;
+			var password=document.supervisor.password.value;
+			var repass=document.supervisor.repass.value;
+			var nip=document.supervisor.nip.value;
+			var name=document.supervisor.name.value;
+			var address=document.supervisor.address.value;
+			var handphone=document.supervisor.handphone.value;
+			var email=document.supervisor.email.value;
+			if(username==""){
+				error+="<li>Username tidak boleh kosong</li>";
+			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
+				error+="<li>Username tidak valid</li>";
+			}
+			if(password==""){
+				error+="<li>Password tidak boleh kosong</li>";
+			}
+			if(repass!=password){
+				error+="<li>Retype Password tidak sama dengan Password</li>";
+			}
+			if(nip==""){
+				error+="<li>NIP tidak boleh kosong</li>";
+			}else if(!/^[0-9]{4}\.[0-9]{2}\.[0-9]{4}\.[0-9]{3}$/.test(nip)){
+				error+="<li>Format NIP salah</li>";
+			}
+			if(name==""){
+				error+="<li>Nama tidak boleh kosong</li>";
+			}
+			if(address==""){
+				error+="<li>Address tidak boleh kosong</li>";
+			}
+			if(handphone==""){
+				error+="<li>Handphone tidak boleh kosong</li>";
+			}else if(!/^[0-9]{7,12}$/.test(handphone)){
+				error+="<li>Format Handphone salah</li>";
+			}
+			if(email==""){
+				error+="<li>Email tidak boleh kosong</li>";
+			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
+				error+="<li>Format Email tidak valid</li>";
+			}
+			if(error==""){
+				document.supervisor.submit();
+			}else{
+				$("#errMsg").hide();
+				$("#errMsg").html("<ul>"+error+"</ul>");
+				$("#errMsg").slideDown();
+			}
+		}
+	}
+	function errMsg(){
+		$("#errMsg").slideUp();
 	}
 	</script>
     <script type="text/javascript">
