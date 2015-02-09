@@ -13,39 +13,20 @@
 
 //grup non-login
 Route::group(array('before'=>'guest'), function(){
-	Route::get('/', function()
-	{
-		return View::make('login');
-	});
+	Route::get('/', 'AuthController@logIn');
 	Route::get('signup', 'AuthController@Signup');
 	Route::post('signup/student', 'AuthController@SignupStudent');
 	Route::post('signup/supervisor', 'AuthController@SignupSupervisor');
 	Route::post('doAuth','AuthController@Auth');
+	Route::post('exist','AuthController@isExist');
 });
-
-Route::get('coba', function()
-{
-	return View::make('coba');
-});
-
-Route::get('test', function(){ 
-	return 'testRoute!';
-});
-
-Route::pattern('id', '[0-9]+');
-Route::get('users/{id}','UserController@ShowProfile');
-
-Route::get('users',function()
-{ 
-	return View::make('users');
+Route::group(array('before'=>'auth'), function(){
+	Route::get('logout','AuthController@logOut');
 });
 
 //khusus student
 Route::group(array('before'=>'student'), function(){
-	Route::get('student/home',function()
-	{ 
-		return View::make('student/dashboard');
-	});
+	Route::get('student/home',"StudentController@home");
 	Route::get('student/code',function()
 	{ 
 		return View::make('student/code');
@@ -114,6 +95,8 @@ Route::group(array('before'=>'supervisor'), function(){
 	{ 
 		return View::make('supervisor/student/viewTask')->with('name',$name);
 	});
+	
+	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	
 	Route::get('supervisor/home',function()
 	{ 

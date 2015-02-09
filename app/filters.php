@@ -92,8 +92,11 @@ Route::filter('guest', function(){
 	if(Session::has('role')) return Redirect::to(Session::get('role').'/home');
 });
 Route::filter('student', function(){
-	if(Session::get('role')!="student") return Redirect::to('/');
+	if(!Session::has('role')||Session::get('role')!="student") return Redirect::to('/');
 });
 Route::filter('supervisor', function(){
-	if(Session::get('role')!="supervisor") return Redirect::to('/');
+	if(!Session::has('role')||Session::get('role')!="supervisor") return Redirect::to('/');
+});
+Route::filter('auth', function(){
+	if(!Session::has('role')) return Redirect::to('/');
 });

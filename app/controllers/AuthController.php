@@ -6,6 +6,13 @@ class AuthController extends Controller {
     {
         return View::make('signup');
     }
+	public function LogIn(){
+		return View::make('login');
+	}
+	public function logOut(){
+		Session::flush();
+		return Redirect::to('/')->withCookie(Cookie::forget('__token'));
+	}
 	public function SignupStudent(){
 		$validator = Validator::make(Input::all(),
 			array(
@@ -77,10 +84,8 @@ class AuthController extends Controller {
 				"appkey" =>REST::$appkey, 
 				"username" =>Input::get('username'), 
 			);
-			$data_string=json_encode($data);
-			$json=REST::POSTRequest('f/isexist',$data_string);
-			$output=json_decode($json,true);
-			if(isset($output['code'])&&$output['code']==0){
+			$exist=$this->isExist(json_encode($data));
+			if($exist==0){
 				$data = array(
 					"appkey" =>REST::$appkey, 
 					"username" =>Input::get('username'), 
@@ -103,7 +108,7 @@ class AuthController extends Controller {
 				}else{
 					return "Internal Server Error";
 				}
-			}else if(isset($output['code'])&&$output['code']==1){
+			}else if($exist==1){
 				return "Username sudah terdaftar";
 			}else{
 				return "Internal Server Error";
@@ -125,19 +130,38 @@ class AuthController extends Controller {
 			if($output['code']==1){
 				Session::put('name',Input::get('name'));
 				Session::put('username',Input::get('username'));
-				Session::put('token',Input::get('name'));
+				Session::put('token',$output['token']);
 				Session::put('role','student');
 			}else if($output['code']==2){
 				Session::put('name',Input::get('name'));
 				Session::put('username',Input::get('username'));
-				Session::put('token',Input::get('name'));
+				Session::put('token',$output['token']);
 				Session::put('role','supervisor');
 			}else{
 				return Redirect::to('/');
 			}
-			return Redirect::to("/".Session::get('role')."/home");
+			if(Input::has('remember'))
+				return Redirect::to("/".Session::get('role')."/home")->withCookie(Cookie::make('__token',$output['token'],1440 * 30));
+			else
+				return Redirect::to("/".Session::get('role')."/home");
 		}else{
 			return "Internal Server Error";
+		}
+	}
+	public function isExist($data_string=NULL){
+		if(Request::ajax()){
+			$data['username']=Input::get('username');
+			$data['appkey']=REST::$appkey;
+			$data_string=json_encode($data);
+		}
+		if($data_string!=NULL){
+			$json=REST::POSTRequest('f/isexist',$data_string);
+			$output=json_decode($json,true);
+			if(!isset($output['code']))
+				$output['code']=-1;
+			return $output['code'];
+		}else{
+			return -1;
 		}
 	}
 }

@@ -29,11 +29,11 @@
 @section('content')
     <h2>Field List</h2>
 	<div class="well widget">
-        <form class="form-inline" style="margin-bottom: 0px;" name="insert">
+        <form class="form-inline" style="margin-bottom: 0px;" name="insert" method="post" action="{{ URL::to('/') }}/supervisor/field/add">
 			<h2>Insert Field</h2>
             <input class="input-xxlarge" placeholder="Name" type="text" name="name"><br/>
 			<textarea class="input-xxlarge" placeholder="Description" name="description"></textarea><br/>
-            <button class="btn" type="button"><i class="icon-save"></i>Save</button>
+            <button class="btn" type="submit" onclick="document.insert.submit()"><i class="icon-save"></i>Save</button>
         </form>
     </div>
 	<div class="well widget">

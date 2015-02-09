@@ -65,7 +65,7 @@
                             <li class="divider"></li>
                             <li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
                             <li class="divider visible-phone"></li>
-                            <li><a tabindex="-1" href="sign-in.html">Logout</a></li>
+                            <li><a tabindex="-1" href="{{ URL::to('/') }}/logout">Log Out</a></li>
                         </ul>
                     </li>
                     

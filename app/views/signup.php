@@ -91,7 +91,7 @@
 			  </div>
 			</div>
 			<div class="form-actions" style="margin:0">
-				<input type="button" class="btn btn-success pull-right" onclick="register()" value="Sign Up"><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
+				<input id="submitBtn" type="button" class="btn btn-success pull-right" onclick="register()" value="Sign Up"><a href="."><span class="glyphicon glyphicon-home"></span>Back to login</a>
 				<div class="clearfix"></div>
 			</div>
         </div>
@@ -104,9 +104,38 @@
     <script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script>
 	var destination="1";
+	var success=false;
 	$("#myTab").children("li").on("click",function(){
 		destination=$(this).attr("dataReg");
 	});
+	function isExist(username){
+		model={
+			"username":username
+		};
+		var output;
+		$.ajax({  
+			type: 'POST',  
+			url: '<?php echo URL::to('/'); ?>/exist',  
+			data: JSON.stringify(model),  
+			dataType: 'text',  
+			contentType: 'application/json',
+			success: function(data){
+				success=true;
+				if(data==1){
+					if($("#errMsg").html()=="")
+						$("#errMsg").html("<ul><li>Username sudah terdaftar</li></ul>");
+					else
+						$("#errMsg>ul").prepend("<li>Username sudah terdaftar</li>");
+				}else if(data=="-1"){
+					$("#errMsg").html("Internal Server Error");
+				}
+			},  
+			error: function(req, status, ex) {
+				alert("POST Request : "+ex);
+	      	},  
+	      	timeout:60000  
+	    });
+	}
 	function register(){
 		var error="";
 		if(destination==1){
@@ -120,8 +149,13 @@
 			var email=document.student.email.value;
 			if(username==""){
 				error+="<li>Username tidak boleh kosong</li>";
+				success=true;
 			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
 				error+="<li>Username tidak valid</li>";
+				success=true;
+			}else{
+				success=false;
+				isExist(username);
 			}
 			if(password==""){
 				error+="<li>Password tidak boleh kosong</li>";
@@ -150,13 +184,7 @@
 			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
 				error+="<li>Format Email tidak valid</li>";
 			}
-			if(error==""){
-				document.student.submit();
-			}else{
-				$("#errMsg").hide();
-				$("#errMsg").html("<ul>"+error+"</ul>");
-				$("#errMsg").slideDown();
-			}
+			
 		}
 		else if(destination==2){
 			var username=document.supervisor.username.value;
@@ -169,8 +197,13 @@
 			var email=document.supervisor.email.value;
 			if(username==""){
 				error+="<li>Username tidak boleh kosong</li>";
+				success=true;
 			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
 				error+="<li>Username tidak valid</li>";
+				success=true;
+			}else{
+				success=false;
+				isExist(username);
 			}
 			if(password==""){
 				error+="<li>Password tidak boleh kosong</li>";
@@ -199,13 +232,25 @@
 			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
 				error+="<li>Format Email tidak valid</li>";
 			}
-			if(error==""){
+		}
+		$("#errMsg").hide();
+		if(error!="")
+			$("#errMsg").html("<ul>"+error+"</ul>");
+		submitForm(destination);
+	}
+	function submitForm(type){
+		error=$("#errMsg").html();
+		$("#submitBtn").prop("disabled", true);
+		if(error==""&&success==true){
+			if(type==1)
+				document.student.submit();
+			else if(type==2)
 				document.supervisor.submit();
-			}else{
-				$("#errMsg").hide();
-				$("#errMsg").html("<ul>"+error+"</ul>");
-				$("#errMsg").slideDown();
-			}
+		}else if(success==true){
+			$("#errMsg").slideDown();
+			$("#submitBtn").prop("disabled", false);
+		}else{
+			setTimeout(function(){ submitForm(type) },500);
 		}
 	}
 	function errMsg(){
