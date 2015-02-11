@@ -8,3 +8,14 @@ function hideOver(){
 	$("#overlay").fadeOut("slow");
 	$("#overlayBox").fadeOut("slow");
 }
+function displayNotif(){
+	showOver();
+}
+function displayConfirm(){
+	$("#overlay").fadeIn("slow");
+	$("#confirm").fadeIn("slow");
+}
+function cancelConfirm(){
+	$("#overlay").fadeOut("slow");
+	$("#confirm").fadeOut("slow");
+}

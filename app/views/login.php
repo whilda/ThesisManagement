@@ -54,7 +54,7 @@
     
     <div class="row-fluid login">
     <div class="dialog">
-        <p class="brand" href=".">Awesome.</p>
+        <p class="brand" href=".">Thesis Management.</p>
 		<div id="errMsg" class="alert alert-error" style="display:none" onclick="errMsg()"></div>
         <div class="block">
             <div class="block-header">
@@ -102,6 +102,10 @@
 	function errMsg(){
 		$("#errMsg").slideUp();
 	}
+	<?php if(Session::has('error')){ ?>
+		$("#errMsg").html("<ul><li><?php echo Session::get('error'); ?></li></ul>");
+		$("#errMsg").slideDown();
+	<?php } ?>
 	</script>
     <script type="text/javascript">
         $("[rel=tooltip]").tooltip();

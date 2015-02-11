@@ -51,17 +51,6 @@ function editTask(data){
 		$("#tasks").slideToggle();
 	}
 }
-function displayNotif(){
-	showOver();
-}
-function displayConfirm(){
-	$("#overlay").fadeIn("slow");
-	$("#confirm").fadeIn("slow");
-}
-function cancelConfirm(){
-	$("#overlay").fadeOut("slow");
-	$("#confirm").fadeOut("slow");
-}
 var data;
 function confirmDelTask(dataTask){
 	var taskName=dataTask.getAttribute("taskName");

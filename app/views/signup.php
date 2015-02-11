@@ -112,7 +112,6 @@
 		model={
 			"username":username
 		};
-		var output;
 		$.ajax({  
 			type: 'POST',  
 			url: '<?php echo URL::to('/'); ?>/exist',  
@@ -131,7 +130,7 @@
 				}
 			},  
 			error: function(req, status, ex) {
-				alert("POST Request : "+ex);
+				$("#errMsg").html("Internal Server Error");
 	      	},  
 	      	timeout:60000  
 	    });

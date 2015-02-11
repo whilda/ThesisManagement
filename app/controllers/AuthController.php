@@ -137,8 +137,10 @@ class AuthController extends Controller {
 				Session::put('username',Input::get('username'));
 				Session::put('token',$output['token']);
 				Session::put('role','supervisor');
+			}else if($output['code']==-1){
+				return "Internal Server Error";
 			}else{
-				return Redirect::to('/');
+				return Redirect::to('/')->with('error','Username/Password Salah');
 			}
 			if(Input::has('remember'))
 				return Redirect::to("/".Session::get('role')."/home")->withCookie(Cookie::make('__token',$output['token'],1440 * 30));
