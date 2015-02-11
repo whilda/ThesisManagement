@@ -128,12 +128,10 @@ class AuthController extends Controller {
 		$output=json_decode($json,true);
 		if(isset($output['code'])){
 			if($output['code']==1){
-				Session::put('name',Input::get('name'));
 				Session::put('username',Input::get('username'));
 				Session::put('token',$output['token']);
 				Session::put('role','student');
 			}else if($output['code']==2){
-				Session::put('name',Input::get('name'));
 				Session::put('username',Input::get('username'));
 				Session::put('token',$output['token']);
 				Session::put('role','supervisor');

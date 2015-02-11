@@ -22,6 +22,7 @@ Route::group(array('before'=>'guest'), function(){
 });
 Route::group(array('before'=>'auth'), function(){
 	Route::get('logout','AuthController@logOut');
+	Route::get('field/get/{search?}', 'GeneralController@getField');
 });
 
 //khusus student
@@ -98,7 +99,6 @@ Route::group(array('before'=>'supervisor'), function(){
 	
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');
-	Route::get('supervisor/field/get/{search?}', 'SupervisorController@getField');
 	
 	Route::get('supervisor/home',function()
 	{ 

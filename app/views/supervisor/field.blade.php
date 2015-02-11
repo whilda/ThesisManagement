@@ -83,7 +83,7 @@
 				$("#loading").fadeIn("slow");
 				$.ajax({  
 					type: 'GET',  
-					url: '<?php echo URL::to('/'); ?>/supervisor/field/get'+search,
+					url: '<?php echo URL::to('/'); ?>/field/get'+search,
 					contentType: 'application/json',
 					success: function(data){
 						$("#loading").fadeOut("fast");
