@@ -27,9 +27,12 @@ class SupervisorController extends Controller {
 			return "Internal Server Error";
 		}
 	}
-	public function getField($search=".+"){
+	public function getField($search=""){
 		if(Request::ajax()){
-			$json=REST::GETRequest("f/getallfield/".$search."/".REST::$appkey."/".Session::get('token'));
+			if($search=="")
+				$json=REST::GETRequest("f/getallfield/".REST::$appkey."/".Session::get('token'));
+			else
+				$json=REST::GETRequest("f/searchfield/".$search."/".REST::$appkey."/".Session::get('token'));
 			$output=json_decode($json,true);
 			if(isset($output['code'])){
 				if($output['code']==1){

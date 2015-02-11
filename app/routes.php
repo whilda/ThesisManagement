@@ -98,7 +98,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');
-	Route::get('supervisor/field/all/{search?}', 'SupervisorController@getField');
+	Route::get('supervisor/field/get/{search?}', 'SupervisorController@getField');
 	
 	Route::get('supervisor/home',function()
 	{ 

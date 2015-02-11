@@ -48,26 +48,34 @@
 	var loading=false;
 	var fields;
 	var maxpage;
+	var search="";
 	var newdata;
 		function chSelection(){
 			var allCheck=document.field.all;
 			var fieldName=document.field.elements["fieldName[]"];
 			var i;
 			if(allCheck.checked){
-				for(i=0;i<fieldName.length;i++){
-					fieldName[i].checked=true;
+				if(fieldName.length===undefined){
+					fieldName.checked=true;
+				}else{
+					for(i=0;i<fieldName.length;i++){
+						fieldName[i].checked=true;
+					}
 				}
 			}else{
-				for(i=0;i<fieldName.length;i++){
-					fieldName[i].checked=false;
+				if(fieldName.length===undefined){
+					fieldName.checked=false;
+				}else{
+					for(i=0;i<fieldName.length;i++){
+						fieldName[i].checked=false;
+					}
 				}
 			}
 		}
 		function notifMsg(){
 			$("#notifMsg").slideUp();
 		}
-		function load(search){
-			search=search||"";
+		function load(){
 			if(loading==false){
 				loading==true;
 				if(search!="")
@@ -75,7 +83,7 @@
 				$("#loading").fadeIn("slow");
 				$.ajax({  
 					type: 'GET',  
-					url: '<?php echo URL::to('/'); ?>/supervisor/field/all'+search,
+					url: '<?php echo URL::to('/'); ?>/supervisor/field/get'+search,
 					contentType: 'application/json',
 					success: function(data){
 						$("#loading").fadeOut("fast");
@@ -144,6 +152,7 @@
 				}
 				$("#fieldData>tbody").html(rowdata);
 				generatePagination(numpage);
+				document.field.all.checked=false;
 			}
 		}
 		load();
@@ -178,22 +187,27 @@
 						try{
 							var output=JSON.parse(data);
 							if(output.code==1){
-								/*
-								var i;
-								var found=false;
-								for(i=0;i<fields.length;i++){
-									if(fields[i]._id==newdata._id){
-										found=true;
-										break;
+								if(search==""){
+									var i;
+									var found=false;
+									for(i=0;i<fields.length;i++){
+										if(fields[i]._id==newdata._id){
+											found=true;
+											break;
+										}
 									}
+									if(!found)
+										fields.push(newdata);
+									else
+										fields[i].description=newdata.description;
+									maxpage=Math.ceil(fields.length/10);
+									if(maxpage==0)
+										maxpage=1;
+									generatePagination(1);
+									showField(1);
+								}else{
+									resetField();
 								}
-								if(!found)
-									fields.push(newdata);
-								else
-									fields[i].description=newdata.description;
-								showField(1);
-								*/
-								load();
 								$("#notifMsg").hide();
 								$("#notifMsg").attr("class", "alert alert-success");
 								$("#notifMsg").html("Field insert success");
@@ -230,19 +244,32 @@
 			}
 		}
 		function searchField(){
-			load(document.search.search.value);
+			search=document.search.search.value;
+			load();
+		}
+		function resetField(){
+			document.search.search.value="";
+			search="";
+			load();
 		}
 		function delField(){
 			$("#btnHapus").prop("disabled",true);
+			document.field.all.checked=false;
 			cancelConfirm();
 			var fieldName=document.field.elements["fieldName[]"];
 			var i;
 			var deleted=[];
-			for(i=0;i<fieldName.length;i++){
-				if(fieldName[i].checked)
-					deleted.push(fieldName[i].value);
+			if(fieldName.length===undefined){
+				if(fieldName.checked)
+					deleted.push(fieldName.value);
 			}
-			if(fieldName.length>0){
+			else{
+				for(i=0;i<fieldName.length;i++){
+					if(fieldName[i].checked)
+						deleted.push(fieldName[i].value);
+				}
+			}
+			if(deleted.length>0){
 				model={
 					"names":deleted
 				};
@@ -259,7 +286,7 @@
 							$("#notifMsg").attr("class", "alert alert-success");
 							$("#notifMsg").html("Field sudah dihapus");
 							$("#notifMsg").slideDown();
-							load();
+							resetField();
 						}else{
 							$("#notifMsg").hide();
 							$("#notifMsg").attr("class", "alert alert-error");
@@ -281,9 +308,14 @@
 		function confirmDel(){
 			var fieldName=document.field.elements["fieldName[]"];
 			var counter=0;
-			for(var i=0;i<fieldName.length;i++){
-				if(fieldName[i].checked)
+			if(fieldName.length===undefined){
+				if(fieldName.checked)
 					counter++;
+			}else{
+				for(var i=0;i<fieldName.length;i++){
+					if(fieldName[i].checked)
+						counter++;
+				}
 			}
 			if(counter>0){
 				$("#confirmText").html("Apakah anda yakin menghapus field yang terpilih?");
@@ -322,6 +354,7 @@
         <form class="form-inline" style="margin-bottom: 0px;" name="search">
             <input class="input-xlarge" placeholder="Search Field..." type="text" name="search">
             <button class="btn" type="button" onclick="searchField()"><i class="icon-search"></i> Go</button>
+			<button class="btn" type="button" onclick="resetField()"><i class="icon-refresh"></i> Reset</button>
         </form>
     </div>
 	<form class="form-horizontal" name="field" style="position:relative">
