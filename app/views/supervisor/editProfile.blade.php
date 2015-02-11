@@ -16,7 +16,7 @@
           <!-- Text input-->
           <label class="control-label" for="alamat">Alamat</label>
           <div class="controls">
-            <textarea name="alamat" id="alamat" class="input-xlarge">Alamat Lama</textarea>
+            <textarea name="alamat" id="alamat" class="input-xlarge">{{ $data['address'] }}</textarea>
           </div>
         </div>
 		<div class="control-group">
@@ -24,7 +24,7 @@
           <!-- Text input-->
           <label class="control-label" for="hp">No. Handphone</label>
           <div class="controls">
-            <input type="text" name="hp" id="hp" class="input-xlarge" value="HP lama">
+            <input type="text" name="hp" id="hp" class="input-xlarge" value="{{ $data['handphone'] }}">
           </div>
         </div>
 		<div class="control-group">
@@ -32,7 +32,7 @@
           <!-- Text input-->
           <label class="control-label" for="email">Email</label>
           <div class="controls">
-            <input type="text" name="email" id="email" class="input-xlarge" value="email@lama">
+            <input type="text" name="email" id="email" class="input-xlarge" value="{{ $data['email'] }}">
           </div>
         </div>
 		<div class="control-group">

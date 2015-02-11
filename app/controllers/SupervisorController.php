@@ -48,6 +48,24 @@ class SupervisorController extends Controller {
 		}
 		return -1;
 	}
+	public function Detail(){
+		$data_output=$this->getData();
+		if(isset($data_output['code'])&&$data_output['code']==1){
+			$data_output['data']=json_decode($data_output['data'],true);
+			return View::make('supervisor/detail', array('data'=>$data_output['data']));
+		}else{
+			return "Internal Server Error";
+		}
+	}
+	public function EditDetailView(){
+		$data_output=$this->getData();
+		if(isset($data_output['code'])&&$data_output['code']==1){
+			$data_output['data']=json_decode($data_output['data'],true);
+			return View::make('supervisor/editProfile', array('data'=>$data_output['data']));
+		}else{
+			return "Internal Server Error";
+		}
+	}
 	public function getData(){
 		$path="su/get/".Session::get('username')."/".REST::$appkey."/".Session::get('token');
 		$output=REST::GETRequest($path);
