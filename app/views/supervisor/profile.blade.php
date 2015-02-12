@@ -4,8 +4,8 @@
 	Nama Supervisor
 @stop
 
-@section('detail.nav') selected="selected" @stop
-@section('detail.menu') active @stop
+@section('profile.nav') selected="selected" @stop
+@section('profile.menu') active @stop
 
 @section('content')
 
@@ -65,7 +65,7 @@
 				  </div>
 				</li>
 				<li class="clearfix">
-				<a class="btn btn-mini" href="edit">Edit</a>
+				<a class="btn btn-mini" href="{{ URL::to('/')}}/supervisor/profile/edit">Edit</a>
 				</li>
 			</ul>
 			</div>

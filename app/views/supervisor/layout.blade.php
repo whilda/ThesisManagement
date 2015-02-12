@@ -61,7 +61,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="{{ URL::to('/') }}/supervisor/detail">Detail</a></li>
+                            <li><a tabindex="-1" href="{{ URL::to('/') }}/supervisor/profile">Profile</a></li>
                             <li class="divider"></li>
                             <li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
                             <li class="divider visible-phone"></li>
@@ -89,7 +89,7 @@
                     
                 <option value="{{ URL::to('/') }}/supervisor/proposal" @yield('proposal.nav')> Student Proposal</option>
                     
-                <option value="{{ URL::to('/') }}/supervisor/detail" @yield('detail.nav')>Detail</option>
+                <option value="{{ URL::to('/') }}/supervisor/profile" @yield('profile.nav')>Profile</option>
                     
             </select>
         </div>
@@ -123,7 +123,7 @@
             <li class="@yield('proposal.menu') "><a href="{{ URL::to('/') }}/supervisor/proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
             
             
-            <li class="@yield('detail.menu') "><a href="{{ URL::to('/') }}/supervisor/detail"><i class="icon-user"></i> <span>Detail</span></a></li>
+            <li class="@yield('profile.menu') "><a href="{{ URL::to('/') }}/supervisor/profile"><i class="icon-user"></i> <span>Profile</span></a></li>
         </ul>
     </div>
     

@@ -120,8 +120,9 @@ Route::group(array('before'=>'supervisor'), function(){
 	{ 
 		return View::make('supervisor/report');
 	});
-	Route::get('supervisor/edit',"SupervisorController@EditDetailView");
-	Route::get('supervisor/detail',"SupervisorController@Detail");
+	Route::get('supervisor/profile/edit',"SupervisorController@EditProfile");
+	Route::post('supervisor/profile/save',"SupervisorController@SaveProfile");
+	Route::get('supervisor/profile',"SupervisorController@Profile");
 	Route::get('supervisor/template',function()
 	{ 
 		return View::make('supervisor/taskTemplate');

@@ -22,7 +22,7 @@ class AuthController extends Controller {
 				'nim' => 'required|regex:/^[A-Za-z][0-9]{2}\.[0-9]{4}\.[0-9]{5}$/',
 				'name' => 'required',
 				'address' => 'required',
-				'handphone' => 'required|numeric|digits_between:7,12',
+				'handphone' => 'required|numeric|digits_between:10,14',
 				'email' => 'required|email',
 			)
 		);
