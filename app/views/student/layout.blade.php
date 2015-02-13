@@ -79,35 +79,35 @@
         <div id="phone-navigation">
             <select class="selectnav" id="phone-menu">
                 
-                <option value="home" @yield('dashboard.nav')> Dashboard</option>
+                <option value="{{ URL::to('/') }}/student/home" @yield('dashboard.nav')> Dashboard</option>
                     
-                <option value="thesis" @yield('thesis.nav')> Thesis</option>
+                <option value="{{ URL::to('/') }}/student/thesis" @yield('thesis.nav')> Thesis</option>
                     
-                <option value="supervisorList" @yield('super.nav')> Supervisor List</option>
+                <option value="{{ URL::to('/') }}/student/supervisorList" @yield('super.nav')> Supervisor List</option>
                     
-                <option value="code" @yield('code.nav')> Input Code</option>
+                <option value="{{ URL::to('/') }}/student/code" @yield('code.nav')> Input Code</option>
                     
-                <option value="timeline" @yield('timeline.nav')> Time Line</option>
+                <option value="{{ URL::to('/') }}/student/timeline" @yield('timeline.nav')> Time Line</option>
                     
-                <option value="report" @yield('report.nav')>Final Report</option>
+                <option value="{{ URL::to('/') }}/student/report" @yield('report.nav')>Final Report</option>
                     
-                <option value="profile" @yield('profile.nav')>Profile</option>
+                <option value="{{ URL::to('/') }}/student/profile" @yield('profile.nav')>Profile</option>
                     
             </select>
         </div>
 
         <ul class="nav nav-tabs">
-            <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
-			<li class="@yield('thesis.menu') "><a href="thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
+            <li class="@yield('dashboard.menu') "><a href="{{ URL::to('/') }}/student/home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
+			<li class="@yield('thesis.menu') "><a href="{{ URL::to('/') }}/student/thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
 			<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i> Supervisor <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-					<li class=" "><a href="supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
-					<li class=" "><a href="code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
+					<li class=" "><a href="{{ URL::to('/') }}/student/supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
+					<li class=" "><a href="{{ URL::to('/') }}/student/code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
                 </ul>
             </li>
-            <li class="@yield('timeline.menu') "><a href="timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
-            <li class="@yield('report.menu') "><a href="report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
+            <li class="@yield('timeline.menu') "><a href="{{ URL::to('/') }}/student/timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
+            <li class="@yield('report.menu') "><a href="{{ URL::to('/') }}/student/report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
         </ul>
     </div>
     
@@ -116,25 +116,25 @@
         
         <ul id="dashboard-menu" class="nav nav-list">
             
-            <li class="@yield('dashboard.menu') "><a href="home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
+            <li class="@yield('dashboard.menu') "><a href="{{ URL::to('/') }}/student/home"><i class="icon-home"></i> <span>Dashboard</span></a></li>
             
 			
-            <li class="@yield('thesis.menu') "><a href="thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
+            <li class="@yield('thesis.menu') "><a href="{{ URL::to('/') }}/student/thesis"><i class="icon-book"></i> <span>Thesis</span></a></li>
 			
             
-            <li class="@yield('super.menu') "><a href="supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
+            <li class="@yield('super.menu') "><a href="{{ URL::to('/') }}/student/supervisorList"><i class="icon-group"></i> <span>Supervisor List</span></a></li>
             
             
-			<li class="@yield('code.menu') "><a href="code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
+			<li class="@yield('code.menu') "><a href="{{ URL::to('/') }}/student/code"><i class="icon-pencil"></i> <span>Input Code</span></a></li>
 			            
             
-            <li class="@yield('timeline.menu') "><a href="timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
+            <li class="@yield('timeline.menu') "><a href="{{ URL::to('/') }}/student/timeline"><i class="icon-calendar"></i> <span>Time Line</span></a></li>
             
             
-            <li class="@yield('report.menu') "><a href="report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
+            <li class="@yield('report.menu') "><a href="{{ URL::to('/') }}/student/report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
             
             
-            <li class="@yield('profile.menu') "><a href="profile"><i class="icon-user"></i> <span>Profile</span></a></li>
+            <li class="@yield('profile.menu') "><a href="{{ URL::to('/') }}/student/profile"><i class="icon-user"></i> <span>Profile</span></a></li>
         </ul>
     </div>
     

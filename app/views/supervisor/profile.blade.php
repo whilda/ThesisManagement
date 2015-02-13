@@ -22,16 +22,16 @@
 			<ul class="item-summary">
 				<li class="clearfix">
 				  <!-- Text input-->
-				  <div class="span4">NIP :</div>
+				  <div class="span4">NPP :</div>
 				  <div class="span8">
-					123123
+					{{ $data['npp'] }}
 				  </div>
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
 				  <div class="span4">Alamat :</div>
 				  <div class="span8">
-					{{ $data['nik'] }}
+					{{ nl2br($data['address']) }}
 				  </div>
 				</li>
 				<li class="clearfix">

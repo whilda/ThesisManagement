@@ -195,7 +195,7 @@
     <div class="control-group">
           <!-- Button -->
           <div class="controls">
-            <input type="button" class="btn btn-success" value="Masukkan" onclick="saveProfile()"/>
+            <input type="button" class="btn btn-success" value="Simpan" onclick="saveProfile()"/>
 			<input type="button" class="btn btn-info" value="Kembali" onclick="window.history.go(-1)"/>
           </div>
         </div>

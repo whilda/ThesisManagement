@@ -82,7 +82,7 @@
 					<input type="text" name="username" id="username" class="span12" placeholder="Username">
 					<input type="password" name="password" id="password" class="span12" placeholder="Password">
 					<input type="password" name="repass" id="repass" class="span12" placeholder="Retype Password">
-					<input type="text" name="nip" id="nip" class="span12" placeholder="NIP">
+					<input type="text" name="npp" id="npp" class="span12" placeholder="NIP">
 					<input type="text" name="name" id="name" class="span12" placeholder="Name">
 					<textarea name="address" id="address" class="span12" placeholder="Address"></textarea>
 					<input type="text" name="handphone" id="handphone" class="span12" placeholder="Handphone">
@@ -189,7 +189,7 @@
 			var username=document.supervisor.username.value;
 			var password=document.supervisor.password.value;
 			var repass=document.supervisor.repass.value;
-			var nip=document.supervisor.nip.value;
+			var npp=document.supervisor.npp.value;
 			var name=document.supervisor.name.value;
 			var address=document.supervisor.address.value;
 			var handphone=document.supervisor.handphone.value;
@@ -210,10 +210,10 @@
 			if(repass!=password){
 				error+="<li>Retype Password tidak sama dengan Password</li>";
 			}
-			if(nip==""){
-				error+="<li>NIP tidak boleh kosong</li>";
-			}else if(!/^[0-9]{4}\.[0-9]{2}\.[0-9]{4}\.[0-9]{3}$/.test(nip)){
-				error+="<li>Format NIP salah</li>";
+			if(npp==""){
+				error+="<li>NPP tidak boleh kosong</li>";
+			}else if(!/^[0-9]{4}\.[0-9]{2}\.[0-9]{4}\.[0-9]{3}$/.test(npp)){
+				error+="<li>Format NPP salah</li>";
 			}
 			if(name==""){
 				error+="<li>Nama tidak boleh kosong</li>";
@@ -233,8 +233,11 @@
 			}
 		}
 		$("#errMsg").hide();
-		if(error!="")
+		if(error!=""){
 			$("#errMsg").html("<ul>"+error+"</ul>");
+		}else{
+			$("#errMsg").html("");
+		}
 		submitForm(destination);
 	}
 	function submitForm(type){

@@ -32,30 +32,17 @@ Route::group(array('before'=>'student'), function(){
 	{ 
 		return View::make('student/code');
 	});
-	Route::get('student/supervisorList',function()
-	{ 
-		return View::make('student/supervisorList');
-	});
-	Route::get('student/supervisor',function()
-	{ 
-		return View::make('student/supervisor');
-	});
+	Route::get('student/supervisorList',"StudentController@SupervisorList");
+	Route::get('student/supervisor/{username}',"StudentController@SupervisorView");
 	Route::get('student/report',function()
 	{ 
 		return View::make('student/report');
 	});
-	Route::get('student/edit',function()
-	{ 
-		return View::make('student/editProfile');
-	});
-	Route::get('student/profile',function()
-	{ 
-		return View::make('student/profile');
-	});
-	Route::get('student/thesis',function()
-	{ 
-		return View::make('student/thesis');
-	});
+	Route::get('student/profile/edit',"StudentController@EditProfile");
+	Route::post('student/profile/save',"StudentController@SaveProfile");
+	Route::get('student/profile',"StudentController@Profile");
+	Route::get('student/thesis',"StudentController@EditThesis");
+	Route::post('student/thesis/save',"StudentController@SaveThesis");
 	Route::get('student/timeline',function()
 	{ 
 		return View::make('student/timeline');
