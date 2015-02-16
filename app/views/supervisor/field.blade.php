@@ -48,6 +48,7 @@
 	var loading=false;
 	var fields;
 	var maxpage;
+	var maxperpage=10;
 	var search="";
 	var newdata;
 		function chSelection(){
@@ -147,7 +148,7 @@
 			if(numpage<=maxpage){
 				var i;
 				var rowdata="";
-				for(i=((numpage-1)*10);i<(numpage*10)&&i<fields.length;i++){
+				for(i=((numpage-1)*maxperpage);i<(numpage*maxperpage)&&i<fields.length;i++){
 					rowdata+="<tr><td><input type='checkbox' name='fieldName[]' value='"+fields[i]._id+"'></td><td>"+fields[i]._id+"</td><td>"+fields[i].description+"</td></tr>";
 				}
 				$("#fieldData>tbody").html(rowdata);
@@ -200,7 +201,7 @@
 										fields.push(newdata);
 									else
 										fields[i].description=newdata.description;
-									maxpage=Math.ceil(fields.length/10);
+									maxpage=Math.ceil(fields.length/maxperpage);
 									if(maxpage==0)
 										maxpage=1;
 									generatePagination(1);

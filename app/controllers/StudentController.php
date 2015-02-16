@@ -60,14 +60,125 @@ class StudentController extends Controller {
 			return -1;
 		}
 	}
-	public function SupervisorList(){
-		$output=REST::GETRequest("su/getall/".REST::$appkey."/".Session::get('token'));
-		$output=json_decode($output,true);
-		if(isset($output["code"])&&$output["code"]!=-1){
-			$output['data']=json_decode($output['data'],true);
-			return View::make('student/supervisorList',array('data'=>$output['data']));
+	public function SelectSupervisor($username){
+		$data_output=$this->getData();
+		if(isset($data_output['code'])&&$data_output['code']==1){
+			$data_output['data']=json_decode($data_output['data'],true);
+			if($data_output['data']['status']==-1&&$student['data']['thesis']['topic']!=""){
+				$input=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"supervisor"=>$username
+				);
+				$input=json_encode($input);
+				$output=REST::POSTRequest("s/propose/",$input);
+			}
+			return Redirect::to('/student/supervisorList');
 		}else{
-			return View::make('student/supervisorList')->with('data',array());
+			return "Internal Server Error";
+		}
+	}
+	public function SupervisorList($page=1){
+		$student=$this->getData();
+		if(isset($student['code'])&&$student['code']==1){
+			$student['data']=json_decode($student['data'],true);
+			if($student['data']['thesis']['topic']=="")
+				$student['data']['status']=-2;
+			$output=REST::GETRequest("su/getall/".REST::$appkey."/".Session::get('token'));
+			$output=json_decode($output,true);
+			$maxperpage=5;
+			if(isset($output["code"])&&$output["code"]!=-1){
+				$output['data']=json_decode($output['data'],true);
+				$maxpage=ceil(count($output['data'])/$maxperpage);
+				if($maxpage==0)
+					$maxpage=1;
+				if($page>$maxpage)
+					return Redirect::to('/student/supervisorList');
+				else{
+					for($i=$maxperpage*($page-1);$i<($maxperpage*$page)&&$i<count($output['data']);$i++){
+						$dataSupervisor[$i]=$output['data'][$i];
+					}
+					$generate="";
+					if($page==1){
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-backward\"></i></a></li>";
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-left\"></i></a></li>";
+					}else{
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."'><i class=\"icon-backward\"></i></a></li>";
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page-1)."'><i class=\"icon-chevron-left\"></i></a></li>";
+					}
+					for($i=$page-4;$i<$page;$i++){
+						if($i<1)
+							continue;
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+					}
+					$generate.="<li class=\"disabled\"><a>".$page."</a></li>";
+					for($i=$page+1;$i<($page+5)&&$i<=$maxpage;$i++){
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+					}
+					if($page==$maxpage){
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-right\"></i></a></li>";
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-forward\"></i></a></li>";
+					}else{
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page+1)."'><i class=\"icon-chevron-right\"></i></a></li>";
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$maxpage."'><i class=\"icon-forward\"></i></a></li>";
+					}
+					return View::make('student/supervisorList',array('data'=>$dataSupervisor,'pagination'=>$generate,'status'=>$student['data']['status']));
+				}
+			}else{
+				return View::make('student/supervisorList')->with('data',array());
+			}
+		}else{
+			return "Internal Server Error";
+		}
+	}
+	public function SupervisorByField($key,$page=1){
+		$student=$this->getData();
+		if(isset($student['code'])&&$student['code']==1){
+			$student['data']=json_decode($student['data'],true);
+			$output=REST::GETRequest("f/search/".$key."/".REST::$appkey."/".Session::get('token'));
+			$output=json_decode($output,true);
+			$maxperpage=5;
+			if(isset($output["code"])&&$output["code"]!=-1){
+				$maxpage=ceil(count($output['data'])/$maxperpage);
+				if($maxpage==0)
+					$maxpage=1;
+				if($page>$maxpage)
+					return Redirect::to('/student/supervisorList');
+				else{
+					for($i=$maxperpage*($page-1);$i<($maxperpage*$page)&&$i<count($output['data']);$i++){
+						$dataSupervisor[$i]=$output['data'][$i];
+					}
+					$generate="";
+					if($page==1){
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-backward\"></i></a></li>";
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-left\"></i></a></li>";
+					}else{
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."'><i class=\"icon-backward\"></i></a></li>";
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page-1)."'><i class=\"icon-chevron-left\"></i></a></li>";
+					}
+					for($i=$page-4;$i<$page;$i++){
+						if($i<1)
+							continue;
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+					}
+					$generate.="<li class=\"disabled\"><a>".$page."</a></li>";
+					for($i=$page+1;$i<($page+5)&&$i<=$maxpage;$i++){
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+					}
+					if($page==$maxpage){
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-right\"></i></a></li>";
+						$generate.="<li class=\"disabled\"><a><i class=\"icon-forward\"></i></a></li>";
+					}else{
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page+1)."'><i class=\"icon-chevron-right\"></i></a></li>";
+						$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$maxpage."'><i class=\"icon-forward\"></i></a></li>";
+					}
+					return View::make('student/supervisorList',array('data'=>$dataSupervisor,'pagination'=>$generate,'status'=>$student['data']['status']));
+				}
+			}else{
+				return View::make('student/supervisorList')->with('data',array());
+			}
+		}else{
+			return "Internal Server Error";
 		}
 	}
 	public function SupervisorView($supervisor){

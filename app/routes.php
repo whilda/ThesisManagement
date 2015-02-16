@@ -32,8 +32,10 @@ Route::group(array('before'=>'student'), function(){
 	{ 
 		return View::make('student/code');
 	});
-	Route::get('student/supervisorList',"StudentController@SupervisorList");
+	Route::get('student/supervisorList/field/{field}/{page?}',"StudentController@SupervisorByField");
+	Route::get('student/supervisorList/{page?}',"StudentController@SupervisorList");
 	Route::get('student/supervisor/{username}',"StudentController@SupervisorView");
+	Route::get('student/supervisor/select/{username}',"StudentController@SelectSupervisor");
 	Route::get('student/report',function()
 	{ 
 		return View::make('student/report');
