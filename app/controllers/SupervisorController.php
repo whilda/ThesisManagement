@@ -88,6 +88,106 @@ class SupervisorController extends Controller {
 			return -1;
 		}
 	}
+	public function ProposalList($page=1){
+		$supervisor=$this->getData();
+		if(isset($supervisor['code'])&&$supervisor['code']==1){
+			$supervisor['data']=json_decode($supervisor['data'],true);
+			$output=$supervisor['data']['proposal'];
+			$maxperpage=5;
+			$maxpage=ceil(count($output)/$maxperpage);
+			if($maxpage==0)
+				$maxpage=1;
+			if($page>$maxpage)
+				return Redirect::to('/student/supervisorList');
+			else{
+				$dataPropose=array();
+				for($i=$maxperpage*($page-1);$i<($maxperpage*$page)&&$i<count($output);$i++){
+					$dataPropose[$i]=$output[$i];
+				}
+				$generate="";
+				if($page==1){
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-backward\"></i></a></li>";
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-left\"></i></a></li>";
+				}else{
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."'><i class=\"icon-backward\"></i></a></li>";
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page-1)."'><i class=\"icon-chevron-left\"></i></a></li>";
+				}
+				for($i=$page-4;$i<$page;$i++){
+					if($i<1)
+						continue;
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+				}
+				$generate.="<li class=\"disabled\"><a>".$page."</a></li>";
+				for($i=$page+1;$i<($page+5)&&$i<=$maxpage;$i++){
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$i."'>".$i."</a></li>";
+				}
+				if($page==$maxpage){
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-right\"></i></a></li>";
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-forward\"></i></a></li>";
+				}else{
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."/".($page+1)."'><i class=\"icon-chevron-right\"></i></a></li>";
+					$generate.="<li><a href='".URL::to('/student/supervisorList')."/".$maxpage."'><i class=\"icon-forward\"></i></a></li>";
+				}
+				return View::make('supervisor/proposal',array('data'=>$dataPropose,'pagination'=>$generate));
+			}
+		}else{
+			return "Internal Server Error";
+		}
+	}
+	public function AcceptPropose($username){
+		$supervisor=$this->getData();
+		if(isset($supervisor['code'])&&$supervisor['code']==1){
+			$supervisor['data']=json_decode($supervisor['data'],true);
+			$found=false;
+			foreach($supervisor['data']['proposal'] as $value){
+				if($value['username']==$username){
+					$found=true;
+					break;
+				}
+			}
+			if($found==true){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$username,
+					"code"=>1
+				);
+				$data_string=json_encode($data);
+				REST::POSTRequest('su/response',$data_string);
+				//return $output;
+			}
+			return Redirect::to('/supervisor/proposal');
+		}else{
+			return "Internal Server Error";
+		}
+	}
+	public function DeclinePropose($username){
+		$supervisor=$this->getData();
+		if(isset($supervisor['code'])&&$supervisor['code']==1){
+			$supervisor['data']=json_decode($supervisor['data'],true);
+			$found=false;
+			foreach($supervisor['data']['proposal'] as $value){
+				if($value['username']==$username){
+					$found=true;
+					break;
+				}
+			}
+			if($found==true){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$username,
+					"code"=>0
+				);
+				$data_string=json_encode($data);
+				REST::POSTRequest('su/response',$data_string);
+				//return $output;
+			}
+			return Redirect::to('/supervisor/proposal');
+		}else{
+			return "Internal Server Error";
+		}
+	}
 	public function getData(){
 		$path="su/get/".Session::get('username')."/".REST::$appkey."/".Session::get('token');
 		$output=REST::GETRequest($path);

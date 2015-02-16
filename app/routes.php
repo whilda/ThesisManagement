@@ -11,6 +11,8 @@
 |
 */
 
+
+Route::pattern('number', '[0-9]+');
 //grup non-login
 Route::group(array('before'=>'guest'), function(){
 	Route::get('/', 'AuthController@logIn');
@@ -32,8 +34,8 @@ Route::group(array('before'=>'student'), function(){
 	{ 
 		return View::make('student/code');
 	});
-	Route::get('student/supervisorList/field/{field}/{page?}',"StudentController@SupervisorByField");
-	Route::get('student/supervisorList/{page?}',"StudentController@SupervisorList");
+	Route::get('student/supervisorList/field/{field}/{number?}',"StudentController@SupervisorByField");
+	Route::get('student/supervisorList/{number?}',"StudentController@SupervisorList");
 	Route::get('student/supervisor/{username}',"StudentController@SupervisorView");
 	Route::get('student/supervisor/select/{username}',"StudentController@SelectSupervisor");
 	Route::get('student/report',function()
@@ -93,10 +95,9 @@ Route::group(array('before'=>'supervisor'), function(){
 	{ 
 		return View::make('supervisor/dashboard');
 	});
-	Route::get('supervisor/proposal',function()
-	{ 
-		return View::make('supervisor/proposal');
-	});
+	Route::get('supervisor/proposal/accept/{username}','SupervisorController@AcceptPropose');
+	Route::get('supervisor/proposal/decline/{username}','SupervisorController@DeclinePropose');
+	Route::get('supervisor/proposal/{number?}','SupervisorController@ProposalList');
 	Route::get('supervisor/studentList',function()
 	{ 
 		return View::make('supervisor/studentList');

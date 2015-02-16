@@ -8,62 +8,43 @@
 @section('proposal.menu') active @stop
 
 @section('content')
-    <h2>Task Templates</h2>
+    <h2>Student Proposal</h2>
   <div id="blog-posts">
-
+	@if(count($data)!=0)
+	@foreach($data as $proposal)
     <div class="row-fluid blog-post">
       <div class="span12">
-        <h4><strong><a href="#">Username</a></strong></h4>
+        <h4><strong><a href="#">{{ $proposal['username'] }}</a></strong></h4>
         <div class="row-fluid">
             <div class="post-summary">   
-				NIM: A11.2012.0????<br/>
+				NIM: {{ $proposal['nim'] }}<br/>
 				Topic:
 				<p>
-                  ................
+                  {{ $proposal['topic'] }}
                 </p>
                 Deskripsi:
 				<p>
-                  ...........<br/>
-				  .................<br/>
+                  {{ nl2br($proposal['description']) }}
                 </p>
-                <p><a class="btn btn-mini" href="#">Accept</a> <a class="btn btn-mini" href="#">Decline</a></p>
+                <p><a class="btn btn-mini" href="{{ URL::to('/') }}/supervisor/proposal/accept/{{ $proposal['username'] }}">Accept</a> <a class="btn btn-mini" href="{{ URL::to('/') }}/supervisor/proposal/decline/{{ $proposal['username'] }}">Decline</a></p>
             </div>
         </div>
       </div>
     </div>
-	<div class="row-fluid blog-post">
-      <div class="span12">
-        <h4><strong><a href="#">Username</a></strong></h4>
-        <div class="row-fluid">
-            <div class="post-summary">   
-				NIM: A11.2012.0????<br/>
-				Topic:
-				<p>
-                  ................
-                </p>
-                Deskripsi:
-				<p>
-                  ...........<br/>
-				  .................<br/>
-                </p>
-                <p><a class="btn btn-mini" href="#">Accept</a> <a class="btn btn-mini" href="#">Decline</a></p>
-            </div>
-        </div>
-      </div>
+	  @endforeach
+	@else
+		Tidak ada proposal terdaftar.
+	@endif
     </div>
+	@if(isset($pagination))
 	<div class="pagination">
 	<center>
 	  <ul>
-		<li class="disabled"><a href="#">Prev</a></li>
-		<li class="active disabled"><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#">Next</a></li>
+		{{ $pagination }}
 	  </ul>
 	</center>
 	</div>
+	@endif
 
     
     
