@@ -11,7 +11,7 @@ class GeneralController extends Controller {
 			$output=json_decode($json,true);
 			if(isset($output['code'])){
 				if($output['code']==1){
-					return $output['data'];
+					return json_encode($output['data']);
 				}else if($output['code']==0){
 					return "[]";
 				}

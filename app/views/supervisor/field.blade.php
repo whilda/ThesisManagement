@@ -46,7 +46,7 @@
 	};
 	$("#loading").spin(opts);
 	var loading=false;
-	var fields;
+	var fields=[];
 	var maxpage;
 	var maxperpage=10;
 	var search="";
@@ -78,7 +78,7 @@
 		}
 		function load(){
 			if(loading==false){
-				loading==true;
+				loading=true;
 				if(search!="")
 					search="/"+search;
 				$("#loading").fadeIn("slow");
@@ -87,10 +87,11 @@
 					url: '<?php echo URL::to('/'); ?>/field/get'+search,
 					contentType: 'application/json',
 					success: function(data){
+						loading=false;
 						$("#loading").fadeOut("fast");
 						try{
 							fields=JSON.parse(data);
-							maxpage=Math.ceil(fields.length/10);
+							maxpage=Math.ceil(fields.length/maxperpage);
 							if(maxpage==0)
 								maxpage=1;
 							generatePagination(1);
@@ -103,7 +104,7 @@
 						}
 					},  
 					error: function(ex) {
-						loading==false;
+						loading=false;
 						$("#loading").fadeOut("slow");
 						$("#notifMsg").hide();
 						$("#notifMsg").attr("class", "alert alert-error");
@@ -331,16 +332,6 @@
 @section('field.menu') active @stop
 
 @section('content')
-	<div id="overlay" style="display:none"></div>
-	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
-		<div class="alert alert-warning notif">
-			<center>
-				<b id="confirmText"></b><br/>
-				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
-				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
-			</center>
-		</div>
-	</div>
     <h2>Field List</h2>
 	<div class="alert alert-error" id="notifMsg" style="display:none" onclick="notifMsg()"></div>
 	<div class="well widget">

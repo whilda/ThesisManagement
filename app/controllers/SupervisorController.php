@@ -5,7 +5,6 @@ class SupervisorController extends Controller {
 	public function home(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('student/dashboard', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -51,7 +50,6 @@ class SupervisorController extends Controller {
 	public function Profile(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('supervisor/profile', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -60,7 +58,6 @@ class SupervisorController extends Controller {
 	public function EditProfile(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('supervisor/editProfile', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -91,7 +88,6 @@ class SupervisorController extends Controller {
 	public function ProposalList($page=1){
 		$supervisor=$this->getData();
 		if(isset($supervisor['code'])&&$supervisor['code']==1){
-			$supervisor['data']=json_decode($supervisor['data'],true);
 			$output=$supervisor['data']['proposal'];
 			$maxperpage=5;
 			$maxpage=ceil(count($output)/$maxperpage);
@@ -137,7 +133,6 @@ class SupervisorController extends Controller {
 	public function AcceptPropose($username){
 		$supervisor=$this->getData();
 		if(isset($supervisor['code'])&&$supervisor['code']==1){
-			$supervisor['data']=json_decode($supervisor['data'],true);
 			$found=false;
 			foreach($supervisor['data']['proposal'] as $value){
 				if($value['username']==$username){
@@ -164,7 +159,6 @@ class SupervisorController extends Controller {
 	public function DeclinePropose($username){
 		$supervisor=$this->getData();
 		if(isset($supervisor['code'])&&$supervisor['code']==1){
-			$supervisor['data']=json_decode($supervisor['data'],true);
 			$found=false;
 			foreach($supervisor['data']['proposal'] as $value){
 				if($value['username']==$username){
@@ -186,6 +180,28 @@ class SupervisorController extends Controller {
 			return Redirect::to('/supervisor/proposal');
 		}else{
 			return "Internal Server Error";
+		}
+	}
+	public function getTemplates(){
+		if(Request::ajax()){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1){
+				$output=json_encode($supervisor['data']['template']);
+				return $output;
+			}
+		}
+	}
+	public function createTemplate(){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"name"=>Input::get('name'),
+				"description"=>Input::get('description')
+			);
+			$data_string=json_encode($data);
+			$output=REST::POSTRequest('su/createtemplate',$data_string);
+			return $output;
 		}
 	}
 	public function getData(){

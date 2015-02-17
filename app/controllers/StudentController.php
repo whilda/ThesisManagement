@@ -5,16 +5,14 @@ class StudentController extends Controller {
 	public function home(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('student/dashboard', array('data'=>$data_output['data']));
 		}else{
-			return "Internal Server Error";
+			return $data_output;
 		}
 	}
 	public function Profile(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('student/profile', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -23,7 +21,6 @@ class StudentController extends Controller {
 	public function EditProfile(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('student/editProfile', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -32,7 +29,6 @@ class StudentController extends Controller {
 	public function EditThesis(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			return View::make('student/thesis', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
@@ -63,7 +59,6 @@ class StudentController extends Controller {
 	public function SelectSupervisor($username){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){
-			$data_output['data']=json_decode($data_output['data'],true);
 			if($data_output['data']['status']==-1&&$data_output['data']['thesis']['topic']!=""){
 				$input=array(
 					"appkey"=>REST::$appkey,
@@ -81,14 +76,12 @@ class StudentController extends Controller {
 	public function SupervisorList($page=1){
 		$student=$this->getData();
 		if(isset($student['code'])&&$student['code']==1){
-			$student['data']=json_decode($student['data'],true);
 			if($student['data']['thesis']['topic']=="")
 				$student['data']['status']=-2;
 			$output=REST::GETRequest("su/getall/".REST::$appkey."/".Session::get('token'));
 			$output=json_decode($output,true);
 			$maxperpage=5;
 			if(isset($output["code"])&&$output["code"]!=-1){
-				$output['data']=json_decode($output['data'],true);
 				$maxpage=ceil(count($output['data'])/$maxperpage);
 				if($maxpage==0)
 					$maxpage=1;
@@ -135,7 +128,6 @@ class StudentController extends Controller {
 	public function SupervisorByField($key,$page=1){
 		$student=$this->getData();
 		if(isset($student['code'])&&$student['code']==1){
-			$student['data']=json_decode($student['data'],true);
 			$output=REST::GETRequest("f/search/".$key."/".REST::$appkey."/".Session::get('token'));
 			$output=json_decode($output,true);
 			$maxperpage=5;
@@ -188,7 +180,6 @@ class StudentController extends Controller {
 		$output=json_decode($output,true);
 		if(isset($output["code"])&&$output["code"]!=-1){
 			if($output["code"]==1){
-				$output['data']=json_decode($output['data'],true);
 				return View::make('student/supervisor',array('data'=>$output['data']));
 			}else if($output["code"]==0){
 				return "Supervisor not found";

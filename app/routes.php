@@ -117,6 +117,8 @@ Route::group(array('before'=>'supervisor'), function(){
 	{ 
 		return View::make('supervisor/taskTemplate');
 	});
+	Route::get('supervisor/template/get',"SupervisorController@getTemplates");
+	Route::post('supervisor/template/create',"SupervisorController@createTemplate");
 	Route::get('supervisor/addTemplate',function()
 	{ 
 		return View::make('supervisor/insertTemplate');
