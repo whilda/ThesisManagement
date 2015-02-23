@@ -11,6 +11,64 @@
 @section('addResource')
 <script src="{{ URL::to('/') }}/javascripts/overlay.js" type="text/javascript"></script>
 <script src="{{ URL::to('/') }}/javascripts/task.js" type="text/javascript"></script>
+<script>
+function saveTemplate(button){
+	var name=document.template.name.value;
+	var description=document.template.description.value;
+	var found=false;
+	var error="";
+	$(button).prop("disabled",true);
+	if(name==""){
+		error+="<li>Name tidak boleh kosong</li>";
+	}
+	if(description==""){
+		error+="<li>Description tidak boleh kosong</li>";
+	}
+	if(error==""){
+		var model={
+			"name":name,
+			"description":description,
+		}
+		$.ajax({  
+			type: 'POST',  
+			url: '<?php echo URL::to('/'); ?>/supervisor/template/{{ $data['code'] }}/save',
+			data: JSON.stringify(model),  
+			dataType: 'text',
+			contentType: 'application/json',
+			success: function(data){
+				$(button).prop("disabled",false);
+				try{
+					var output=JSON.parse(data);
+					if(output.code==1){
+						$("#notif").attr("class", "alert alert-success closeNotif");
+						$("#notif").html("Sukses menyimpan template");
+						displayNotif();
+					}else{
+						$("#notif").attr("class", "alert alert-error closeNotif");
+						$("#notif").html("Gagal menyimpan template");
+						displayNotif();
+					}
+				}catch(err){
+					$("#notif").attr("class", "alert alert-error closeNotif");
+					$("#notif").html("Gagal menyimpan template");
+					displayNotif();
+				}
+			},  
+			error: function(ex) {
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Gagal menyimpan template");
+				displayNotif();
+			},  
+			timeout:60000  
+		});
+	}
+	else{
+		$("#notif").attr("class", "alert alert-error closeNotif");
+		$("#notif").html("<ul>"+error+"</ul>");
+		displayNotif();
+	}
+}
+</script>
 @stop
 
 @section('template.nav') selected="selected" @stop
@@ -19,7 +77,7 @@
 @section('content')
 	<div id="overlay" style="display:none"></div>
 	<div id="overlayBox" class="offset3 span6" style="display:none">
-		<div class="alert alert-success closeNotif">
+		<div class="alert alert-success closeNotif" id="notif">
 			<center><b>Task berhasil ditambahkan!</b></center>
 		</div>
 	</div>
@@ -43,7 +101,7 @@
 				  <div class="controls">
 					<input type="text" name="taskName" id="taskName" class="input-xlarge" value="Nama task">
 					<input type="hidden" name="oldName" value="Nama task">
-					<input type="hidden" name="templateName" value="">
+					<input type="hidden" name="templateCode" value="">
 					<input type="hidden" name="type" value="1">
 				  </div>
 				</div>
@@ -112,9 +170,7 @@
           <!-- Text input-->
           <label class="control-label" for="name">Name</label>
           <div class="controls">
-            <input type="text" name="name" id="name" class="input-xlarge" value="Nama template">
-			<input type="hidden" name="oldName" value="Nama Template">
-			<input type="hidden" name="type" value="1">
+            <input type="text" name="name" id="name" class="input-xlarge" value="{{ $data['name'] }}">
           </div>
         </div>
 		<div class="control-group">
@@ -122,7 +178,7 @@
           <!-- Text input-->
           <label class="control-label" for="description">Description</label>
           <div class="controls">
-            <textarea name="description" id="description" class="input-xlarge">Deskripsi Template</textarea>
+            <textarea name="description" id="description" class="input-xlarge">{{ $data['description'] }}</textarea>
           </div>
         </div>
 		<div class="control-group" id="fileContainer">
@@ -131,15 +187,17 @@
 				  <div class="control-label">Tasks</div>
 				  <div id="delTask"></div>
 				  <div class="controls">
+					@foreach($data['task'] as $task)
 					<div>
 						<div class="input-prepend">
-							<span class="add-on">Task 1</span>
+							<span class="add-on">{{ $task['name'] }}</span>
 						</div><div class="input-append">
-							<span class="add-on"><a href="javascript:void(0)" onclick="editTask(this)" taskName="Task 1"><i class="icon-pencil"></i></a></span>
+							<span class="add-on"><a href="javascript:void(0)" onclick="editTask(this)" taskName="{{ $task['name'] }}"><i class="icon-pencil"></i></a></span>
 						</div><div class="input-append">
-							<span class="add-on"><a href="javascript:void(0)" onclick="confirmDelTask(this)" taskName="Task 1"><i class="icon-remove"></i></a></span>
+							<span class="add-on"><a href="javascript:void(0)" onclick="confirmDelTask(this)" taskName="{{ $task['name'] }}"><i class="icon-remove"></i></a></span>
 						</div>
 					</div>
+					@endforeach
 					<div>
 						<div class="input-prepend">
 							<span class="add-on">Task 2</span>
@@ -160,8 +218,8 @@
     <div class="control-group">
           <!-- Button -->
           <div class="controls">
-            <input type="button" class="btn btn-success" value="Masukkan" onclick="displayNotif()"/>
-			<input type="button" class="btn btn-info" value="Kembali" onclick="window.history.go(-1)"/>
+            <input type="button" class="btn btn-success" value="Simpan" onclick="saveTemplate()"/>
+			<a type="button" class="btn btn-info" href="{{ URL::to('/supervisor/template') }}">Kembali</a>
           </div>
         </div>
 

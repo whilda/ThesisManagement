@@ -9,19 +9,11 @@ function tambahTemplate(){
 var data;
 var templates=[];
 function confirmDelTemplate(dataTemplate){
-	var templateName=dataTemplate.getAttribute("templateName");
-	if(templateName!=""){
-		data=dataTask;
-		$("#confirmText").html("Apakah anda yakin menghapus template "+templateName+"?");
+	var templateCode=dataTemplate.getAttribute("templateCode");
+	if(templateCode!=""){
+		data=dataTemplate;
+		$("#confirmText").html("Apakah anda yakin menghapus template ini?");
 		$("#confirmYes").attr("onclick","delTemplate()");
 		displayConfirm();
-	}
-}
-function delTemplate(){
-	var taskName=data.getAttribute("taskName");
-	if(taskName!=""){
-		$("#delTask").append("<input type=\"hidden\" name=\"deleted[]\" value=\""+taskName+"\">");
-		data.parentNode.parentNode.parentNode.parentNode.removeChild(data.parentNode.parentNode.parentNode);
-		cancelConfirm();
 	}
 }

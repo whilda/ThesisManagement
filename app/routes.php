@@ -119,14 +119,10 @@ Route::group(array('before'=>'supervisor'), function(){
 	});
 	Route::get('supervisor/template/get',"SupervisorController@getTemplates");
 	Route::post('supervisor/template/create',"SupervisorController@createTemplate");
-	Route::get('supervisor/addTemplate',function()
-	{ 
-		return View::make('supervisor/insertTemplate');
-	});
-	Route::get('supervisor/template/{name}/edit',function($name)
-	{ 
-		return View::make('supervisor/editTemplate');
-	});
+	Route::get('supervisor/template/delete/{code}',"SupervisorController@deleteTemplate");
+	Route::get('supervisor/template/{code}',"SupervisorController@editTemplate");
+	Route::post('supervisor/template/{code}/save',"SupervisorController@updateTemplate");
+	Route::post('supervisor/template/{code}/task/add',"SupervisorController@addTask");
 	Route::get('supervisor/field',function()
 	{ 
 		return View::make('supervisor/field');

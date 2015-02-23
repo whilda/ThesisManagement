@@ -25,6 +25,7 @@
 @stop
 
 @section('addResource')
+<script src="{{ URL::to('/') }}/javascripts/overlay.js" type="text/javascript"></script>
 <script src="{{ URL::to('/') }}/javascripts/taskTemplate.js" type="text/javascript"></script>
 <script src="{{ URL::to('/') }}/javascripts/spin.min.js" type="text/javascript"></script>
 	<script src="{{ URL::to('/') }}/javascripts/jquery.spin.js" type="text/javascript"></script>
@@ -63,57 +64,49 @@ function saveTemplate(button){
 		error+="<li>Description tidak boleh kosong</li>";
 	}
 	if(error==""){
-		for(var i=0;i<templates.length;i++){
-			if(templates[i].name==name){
-				found=true;
-				break;
-			}
+		var model={
+			"name":name,
+			"description":description
 		}
-		if(!found){
-			var model={
-				"name":name,
-				"description":description
-			}
-			$.ajax({  
-				type: 'POST',  
-				url: '<?php echo URL::to('/'); ?>/supervisor/template/create',
-				data: JSON.stringify(model),  
-				dataType: 'text',
-				contentType: 'application/json',
-				success: function(data){
-					$("#template").slideUp();
-					$(button).prop("disabled",false);
-					try{
-						var output=JSON.parse(data);
-						if(output.code==1){
-							load();
-							$("#notifMsg").hide();
-							$("#notifMsg").attr("class", "alert alert-success");
-							$("#notifMsg").html("Sukses menyimpan field");
-							$("#notifMsg").slideDown();
-						}else{
-							$("#notifMsg").hide();
-							$("#notifMsg").attr("class", "alert alert-error");
-							$("#notifMsg").html("Gagal menyimpan field");
-							$("#notifMsg").slideDown();
-						}
-					}catch(err){
+		$.ajax({  
+			type: 'POST',  
+			url: '<?php echo URL::to('/'); ?>/supervisor/template/create',
+			data: JSON.stringify(model),  
+			dataType: 'text',
+			contentType: 'application/json',
+			success: function(data){
+				$("#template").slideUp();
+				$(button).prop("disabled",false);
+				try{
+					var output=JSON.parse(data);
+					if(output.code==1){
+						load();
+						$("#notifMsg").hide();
+						$("#notifMsg").attr("class", "alert alert-success");
+						$("#notifMsg").html("Sukses menyimpan template");
+						$("#notifMsg").slideDown();
+					}else{
 						$("#notifMsg").hide();
 						$("#notifMsg").attr("class", "alert alert-error");
-						$("#notifMsg").html("Gagal menyimpan field");
+						$("#notifMsg").html("Gagal menyimpan template");
 						$("#notifMsg").slideDown();
 					}
-				},  
-				error: function(ex) {
-					$("#template").slideUp();
+				}catch(err){
 					$("#notifMsg").hide();
 					$("#notifMsg").attr("class", "alert alert-error");
-					$("#notifMsg").html("Gagal menyimpan field");
+					$("#notifMsg").html("Gagal menyimpan template");
 					$("#notifMsg").slideDown();
-				},  
-				timeout:60000  
-			});
-		}
+				}
+			},  
+			error: function(ex) {
+				$("#template").slideUp();
+				$("#notifMsg").hide();
+				$("#notifMsg").attr("class", "alert alert-error");
+				$("#notifMsg").html("Gagal menyimpan field");
+				$("#notifMsg").slideDown();
+			},  
+			timeout:60000  
+		});
 	}
 	else{
 		$(button).prop("disabled",false);
@@ -193,13 +186,13 @@ function showTemplates(numpage){
 		for(i=((numpage-1)*maxperpage);i<(numpage*maxperpage)&&i<templates.length;i++){
 			rowdata+="<div class=\"row-fluid blog-post\">";
 			rowdata+="<div class=\"span12\">";
-			rowdata+="<h4><strong><a href=\"#\">"+templates[i].name+"</a></strong></h4>";
+			rowdata+="<h4><strong><a href=\"{{ URL::to('/') }}/supervisor/template/"+templates[i].code+"\">"+templates[i].name+"</a></strong></h4>";
 			rowdata+="<div class=\"row-fluid\">";
             rowdata+="<div class=\"post-summary\">";
             rowdata+="Code: "+templates[i].code+"<br/><br/>";
 			rowdata+="Deskripsi:";
 			rowdata+="<p>"+templates[i].description+"</p>";
-            rowdata+="<p><a class=\"btn btn-mini\" href=\"{{ URL::to('/') }}/supervisor/template/"+templates[i].name+"/edit\">Edit</a> <a class=\"btn btn-mini\" templateName='"+templates[i].name+"' onclick=\"confirmDelTemplate(this)\">Delete</a></p>";
+            rowdata+="<p><a class=\"btn btn-mini\" href=\"{{ URL::to('/') }}/supervisor/template/"+templates[i].code+"\">Edit</a> <a class=\"btn btn-mini\" templateCode='"+templates[i].code+"' onclick=\"confirmDelTemplate(this)\">Delete</a></p>";
             rowdata+="</div>";
 			rowdata+="</div>";
 			rowdata+="<div class=\"row-fluid details\">";
@@ -209,6 +202,53 @@ function showTemplates(numpage){
 		$("#blog-posts").html(rowdata);
 		generatePagination(numpage);
 	}
+}
+var deleted="";
+function delTemplate(){
+	var templateCode=data.getAttribute("templateCode");
+	if(templateCode!=""){
+		var found=false;
+		for(i=0;i<templates.length;i++){
+			if(templates[i].code==templateCode){
+				deleted=i;
+				found=true;
+				break;
+			}
+		}
+		if(found){
+			$.ajax({  
+			type: 'GET',  
+			url: '<?php echo URL::to('/'); ?>/supervisor/template/delete/'+templateCode,
+			contentType: 'application/json',
+			success: function(outData){
+				$("#loading").fadeOut("fast");
+					if(outData==1){
+						$("#notifMsg").hide();
+						$("#notifMsg").attr("class", "alert alert-success");
+						$("#notifMsg").html("Sukses menghapus template");
+						$("#notifMsg").slideDown();
+						templates.splice(deleted,1);
+						data.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(data.parentNode.parentNode.parentNode.parentNode.parentNode);
+					}else{
+						$("#loading").fadeOut("fast");
+						$("#notifMsg").hide();
+						$("#notifMsg").attr("class", "alert alert-error");
+						$("#notifMsg").html("Gagal menghapus template");
+						$("#notifMsg").slideDown();
+					}
+			},  
+			error: function(ex) {
+				$("#loading").fadeOut("fast");
+				$("#notifMsg").hide();
+				$("#notifMsg").attr("class", "alert alert-error");
+				$("#notifMsg").html("Gagal menghapus template");
+				$("#notifMsg").slideDown();
+			},  
+			timeout:60000  
+		});
+		}
+	}
+	cancelConfirm();
 }
 function notifMsg(){
 	$("#notifMsg").slideUp();
@@ -264,43 +304,6 @@ function notifMsg(){
 	<div class="alert alert-error" id="notifMsg" style="display:none" onclick="notifMsg()"></div>
 	<a class="btn btn-mini" onclick="tambahTemplate()">Tambah Template</a>
   <div id="blog-posts">
-
-    <div class="row-fluid blog-post">
-      <div class="span12">
-        <h4><strong><a href="#">Nama Template</a></strong></h4>
-        <div class="row-fluid">
-            <div class="post-summary">      
-                Deskripsi:
-				<p>
-                  ...........<br/>
-				  .................<br/>
-                </p>
-                <p><a class="btn btn-mini" href="template/name/edit">Edit</a> <a class="btn btn-mini" href="supervisor">Delete</a></p>
-            </div>
-        </div>
-		<div class="row-fluid details">
-            <i class="icon-tasks"></i> Tasks: 0
-        </div>
-      </div>
-    </div>
-	<div class="row-fluid blog-post">
-      <div class="span12">
-        <h4><strong><a href="#">Nama Template</a></strong></h4>
-        <div class="row-fluid">
-            <div class="post-summary">      
-                Deskripsi:
-				<p>
-                  ...........<br/>
-				  .................<br/>
-                </p>
-                <p><a class="btn btn-mini" href="editTemplate">Edit</a> <a class="btn btn-mini" href="supervisor">Delete</a></p>
-            </div>
-        </div>
-		<div class="row-fluid details">
-            <i class="icon-tasks"></i> Tasks: 2
-        </div>
-      </div>
-    </div>
 
     
     

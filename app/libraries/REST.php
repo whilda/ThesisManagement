@@ -28,4 +28,12 @@ class REST{
 		$result = curl_exec($ch);
 		return $result;
 	}
+	static function ServletRequest($path, $data){
+		$ch = curl_init(REST::$url.$path);
+		curl_setopt($ch, CURLOPT_POST,true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$result = curl_exec($ch);
+		return $result;
+	}
 }

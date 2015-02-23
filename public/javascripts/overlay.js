@@ -1,4 +1,4 @@
-$("#overlay, .closeX").on("click",function(){hideOver();});
+$(".closeX").on("click",function(){hideOver();});
 $(".loginbtn").on("click",function(){login();showOver();});
 function showOver(){
 	$("#overlay").fadeIn("slow");

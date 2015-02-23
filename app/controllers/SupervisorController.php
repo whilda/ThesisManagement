@@ -182,6 +182,53 @@ class SupervisorController extends Controller {
 			return "Internal Server Error";
 		}
 	}
+	public function editTemplate($code){
+		$supervisor=$this->getData();
+		if(isset($supervisor['code'])&&$supervisor['code']==1){
+			$found=false;
+			foreach($supervisor['data']['template'] as $template){
+				if($template['code']==$code){
+					$found=true;
+					break;
+				}
+			}
+			if($found){
+				return View::make('supervisor/editTemplate',array('data'=>$template));
+			}else{
+				return Redirect::to('supervisor/template');
+			}
+		}else{
+			return "Internal Server error";
+		}
+	}
+	public function updateTemplate($code){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"code"=>$code,
+				"name"=>Input::get('name'),
+				"description"=>Input::get('description')
+			);
+			$data_string=json_encode($data);
+			$output=REST::POSTRequest('su/updatetemplate',$data_string);
+			return $output;
+		}
+	}
+	public function addTask($code){
+		if(Input::has('name')&&Input::has('description')&&Input::has('duration')){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"template"=>$code,
+				"name"=>Input::get('name'),
+				"description"=>Input::get('description'),
+				"duration"=>Input::get('duration'),
+			);
+			$output=REST::ServletRequest('su/addtask',$data);
+			return $output;
+		}
+	}
 	public function getTemplates(){
 		if(Request::ajax()){
 			$supervisor=$this->getData();
@@ -202,6 +249,22 @@ class SupervisorController extends Controller {
 			$data_string=json_encode($data);
 			$output=REST::POSTRequest('su/createtemplate',$data_string);
 			return $output;
+		}
+	}
+	public function deleteTemplate($code){
+		if(Request::ajax()){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"code"=>$code,
+			);
+			$data_string=json_encode($data);
+			$output=REST::POSTRequest('su/deletetemplate',$data_string);
+			$output=json_decode($output,true);
+			if(isset($output['code']))
+				return $output['code'];
+			else
+				return -1;
 		}
 	}
 	public function getData(){

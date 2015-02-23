@@ -1,29 +1,26 @@
 $(".closeNotif").on("click",function(){hideOver();});
 $(".closeBtn").on("click",function(){$("#tasks").slideToggle();});
 function tambahTask(){
-	if(!(document.template.type.value=="0"||document.template.oldName.value=="")){
-		$('#judulTipe').html("Tambah Task");
-		document.task.templateName.value=document.template.name.value;
-		document.task.taskName.value="";
-		document.task.taskDesc.value="";
-		document.task.oldName.value="";
-		document.task.type.value="1";
-		document.task.taskDur.value="0";
-		$('#fileContainer').html("");
-		$('#delFile').html("");
-		var file = $("#file");
-		file.replaceWith(file.val('').clone(true));
-		$("#tasks").slideToggle();
-	}
+	$('#judulTipe').html("Tambah Task");
+	document.task.taskName.value="";
+	document.task.taskDesc.value="";
+	document.task.oldName.value="";
+	document.task.type.value="1";
+	document.task.taskDur.value="0";
+	$('#fileContainer').html("");
+	$('#delFile').html("");
+	var file = $("#file");
+	file.replaceWith(file.val('').clone(true));
+	$("#tasks").slideToggle();
 }
 function editTask(data){
+	alert(code);
 	var taskName=data.getAttribute("taskName");
-	if(!(document.template.type.value=="0"||document.template.oldName.value==""||taskName=="")){
+	if(taskName!=""){
 		$('#judulTipe').html("Edit Task");
-		document.task.templateName.value=document.template.name.value;
 		document.task.taskName.value=data.getAttribute("taskName");
 		document.task.taskDesc.value="Lama";
-		document.task.oldName.value="Lama";
+		document.task.oldName.value=data.getAttribute("taskName");
 		document.task.type.value="2";
 		document.task.taskDur.value="23";
 		$('#fileContainer').html("");
