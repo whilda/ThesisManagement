@@ -1,53 +1,6 @@
 $(".closeNotif").on("click",function(){hideOver();});
 $(".closeBtn").on("click",function(){$("#tasks").slideToggle();});
-function tambahTask(){
-	$('#judulTipe').html("Tambah Task");
-	document.task.taskName.value="";
-	document.task.taskDesc.value="";
-	document.task.oldName.value="";
-	document.task.type.value="1";
-	document.task.taskDur.value="0";
-	$('#fileContainer').html("");
-	$('#delFile').html("");
-	var file = $("#file");
-	file.replaceWith(file.val('').clone(true));
-	$("#tasks").slideToggle();
-}
-function editTask(data){
-	alert(code);
-	var taskName=data.getAttribute("taskName");
-	if(taskName!=""){
-		$('#judulTipe').html("Edit Task");
-		document.task.taskName.value=data.getAttribute("taskName");
-		document.task.taskDesc.value="Lama";
-		document.task.oldName.value=data.getAttribute("taskName");
-		document.task.type.value="2";
-		document.task.taskDur.value="23";
-		$('#fileContainer').html("");
-		$('#delFile').html("");
-		var element=document.createElement("div");
-		var child1=document.createElement("div");
-		child1.className="input-prepend";
-		$(child1).html("<span class=\"add-on\">asd.png</span>");
-		var child2=document.createElement("div");
-		child2.className="input-append";
-		$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileName=\"asd.png\" taskFile=\"1\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
-		$(element).append(child1,child2);
-		$("#fileContainer").append(element);
-		var element=document.createElement("div");
-		var child1=document.createElement("div");
-		child1.className="input-prepend";
-		$(child1).html("<span class=\"add-on\">def.png</span>");
-		var child2=document.createElement("div");
-		child2.className="input-append";
-		$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileName=\"def.png\" taskFile=\"2\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
-		$(element).append(child1,child2);
-		$("#fileContainer").append(element);
-		var file = $("#file");
-		file.replaceWith(file.val('').clone(true));
-		$("#tasks").slideToggle();
-	}
-}
+
 var data;
 function confirmDelTask(dataTask){
 	var taskName=dataTask.getAttribute("taskName");

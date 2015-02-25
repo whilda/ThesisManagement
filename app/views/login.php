@@ -14,7 +14,7 @@
 
     <!-- For sample logo only-->
     <!--Remove if you no longer need this font-->
-    <link rel="stylesheet" type="text/css" href="<?php echo URL::to('/'); ?>/lib/AquafinaFont.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Aguafina+Script">
     <!--For sample logo only-->
 
 

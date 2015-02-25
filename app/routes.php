@@ -123,6 +123,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('supervisor/template/{code}',"SupervisorController@editTemplate");
 	Route::post('supervisor/template/{code}/save',"SupervisorController@updateTemplate");
 	Route::post('supervisor/template/{code}/task/add',"SupervisorController@addTask");
+	Route::get('supervisor/template/{code}/tasks',"SupervisorController@getTask");
 	Route::get('supervisor/field',function()
 	{ 
 		return View::make('supervisor/field');

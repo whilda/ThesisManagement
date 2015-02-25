@@ -216,17 +216,47 @@ class SupervisorController extends Controller {
 		}
 	}
 	public function addTask($code){
-		if(Input::has('name')&&Input::has('description')&&Input::has('duration')){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&Input::get('duration')>0){
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get('token'),
 				"template"=>$code,
 				"name"=>Input::get('name'),
 				"description"=>Input::get('description'),
-				"duration"=>Input::get('duration'),
+				"duration"=>(int)Input::get('duration'),
 			);
+			if(Input::hasFile("file")){
+				$count=0;
+				foreach(Input::file("file") as $file){
+					if($file->isValid()){
+						$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+						$count++;
+					}
+				}
+			}
 			$output=REST::ServletRequest('su/addtask',$data);
 			return $output;
+		}
+	}
+	public function getTask($code){
+		if(Request::ajax()){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1){
+				$found=false;
+				foreach($supervisor['data']['template'] as $template){
+					if($template['code']==$code){
+						$found=true;
+						break;
+					}
+				}
+				if($found){
+					return json_encode($template['task']);
+				}else{
+					return Redirect::to('supervisor/template');
+				}
+			}else{
+				return "Internal Server error";
+			}
 		}
 	}
 	public function getTemplates(){
