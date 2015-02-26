@@ -30,10 +30,8 @@ Route::group(array('before'=>'auth'), function(){
 //khusus student
 Route::group(array('before'=>'student'), function(){
 	Route::get('student/home',"StudentController@home");
-	Route::get('student/code',function()
-	{ 
-		return View::make('student/code');
-	});
+	Route::get('student/code',"StudentController@Code");
+	Route::post('student/code/save',"StudentController@saveCode");
 	Route::get('student/supervisorList/field/{field}/{number?}',"StudentController@SupervisorByField");
 	Route::get('student/supervisorList/{number?}',"StudentController@SupervisorList");
 	Route::get('student/supervisor/{username}',"StudentController@SupervisorView");
@@ -122,8 +120,10 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('supervisor/template/delete/{code}',"SupervisorController@deleteTemplate");
 	Route::get('supervisor/template/{code}',"SupervisorController@editTemplate");
 	Route::post('supervisor/template/{code}/save',"SupervisorController@updateTemplate");
-	Route::post('supervisor/template/{code}/task/add',"SupervisorController@addTask");
-	Route::get('supervisor/template/{code}/tasks',"SupervisorController@getTask");
+	Route::post('supervisor/template/{code}/task/add',"SupervisorController@addTaskTemplate");
+	Route::post('supervisor/template/{code}/task/{name}/edit',"SupervisorController@updateTaskTemplate");
+	Route::get('supervisor/template/{code}/task/{name}/delete',"SupervisorController@deleteTaskTemplate");
+	Route::get('supervisor/template/{code}/tasks',"SupervisorController@getTaskTemplate");
 	Route::get('supervisor/field',function()
 	{ 
 		return View::make('supervisor/field');

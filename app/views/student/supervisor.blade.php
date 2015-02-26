@@ -65,7 +65,10 @@
 				  </div>
 				</li>
 				<li class="clearfix">
-				<a class="btn btn-mini" href="#">Pilih Supervisor</a> <button class="btn btn-mini" onclick="window.history.go(-1)">Kembali</button>
+				@if($status==-1)
+				<a class="btn btn-mini" href="{{ URL::to('/') }}/student/supervisor/select/{{ $supervisor['_id'] }}">Pilih Supervisor</a>
+				@endif
+				<button class="btn btn-mini" onclick="window.history.go(-1)">Kembali</button>
 				</li>
 			</ul>
 			</div>

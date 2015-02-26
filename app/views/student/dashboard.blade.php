@@ -21,72 +21,42 @@
     <div class="row-fluid">
         <div class="row-fluid">
 			@if ($data['thesis']['topic']=="")
-			<div class="alert"><a href="thesis">Anda belum mengisi thesis</a></div>
-			@endif
+			<div class="alert"><a href="{{ URL::to('/student/thesis') }}">Anda belum mengisi thesis</a></div>
+			@elseif($data['status']==-1)
+			<div class="alert"><a href="{{ URL::to('/student/supervisorList') }}">Anda belum memilih supervisor</a></div>
+			@else
             <h2>Available Tasks
                 <span class="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>
             </h2>
             <ul class="item-summary">
             
 
-            
+				@foreach($data['task'] as $task)
                 <li>
+				<?php
+					$date=new DateTime($task['created_date']['$date']);
+				?>
                     <div class="overview span4">
-                        <p class="main-detail">April 14th</p>
+                        <p class="main-detail">{{ date_format($date, 'M jS') }}</p>
                         <p class="sub-detail"> </p>
-                        <span class="label label-success">Active</span> <span class="label label-info">New</span>
-                    </div>
-                    <div class="info span8">
-						<h2>Nama Task yang Panjang Sekali</h2>
-                        <p>Trust fund photo letterpress, keytar raw skydiving denim grape keffiyeh etsy art base apple party ball before they.</p>
-                        <a class="btn btn-mini" href="#">View Task</a>
-                    </div>
-                    <div class="clearfix"></div>
-                </li>
-            
-                <li>
-                    <div class="overview span4">
-                        <p class="main-detail">Jan 24th</p>
-                        <p class="sub-detail"> </p>
+						@if($task['status']==0)
                         <span class="label label-success">Active</span>
+						@endif
+						@if(count($task['comment'])==0)
+						<span class="label label-info">New</span>
+						@endif
                     </div>
                     <div class="info span8">
-						<h2>Nama Task yang Panjang Sekali</h2>
-                        <p>Trust fund photo letterpress, keytar raw skydiving denim grape keffiyeh etsy art base apple party ball before they.</p>
-                        <a class="btn btn-mini" href="#">View Task</a>
+						<h2>{{ $task['name'] }}</h2>
+                        <p>{{ $task['description'] }}</p>
+                        <a class="btn btn-mini" href="{{ URL::to('/student/task/'.$task['id_task']) }}">View Task</a>
                     </div>
                     <div class="clearfix"></div>
                 </li>
-            
-                <li>
-                    <div class="overview span4">
-                        <p class="main-detail">May 9th</p>
-                        <p class="sub-detail"> </p>
-                        <span class="label label-success">Active</span>
-                    </div>
-                    <div class="info span8">
-						<h2>Nama Task yang Panjang Sekali</h2>
-                        <p>Trust fund photo letterpress, keytar raw skydiving denim grape keffiyeh etsy art base apple party ball before they.</p>
-                        <a class="btn btn-mini" href="#">View Task</a>
-                    </div>
-                    <div class="clearfix"></div>
-                </li>
-            
-                <li>
-                    <div class="overview span4">
-                        <p class="main-detail">June 3rd</p>
-                        <p class="sub-detail"> </p>
-                        <span class="label label-success">Active</span>
-                    </div>
-                    <div class="info span8">
-						<h2>Nama Task yang Panjang Sekali</h2>
-                        <p>Trust fund photo letterpress, keytar raw skydiving denim grape keffiyeh etsy art base apple party ball before they.</p>
-                        <a class="btn btn-mini" href="#">View Task</a>
-                    </div>
-                    <div class="clearfix"></div>
-                </li>
+				@endforeach
             
             </ul>
+			@endif
         </div>
 	</div>
 </div>

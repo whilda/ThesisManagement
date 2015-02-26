@@ -15,32 +15,24 @@
 <script>
 var type;
 var taskElement=[];
-var loaded=false;
-$.ajax({  
-	type: 'GET',  
-	url: '<?php echo URL::to('/'); ?>/supervisor/template/{{ $data['code'] }}/tasks',
-	contentType: 'application/json',
-	success: function(data){
-		loaded=true;
-		try{
-			taskElement=JSON.parse(data);
-		}catch(err){
-			alert(err);
-		}
-	},  
-	error: function(ex) {
-		loaded=true;
-		$("#loading").fadeOut("fast");
-		$("#notifMsg").hide();
-		$("#notifMsg").attr("class", "alert alert-error");
-		$("#notifMsg").html("Koneksi error");
-		$("#notifMsg").slideDown();
-	},  
-	timeout:60000  
-});
 $("#task").ajaxForm({
 	dataType: 'json',
 	beforeSubmit: function(a,f,o) {
+		var name=document.task.name.value;
+		var description=document.task.description.value;
+		var error="";
+		if(name==""){
+			error+="<li>Name tidak boleh kosong</li>";
+		}
+		if(description==""){
+			error+="<li>Description tidak boleh kosong</li>";
+		}
+		if(error!=""){
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("<ul>"+error+"</ul>");
+			displayNotif();
+			return false;
+		}
 		$(document.task.simpan).prop("disabled",true);
 		$(document.task.batal).prop("disabled",true);
 	},
@@ -55,21 +47,28 @@ $("#task").ajaxForm({
 				$("#notif").html("Gagal menambah task");
 				displayNotif();
 			}
-			var tambah="<div><div class=\"input-prepend\"><span class=\"add-on\">"+document.task.name.value+"</span>";
-			tambah+="</div><div class=\"input-append\">";
-			tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"editTask(this)\" taskName=\""+document.task.name.value+"\"><i class=\"icon-pencil\"></i></a></span>";
-			tambah+="</div><div class=\"input-append\">";
-			tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"confirmDelTask(this)\" taskName=\""+document.task.name.value+"\"><i class=\"icon-remove\"></i></a></span></div>";
-			tambah+="</div>";
-			$("#taskLists").append(tambah);
+		}else if(type==2){
+			if(data.code==1){
+				$("#notif").attr("class", "alert alert-success closeNotif");
+				$("#notif").html("Sukses merubah task");
+				displayNotif();
+			}else{
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Gagal merubah task");
+				displayNotif();
+			}
 		}
+		reloadTask();
 		$(document.task.simpan).prop("disabled",false);
 		$(document.task.batal).prop("disabled",false);
 		$("#tasks").slideToggle();
 	},
 	error: function(ex) {
 		$("#notif").attr("class", "alert alert-error closeNotif");
-		$("#notif").html("Gagal menambah task");
+		if(type==1)
+			$("#notif").html("Gagal menambah task");
+		else if(type==2)
+			$("#notif").html("Gagal merubah task");
 		displayNotif();
 		$(document.task.simpan).prop("disabled",false);
 		$(document.task.batal).prop("disabled",false);
@@ -81,9 +80,8 @@ function tambahTask(){
 	$('#judulTipe').html("Tambah Task");
 	document.task.name.value="";
 	document.task.description.value="";
-	document.task.oldName.value="";
 	$(document.task).prop("action","{{ URL::to('/supervisor/template/'.$data['code'].'/task/add') }}");
-	document.task.duration.value="0";
+	document.task.duration.value="";
 	$('#fileContainer').html("");
 	$('#delFile').html("");
 	var file = $("#file");
@@ -91,54 +89,111 @@ function tambahTask(){
 	$("#tasks").slideToggle();
 }
 function showTask(){
-	if(loaded){
-		var tambah="";
-		for(var i=0;i<taskElement.length;i++){
-			tambah+="<div><div class=\"input-prepend\"><span class=\"add-on\">"+taskElement[i].name+"</span>";
-			tambah+="</div><div class=\"input-append\">";
-			tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"editTask(this)\" taskName=\""+taskElement[i].name+"\"><i class=\"icon-pencil\"></i></a></span>";
-			tambah+="</div><div class=\"input-append\">";
-			tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"confirmDelTask(this)\" taskName=\""+taskElement[i].name+"\"><i class=\"icon-remove\"></i></a></span></div>";
-			tambah+="</div>";
-		}
-		$("#taskLists").html(tambah);
-	}else{
-		setTimeout(function(){ showTask() },500);
+	var tambah="";
+	for(var i=0;i<taskElement.length;i++){
+		tambah+="<div><div class=\"input-prepend\"><span class=\"add-on\">"+taskElement[i].name+"</span>";
+		tambah+="</div><div class=\"input-append\">";
+		tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"editTask(this)\" taskName=\""+taskElement[i].name+"\"><i class=\"icon-pencil\"></i></a></span>";
+		tambah+="</div><div class=\"input-append\">";
+		tambah+="<span class=\"add-on\"><a href=\"javascript:void(0)\" onclick=\"confirmDelTask(this)\" taskName=\""+taskElement[i].name+"\"><i class=\"icon-remove\"></i></a></span></div>";
+		tambah+="</div>";
 	}
+	$("#taskLists").html(tambah);
 }
-showTask();
+function reloadTask(){
+	$("#taskLists").html("<img class=\"loading\" alt=\"loading\" src=\"{{ URL::to('/') }}/images/loading-icons/loading11.gif\">");
+	$.ajax({  
+		type: 'GET',  
+		url: '<?php echo URL::to('/'); ?>/supervisor/template/{{ $data['code'] }}/tasks',
+		contentType: 'application/json',
+		success: function(data){
+			try{
+				taskElement=JSON.parse(data);
+				showTask();
+			}catch(err){
+				alert(err);
+			}
+		},  
+		error: function(ex) {
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Koneksi error");
+			displayNotif();
+		},  
+		timeout:60000  
+	});
+}
+reloadTask();
+function searchTask(name){
+	for(var i=0;i<taskElement.length;i++){
+		if(taskElement[i].name==name)
+			return taskElement[i];
+	}
+	return "";
+}
 function editTask(data){
 	type=2;
 	var taskName=data.getAttribute("taskName");
 	if(taskName!=""){
-		$('#judulTipe').html("Edit Task");
-		document.task.name.value=data.getAttribute("taskName");
-		document.task.description.value="Lama";
-		document.task.oldName.value=data.getAttribute("taskName");
-		document.task.duration.value="23";
-		$('#fileContainer').html("");
-		$('#delFile').html("");
-		var element=document.createElement("div");
-		var child1=document.createElement("div");
-		child1.className="input-prepend";
-		$(child1).html("<span class=\"add-on\">asd.png</span>");
-		var child2=document.createElement("div");
-		child2.className="input-append";
-		$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileName=\"asd.png\" taskFile=\"1\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
-		$(element).append(child1,child2);
-		$("#fileContainer").append(element);
-		var element=document.createElement("div");
-		var child1=document.createElement("div");
-		child1.className="input-prepend";
-		$(child1).html("<span class=\"add-on\">def.png</span>");
-		var child2=document.createElement("div");
-		child2.className="input-append";
-		$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileName=\"def.png\" taskFile=\"2\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
-		$(element).append(child1,child2);
-		$("#fileContainer").append(element);
-		var file = $("#file");
-		file.replaceWith(file.val('').clone(true));
-		$("#tasks").slideToggle();
+		var task=searchTask(taskName);
+		if(task!=""){
+			$('#judulTipe').html("Edit Task");
+			document.task.name.value=task.name;
+			document.task.description.value=task.description;
+			$(document.task).prop("action","{{ URL::to('/supervisor/template/'.$data['code'].'/task') }}/"+task.name+"/edit");
+			document.task.duration.value=task.duration;
+			$('#fileContainer').html("");
+			$('#delFile').html("");
+			for(var i=0;i<task.file.length;i++){
+				var element=document.createElement("div");
+				var child1=document.createElement("div");
+				child1.className="input-prepend";
+				$(child1).html("<span class=\"add-on\">"+task.file[i].filename+"</span>");
+				var child2=document.createElement("div");
+				child2.className="input-append";
+				$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileID=\""+task.file[i].fileid+"\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
+				$(element).append(child1,child2);
+				$("#fileContainer").append(element);
+			}
+			var file = $("#file");
+			file.replaceWith(file.val('').clone(true));
+			$("#tasks").slideToggle();
+		}
+	}
+}
+function delTask(){
+	var taskName=data.getAttribute("taskName");
+	if(taskName!=""){
+		$.ajax({  
+			type: 'GET',  
+			url: "{{ URL::to('/supervisor/template/'.$data['code'].'/task') }}/"+taskName+"/delete",
+			contentType: 'application/json',
+			success: function(data){
+				try{
+					data=JSON.parse(data);
+					if(data.code==1){
+						$("#notif").attr("class", "alert alert-success closeNotif");
+						$("#notif").html("Sukses menghapus task");
+						displayNotif();
+						reloadTask();
+					}else{
+						$("#notif").attr("class", "alert alert-error closeNotif");
+						$("#notif").html("Gagal menghapus task");
+						displayNotif();
+					}
+				}catch(err){
+					$("#notif").attr("class", "alert alert-error closeNotif");
+					$("#notif").html("Gagal menghapus task");
+					displayNotif();
+				}
+			},  
+			error: function(ex) {
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Gagal menghapus task");
+				displayNotif();
+			},  
+			timeout:60000  
+		});
+		cancelConfirm();
 	}
 }
 function saveTemplate(button){
@@ -229,7 +284,6 @@ function saveTemplate(button){
 				  <label class="control-label" for="name">Name</label>
 				  <div class="controls">
 					<input type="text" name="name" id="name" class="input-xlarge" value="Nama task">
-					<input type="hidden" name="oldName" value="">
 				  </div>
 				</div>
 				<div class="control-group">

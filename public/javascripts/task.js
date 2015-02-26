@@ -11,14 +11,6 @@ function confirmDelTask(dataTask){
 		displayConfirm();
 	}
 }
-function delTask(){
-	var taskName=data.getAttribute("taskName");
-	if(taskName!=""){
-		$("#delTask").append("<input type=\"hidden\" name=\"deleted[]\" value=\""+taskName+"\">");
-		data.parentNode.parentNode.parentNode.parentNode.removeChild(data.parentNode.parentNode.parentNode);
-		cancelConfirm();
-	}
-}
 function confirmDelFile(dataFile){
 	var fileName=dataFile.getAttribute("fileName");
 	if(fileName!=""){
@@ -29,9 +21,9 @@ function confirmDelFile(dataFile){
 	}
 }
 function delFile(){
-	var taskFile=data.getAttribute("taskFile");
-	if(taskFile!=""){
-		$("#delFile").append("<input type=\"hidden\" name=\"deleted[]\" value=\""+taskFile+"\">");
+	var fileID=data.getAttribute("fileID");
+	if(fileID!=""){
+		$("#delFile").append("<input type=\"hidden\" name=\"deleted[]\" value=\""+fileID+"\">");
 		data.parentNode.parentNode.parentNode.parentNode.removeChild(data.parentNode.parentNode.parentNode);
 		cancelConfirm();
 	}

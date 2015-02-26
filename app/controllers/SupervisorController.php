@@ -215,8 +215,8 @@ class SupervisorController extends Controller {
 			return $output;
 		}
 	}
-	public function addTask($code){
-		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&Input::get('duration')>0){
+	public function addTaskTemplate($code){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&(Input::get('duration')>0||Input::get('duration')=="")){
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get('token'),
@@ -238,7 +238,53 @@ class SupervisorController extends Controller {
 			return $output;
 		}
 	}
-	public function getTask($code){
+	public function updateTaskTemplate($code,$name){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&(Input::get('duration')>0||Input::get('duration')=="")){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"template"=>$code,
+				"oldname"=>$name,
+				"newname"=>Input::get('name'),
+				"description"=>Input::get('description'),
+				"duration"=>(int)Input::get('duration'),
+				"remove"=>""
+			);
+			if(Input::has("deleted")){
+				$count=0;
+				foreach(Input::get("deleted") as $deleted){
+					$data["remove"][$count]=$deleted;
+					$count++;
+				}
+				$data["remove"]=json_encode($data["remove"]);
+			}
+			if(Input::hasFile("file")){
+				$count=0;
+				foreach(Input::file("file") as $file){
+					if($file->isValid()){
+						$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+						$count++;
+					}
+				}
+			}
+			$output=REST::ServletRequest('su/updatetasktemplate',$data);
+			return $output;
+		}
+	}
+	public function deleteTaskTemplate($code,$name){
+		if(Request::ajax()){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"template"=>$code,
+				"task"=>$name,
+			);
+			$data=json_encode($data);
+			$output=REST::POSTRequest('su/removetask',$data);
+			return $output;
+		}
+	}
+	public function getTaskTemplate($code){
 		if(Request::ajax()){
 			$supervisor=$this->getData();
 			if(isset($supervisor['code'])&&$supervisor['code']==1){

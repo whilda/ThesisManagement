@@ -27,28 +27,7 @@
 @section('addResource')
 <script src="{{ URL::to('/') }}/javascripts/overlay.js" type="text/javascript"></script>
 <script src="{{ URL::to('/') }}/javascripts/taskTemplate.js" type="text/javascript"></script>
-<script src="{{ URL::to('/') }}/javascripts/spin.min.js" type="text/javascript"></script>
-	<script src="{{ URL::to('/') }}/javascripts/jquery.spin.js" type="text/javascript"></script>
 <script>
-var opts = {
-  lines: 10, // The number of lines to draw
-  length: 8, // The length of each line
-  width: 4, // The line thickness
-  radius: 8, // The radius of the inner circle
-  corners: 1, // Corner roundness (0..1)
-  rotate: 0, // The rotation offset
-  direction: 1, // 1: clockwise, -1: counterclockwise
-  color: '#fff', // #rgb or #rrggbb or array of colors
-  speed: 1, // Rounds per second
-  trail: 60, // Afterglow percentage
-  shadow: false, // Whether to render a shadow
-  hwaccel: false, // Whether to use hardware acceleration
-  className: 'spinner', // The CSS class to assign to the spinner
-  zIndex: 2e9, // The z-index (defaults to 2000000000)
-  top: '50%', // Top position relative to parent
-  left: '50%' // Left position relative to parent
-};
-$("#loading").spin(opts);
 var maxpage;
 var maxperpage=10;
 function saveTemplate(button){
@@ -117,7 +96,7 @@ function saveTemplate(button){
 	}
 }
 function load(){
-	$("#loading").show();
+	$("#blog-posts").html("<img class=\"loading\" alt=\"loading\" src=\"{{ URL::to('/') }}/images/loading-icons/loading11.gif\">");
 	$.ajax({  
 		type: 'GET',  
 		url: '<?php echo URL::to('/'); ?>/supervisor/template/get',
@@ -257,7 +236,6 @@ function notifMsg(){
 @stop
 
 @section('content')
-	<div class="overlay" id="loading" style="display:none"></div>
 	<div id="overlay" style="display:none"></div>
 	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
 		<div class="alert alert-warning notif">
@@ -304,9 +282,7 @@ function notifMsg(){
 	<div class="alert alert-error" id="notifMsg" style="display:none" onclick="notifMsg()"></div>
 	<a class="btn btn-mini" onclick="tambahTemplate()">Tambah Template</a>
   <div id="blog-posts">
-
-    
-    
+  <img class="loading" alt="loading" src="{{ URL::to('/') }}/images/loading-icons/loading11.gif">   
 </div>
 	<div class="pagination">
 	<center>

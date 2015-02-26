@@ -119,7 +119,7 @@ class StudentController extends Controller {
 					return View::make('student/supervisorList',array('data'=>$dataSupervisor,'pagination'=>$generate,'status'=>$student['data']['status']));
 				}
 			}else{
-				return View::make('student/supervisorList')->with('data',array());
+				return View::make('student/supervisorList',array('data'=>array(),'status'=>$student['data']['status']));
 			}
 		}else{
 			return "Internal Server Error";
@@ -128,6 +128,8 @@ class StudentController extends Controller {
 	public function SupervisorByField($key,$page=1){
 		$student=$this->getData();
 		if(isset($student['code'])&&$student['code']==1){
+			if($student['data']['thesis']['topic']=="")
+				$student['data']['status']=-2;
 			$output=REST::GETRequest("f/search/".$key."/".REST::$appkey."/".Session::get('token'));
 			$output=json_decode($output,true);
 			$maxperpage=5;
@@ -169,7 +171,7 @@ class StudentController extends Controller {
 					return View::make('student/supervisorList',array('data'=>$dataSupervisor,'pagination'=>$generate,'status'=>$student['data']['status']));
 				}
 			}else{
-				return View::make('student/supervisorList')->with('data',array());
+				return View::make('student/supervisorList',array('data'=>array(),'status'=>$student['data']['status']));
 			}
 		}else{
 			return "Internal Server Error";
@@ -178,11 +180,18 @@ class StudentController extends Controller {
 	public function SupervisorView($supervisor){
 		$output=REST::GETRequest("su/get/".$supervisor."/".REST::$appkey."/".Session::get('token'));
 		$output=json_decode($output,true);
-		if(isset($output["code"])&&$output["code"]!=-1){
-			if($output["code"]==1){
-				return View::make('student/supervisor',array('data'=>$output['data']));
-			}else if($output["code"]==0){
-				return "Supervisor not found";
+		$student=$this->getData();
+		if(isset($student['code'])&&$student['code']==1){
+			if($student['data']['thesis']['topic']=="")
+				$student['data']['status']=-2;
+			if(isset($output["code"])&&$output["code"]!=-1){
+				if($output["code"]==1){
+					return View::make('student/supervisor',array('data'=>$output['data'],'status'=>$student['data']['status']));
+				}else if($output["code"]==0){
+					return "Supervisor not found";
+				}
+			}else{
+				return "Internal Server Error";
 			}
 		}else{
 			return "Internal Server Error";
@@ -202,6 +211,41 @@ class StudentController extends Controller {
 			$output=json_decode($output,true);
 			if(isset($output["code"])&&$output["code"]==1){
 				return 1;
+			}else{
+				return -1;
+			}
+		}else{
+			return -1;
+		}
+	}
+	public function Code(){
+		$data_output=$this->getData();
+		if(isset($data_output['code'])&&$data_output['code']==1){
+			return View::make('student/code', array('data'=>$data_output['data']));
+		}else{
+			return "Internal Server Error";
+		}
+	}
+	public function saveCode(){
+		if(Request::ajax()&&Input::has('code')){
+			$data_output=$this->getData();
+			if(isset($data_output['code'])&&$data_output['code']==1){
+				if($data_output['data']['status']==1){
+					$data=array(
+						"appkey"=>REST::$appkey,
+						"token"=>Session::get("token"),
+						"code"=>Input::get("code")
+					);
+					$data_string=json_encode($data);
+					$output=REST::POSTRequest("s/inputcode",$data_string);
+					$output=json_decode($output,true);
+					if(isset($output['code']))
+						return $output['code'];
+					else
+						return -1;
+				}else{
+					return -1;
+				}
 			}else{
 				return -1;
 			}
