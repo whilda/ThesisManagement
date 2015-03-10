@@ -3,9 +3,14 @@
 class SupervisorController extends Controller {
 	 
 	public function home(){
-		$data_output=$this->getData();
-		if(isset($data_output['code'])&&$data_output['code']==1){
-			return View::make('student/dashboard', array('data'=>$data_output['data']));
+		$input=array(
+			"appkey"=>REST::$appkey,
+			"token"=>Session::get('token')
+		);
+		$output=REST::POSTRequest('su/getstudentprogress',json_encode($input));
+		$data_output=json_decode($output,true);
+		if(isset($data_output['code'])&&$data_output['code']!=-1){
+			return View::make('supervisor/dashboard', array('data'=>$data_output['data']));
 		}else{
 			return "Internal Server Error";
 		}
@@ -64,7 +69,14 @@ class SupervisorController extends Controller {
 		}
 	}
 	public function SaveProfile(){
-		if(Request::ajax()&&Input::has("address")&&Input::has("handphone")&&Input::has("email")&&Input::has("field")){
+		$validator = Validator::make(Input::all(),
+			array(
+				'address' => 'between:0,50',
+				'handphone' => 'digits_between:0,20',
+				'email' => 'email',
+			)
+		);
+		if(Request::ajax()&&$validator->passes()&&Input::has("field")){
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get("token"),

@@ -10,7 +10,7 @@
 @section('content')
     <h2>Supervisor List</h2>
 	@if($status==-2)
-	<div class="alert"><a href="thesis">Anda belum mengisi thesis</a></div>
+	<div class="alert">Anda belum mengisi thesis. Klik link berikut untuk mengisi <a href="{{ URL::to('/student/thesis') }}">thesis</a></div>
 	@endif
 
 <div id="blog-posts">

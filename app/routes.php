@@ -89,10 +89,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');
 	
-	Route::get('supervisor/home',function()
-	{ 
-		return View::make('supervisor/dashboard');
-	});
+	Route::get('supervisor/home', 'SupervisorController@home');
 	Route::get('supervisor/proposal/accept/{username}','SupervisorController@AcceptPropose');
 	Route::get('supervisor/proposal/decline/{username}','SupervisorController@DeclinePropose');
 	Route::get('supervisor/proposal/{number?}','SupervisorController@ProposalList');

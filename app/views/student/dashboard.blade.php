@@ -21,9 +21,13 @@
     <div class="row-fluid">
         <div class="row-fluid">
 			@if ($data['thesis']['topic']=="")
-			<div class="alert"><a href="{{ URL::to('/student/thesis') }}">Anda belum mengisi thesis</a></div>
+			<div class="alert">Anda belum mengisi thesis. Klik link berikut untuk mengisi <a href="{{ URL::to('/student/thesis') }}">thesis</a></div>
 			@elseif($data['status']==-1)
-			<div class="alert"><a href="{{ URL::to('/student/supervisorList') }}">Anda belum memilih supervisor</a></div>
+			<div class="alert">Anda belum memilih supervisor. Klik link berikut untuk memilih <a href="{{ URL::to('/student/supervisorList') }}">supervisor</a>.</div>
+			@elseif($data['status']==0)
+			<div class="alert">Permintaan anda belum direspon supervisor.</div>
+			@elseif($data['status']==1)
+			<div class="alert">Anda belum mengisi kode. Mintalah kode pada supervisor anda dan klik link berikut untuk mengisi <a href="{{ URL::to('/student/code') }}">kode</a>.</div>
 			@else
             <h2>Available Tasks
                 <span class="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>

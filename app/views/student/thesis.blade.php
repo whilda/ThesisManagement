@@ -72,6 +72,9 @@
 			if(description==""){
 				error+="<li>Abstract tidak boleh kosong</li>";
 			}
+			if(fields==undefined){
+				error+="<li>Field tidak boleh kosong</li>";
+			}
 			if(error==""){
 				if(fields!=undefined){
 					if(fields.length==undefined){

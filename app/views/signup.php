@@ -120,7 +120,7 @@
 			contentType: 'application/json',
 			success: function(data){
 				success=true;
-				if(data==1){
+				if(data==0){
 					if($("#errMsg").html()=="")
 						$("#errMsg").html("<ul><li>Username sudah terdaftar</li></ul>");
 					else
@@ -149,8 +149,8 @@
 			if(username==""){
 				error+="<li>Username tidak boleh kosong</li>";
 				success=true;
-			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
-				error+="<li>Username tidak valid</li>";
+			}else if(!/^[\w\.\-]{4,15}$/.test(username)){
+				error+="<li>Username tidak valid, minimum 4 digit, maksimum 15 digit, gunakan huruf, angka, titik(.),dash(-), dan underscore(_)</li>";
 				success=true;
 			}else{
 				success=false;
@@ -158,28 +158,27 @@
 			}
 			if(password==""){
 				error+="<li>Password tidak boleh kosong</li>";
+			}else if(!/^[\w]{8,16}$/.test(password)){
+				error+="<li>Password harus diantara 8-16 digit, gunakan kombinasi huruf dan angka.</li>"
 			}
 			if(repass!=password){
 				error+="<li>Retype Password tidak sama dengan Password</li>";
 			}
 			if(nim==""){
 				error+="<li>NIM tidak boleh kosong</li>";
-			}else if(!/^[A-Za-z][0-9]{2}\.[0-9]{4}\.[0-9]{5}$/.test(nim)){
+			}else if(!/^[A-Ea-e][0-9]{2}\.[0-9]{4}\.[0-9]{5}$/.test(nim)){
 				error+="<li>Format nim salah</li>";
 			}
 			if(name==""){
 				error+="<li>Nama tidak boleh kosong</li>";
 			}
-			if(address==""){
-				error+="<li>Address tidak boleh kosong</li>";
-			}
 			if(handphone==""){
-				error+="<li>Handphone tidak boleh kosong</li>";
-			}else if(!/^[0-9]{7,12}$/.test(handphone)){
+				
+			}else if(!/^[0-9]{7,20}$/.test(handphone)){
 				error+="<li>Format Handphone salah</li>";
 			}
 			if(email==""){
-				error+="<li>Email tidak boleh kosong</li>";
+				
 			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
 				error+="<li>Format Email tidak valid</li>";
 			}
@@ -197,8 +196,8 @@
 			if(username==""){
 				error+="<li>Username tidak boleh kosong</li>";
 				success=true;
-			}else if(!/^[A-Za-z0-9-_.]+$/.test(username)){
-				error+="<li>Username tidak valid</li>";
+			}else if(!/^[\w\.\-]{4,15}$/.test(username)){
+				error+="<li>Username tidak valid, minimum 4 digit, maksimum 15 digit, gunakan huruf, angka, titik(.),dash(-), dan underscore(_)</li>";
 				success=true;
 			}else{
 				success=false;
@@ -206,6 +205,8 @@
 			}
 			if(password==""){
 				error+="<li>Password tidak boleh kosong</li>";
+			}else if(!/^[\w]{8,16}$/.test(password)){
+				error+="<li>Password harus diantara 8-16 digit, gunakan kombinasi huruf dan angka.</li>"
 			}
 			if(repass!=password){
 				error+="<li>Retype Password tidak sama dengan Password</li>";
@@ -218,16 +219,13 @@
 			if(name==""){
 				error+="<li>Nama tidak boleh kosong</li>";
 			}
-			if(address==""){
-				error+="<li>Address tidak boleh kosong</li>";
-			}
 			if(handphone==""){
-				error+="<li>Handphone tidak boleh kosong</li>";
-			}else if(!/^[0-9]{7,12}$/.test(handphone)){
+				
+			}else if(!/^[0-9]{7,20}$/.test(handphone)){
 				error+="<li>Format Handphone salah</li>";
 			}
 			if(email==""){
-				error+="<li>Email tidak boleh kosong</li>";
+				
 			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
 				error+="<li>Format Email tidak valid</li>";
 			}

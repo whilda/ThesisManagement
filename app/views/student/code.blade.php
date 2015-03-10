@@ -73,7 +73,7 @@ function notifMsg(){
 @section('content')
     <h2>Input Code</h2>
 	@if($data['status']==-1)
-	<div class="alert"><a href="{{ URL::to('/student/supervisorList') }}">Anda belum memilih supervisor</a></div>
+	<div class="alert">Anda belum memilih supervisor. Klik link berikut untuk memilih <a href="{{ URL::to('/student/supervisorList') }}">supervisor</a></div>
 	@elseif($data['status']==0)
 	<div class="alert">Permintaan anda belum direspon supervisor.</div>
 	@elseif($data['status']>1)

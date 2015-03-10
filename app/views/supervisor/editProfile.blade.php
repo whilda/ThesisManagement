@@ -63,14 +63,15 @@
 			var fields=document.edit.elements["field[]"];
 			var fieldList=[];
 			var error="";
-			if(alamat==""){
-				error+="<li>Alamat tidak boleh kosong</li>";
-			}
 			if(hp==""){
-				error+="<li>No. Handphone tidak boleh kosong</li>";
+				
+			}else if(!/^[0-9]{7,20}$/.test(hp)){
+				error+="<li>Format No. Handphone salah</li>";
 			}
 			if(email==""){
-				error+="<li>Email tidak boleh kosong</li>";
+				
+			}else if(!/^[A-Za-z0-9-_.]+@[A-Za-z0-9-_]+\.[A-Za-z0-9-_.]+$/.test(email)){
+				error+="<li>Format Email tidak valid</li>";
 			}
 			if(error==""){
 				if(fields!=undefined){

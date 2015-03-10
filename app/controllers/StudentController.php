@@ -198,7 +198,14 @@ class StudentController extends Controller {
 		}
 	}
 	public function SaveProfile(){
-		if(Request::ajax()&&Input::has("address")&&Input::has("handphone")&&Input::has("email")){
+		$validator = Validator::make(Input::all(),
+			array(
+				'address' => 'between:0,50',
+				'handphone' => 'digits_between:0,20',
+				'email' => 'email',
+			)
+		);
+		if(Request::ajax()&&$validator->passes()){
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get("token"),
