@@ -224,14 +224,15 @@ class SupervisorController extends Controller {
 		}
 	}
 	public function addTaskTemplate($code){
-		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&(Input::get('duration')>0||Input::get('duration')=="")){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&(Input::get('duration')>0||Input::get('duration')=="")){
+			$duration=(Input::get('duration')=="")?"":(int)Input::get('duration');
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get('token'),
 				"template"=>$code,
 				"name"=>Input::get('name'),
 				"description"=>Input::get('description'),
-				"duration"=>(int)Input::get('duration'),
+				"duration"=>$duration,
 			);
 			if(Input::hasFile("file")){
 				$count=0;
@@ -244,10 +245,13 @@ class SupervisorController extends Controller {
 			}
 			$output=REST::ServletRequest('su/addtask',$data);
 			return $output;
+		}else{
+			return "{code:-1}";
 		}
 	}
 	public function updateTaskTemplate($code,$name){
-		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&Input::has('duration')&&(Input::get('duration')>0||Input::get('duration')=="")){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&(Input::get('duration')>0||Input::get('duration')=="")){
+			$duration=(Input::get('duration')=="")?"":(int)Input::get('duration');
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get('token'),
@@ -255,7 +259,7 @@ class SupervisorController extends Controller {
 				"oldname"=>$name,
 				"newname"=>Input::get('name'),
 				"description"=>Input::get('description'),
-				"duration"=>(int)Input::get('duration'),
+				"duration"=>$duration,
 				"remove"=>""
 			);
 			if(Input::has("deleted")){
@@ -304,6 +308,10 @@ class SupervisorController extends Controller {
 					}
 				}
 				if($found){
+					foreach($template['task'] as &$task){
+						if($task['duration']==-1)
+							$task['duration']="";
+					}
 					return json_encode($template['task']);
 				}else{
 					return Redirect::to('supervisor/template');

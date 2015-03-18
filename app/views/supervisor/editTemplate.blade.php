@@ -15,17 +15,36 @@
 <script>
 var type;
 var taskElement=[];
+$(document.task.duration).on("keydown",function(e){
+	// Allow: backspace, delete, tab, escape, enter and .
+	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+		 // Allow: Ctrl+A
+		(e.keyCode == 65 && e.ctrlKey === true) || 
+		 // Allow: home, end, left, right
+		(e.keyCode >= 35 && e.keyCode <= 39)) {
+			 // let it happen, don't do anything
+			 return;
+	}
+	// Ensure that it is a number and stop the keypress
+	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+		e.preventDefault();
+	}
+})
 $("#task").ajaxForm({
 	dataType: 'json',
 	beforeSubmit: function(a,f,o) {
 		var name=document.task.name.value;
 		var description=document.task.description.value;
+		var duration=document.task.duration.value;
 		var error="";
 		if(name==""){
 			error+="<li>Name tidak boleh kosong</li>";
 		}
 		if(description==""){
 			error+="<li>Description tidak boleh kosong</li>";
+		}
+		if(duration!=""&&(isNaN(duration)||duration<0)){
+			error+="<li>Duration harus berbentuk angka dan &gt0</li>";
 		}
 		if(error!=""){
 			$("#notif").attr("class", "alert alert-error closeNotif");

@@ -1,7 +1,7 @@
 @extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Add Task
+	Add Task for {{ $data['name'] }}
 @stop
 
 @section('task.nav') selected="selected" @stop
@@ -27,7 +27,7 @@
 			</center>
 		</div>
 	</div>
-    <h2>Tambah Task</h2>
+    <h2>Tambah Task untuk {{ $data['name'] }}</h2>
   <form class="form-horizontal">
     <fieldset>
 			<div class="control-group">
