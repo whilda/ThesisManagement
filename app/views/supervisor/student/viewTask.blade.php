@@ -4,8 +4,8 @@
 	Final Report
 @stop
 
-@section('report.nav') selected="selected" @stop
-@section('report.menu') active @stop
+@section('task.nav') selected="selected" @stop
+@section('task.menu') active @stop
 
 @section('addResourceTop')
 <style>
@@ -16,6 +16,38 @@
 @stop
 
 @section('addResource')
+<style>
+.alert {
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.alert, .alert h4 {
+  color: #c09853;
+}
+.alert.alert-info {
+  background: #d9edf7;
+  border-color: #bce8f1;
+  color: #3a87ad;
+}
+.alert.alert-danger, .alert.alert-error {
+  background: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);;
+}
+.alert.alert-success {
+  background: #dff0d8;
+  border-color: #d6e9c6;
+  color: #468847;
+}
+
+</style>
 <script>
 	$(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
@@ -110,21 +142,21 @@
   <div class="alert alert-info">
 	<div class="comment-header">Comment by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
-	<p><a href="#" class="btn"><i class="icon-paper-clip"></i> asd.pdf</a></p>
+	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
   <div class="alert alert-error">
 	<div class="comment-header">Instruction by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
-	<p><a href="#" class="btn"><i class="icon-paper-clip"></i> asd.pdf</a></p>
+	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
   <div class="alert alert-success">
 	<div class="comment-header">Clarify by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
-	<p><a href="#" class="btn"><i class="icon-paper-clip"></i> asd.pdf</a></p>
+	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
   <div class="alert alert-block">
 	<div class="comment-header">Ask by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
-	<p><a href="#" class="btn"><i class="icon-paper-clip"></i> asd.pdf</a></p>
+	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
 @stop

@@ -11,86 +11,47 @@
     <h2>Student List</h2>
 
 <div id="blog-posts">
-
+	@if(count($data)!=0)
+	@foreach($data as $student)
     <div class="row-fluid blog-post">
       <div class="span12">
-        <h4><strong><a href="{{ URL::to('/') }}/student/namastudent">Nama Student</a></strong></h4>
+        <h4><strong><a href="{{ URL::to('/') }}/student/{{ $student['_id'] }}">{{ $student['name'] }}</a></strong></h4>
         <div class="row-fluid">
             <a href="#" class="thumbnail pull-left">
                 <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
             </a>
             <div class="post-summary">      
                 <p>
-                  NIM: A11.2012.0????<br/>
+                  NIM: {{ $student['nim'] }}<br/>
                 </p>
-                <p><a class="btn btn-mini" href="{{ URL::to('/') }}/student/namastudent">Lihat Detail</a></p>
+                <p><a class="btn btn-mini" href="{{ URL::to('/') }}/student/{{ $student['_id'] }}">Lihat Detail</a></p>
             </div>
         </div>
         <div class="row-fluid details">
-            <i class="icon-tags"></i> Field <a href="#"><span class="label label-info">A</span></a> 
-            <a href="#"><span class="label label-info">B</span></a> 
-            <a href="#"><span class="label label-info">C</span></a> 
-            <a href="#"><span class="label label-info">D</span></a>
+            <i class="icon-tags"></i> Field <a href="#">
+			@if(count($student['thesis']['field'])!=0)
+			@foreach($student['thesis']['field'] as $field)
+			<a href="{{ URL::to('/') }}/student/supervisorList/field/{{ $field }}"><span class="label label-info">{{ $field }}</span></a> 
+			@endforeach
+			@else
+			-
+			@endif
         </div>
       </div>
     </div>
-    <div class="row-fluid blog-post">
-      <div class="span12">
-        <h4><strong><a href="{{ URL::to('/') }}/student/namastudent">Nama Student</a></strong></h4>
-        <div class="row-fluid">
-            <a href="#" class="thumbnail pull-left">
-                <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
-            </a>
-            <div class="post-summary">      
-                <p>
-                  NIM: A11.2012.0????<br/>
-                </p>
-                <p><a class="btn btn-mini" href="student">Lihat Detail</a></p>
-            </div>
-        </div>
-        <div class="row-fluid details">
-            <i class="icon-tags"></i> Field <a href="#"><span class="label label-info">A</span></a> 
-            <a href="#"><span class="label label-info">B</span></a> 
-            <a href="#"><span class="label label-info">C</span></a> 
-            <a href="#"><span class="label label-info">D</span></a>
-        </div>
-      </div>
-    </div>
-	<div class="row-fluid blog-post">
-      <div class="span12">
-        <h4><strong><a href="#">Nama Student</a></strong></h4>
-        <div class="row-fluid">
-            <a href="#" class="thumbnail pull-left">
-                <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
-            </a>
-            <div class="post-summary">      
-                <p>
-                  NIM: A11.2012.0????<br/>
-                </p>
-                <p><a class="btn btn-mini" href="student">Lihat Detail</a></p>
-            </div>
-        </div>
-        <div class="row-fluid details">
-            <i class="icon-tags"></i> Field <a href="#"><span class="label label-info">A</span></a> 
-            <a href="#"><span class="label label-info">B</span></a> 
-            <a href="#"><span class="label label-info">C</span></a> 
-            <a href="#"><span class="label label-info">D</span></a>
-        </div>
-      </div>
-    </div>
-	<div class="pagination">
-	  <ul>
-		<li class="disabled"><a href="#">Prev</a></li>
-		<li class="active disabled"><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#">Next</a></li>
-	  </ul>
-	</div>
-
-    
-    
+	@endforeach
+	@else
+		Tidak ada student yang terdaftar.
+	@endif
+	
 </div>
+	@if(isset($pagination))
+	<div class="fancy pagination">
+	<center>
+	  <ul>
+		{{ $pagination }}
+	  </ul>
+	</center>
+	</div>
+	@endif
 @stop

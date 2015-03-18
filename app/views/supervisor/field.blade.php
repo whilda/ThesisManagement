@@ -363,7 +363,7 @@
        </tbody>
     </table>
   </form>
-  <div class="pagination">
+  <div class="fancy pagination">
 	<center>
 	  <ul>
 	  </ul>

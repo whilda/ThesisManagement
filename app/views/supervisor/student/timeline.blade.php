@@ -1,7 +1,7 @@
 @extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Time Line
+	{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Time Line
 @stop
 
 @section('timeline.nav') selected="selected" @stop
@@ -108,6 +108,6 @@
 
 </style>
 
-<h2>Time Line</h2>
+<h2>{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Time Line</h2>
 <div id='calendar'></div>
 @stop

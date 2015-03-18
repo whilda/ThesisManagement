@@ -1,7 +1,7 @@
 @extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Nama Student
+	{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Profile
 @stop
 
 @section('profile.nav') selected="selected" @stop
@@ -13,7 +13,7 @@
 
     <div class="row-fluid">
       <div class="span12">
-        <center><h4 style="font-size:25px"><strong>Nama Student</strong></h4></center><br/>
+        <center><h4 style="font-size:25px"><strong>{{ $data['name'] }}</strong></h4></center><br/>
         <div class="row-fluid">
 			<div class="offset2 span2 thumbnail">
                 <img src="{{ URL::to('/') }}/images/blog/442256_20337880.jpg" alt="">
@@ -22,46 +22,37 @@
 			<ul class="item-summary">
 				<li class="clearfix">
 				  <!-- Text input-->
-				  <div class="span4">Username :</div>
-				  <div class="span8">
-					asdf
-				  </div>
-				</li>
-				<li class="clearfix">
-				  <!-- Text input-->
 				  <div class="span4">NIM :</div>
 				  <div class="span8">
-					12312312312
+					{{ $data['nim'] }}
 				  </div>
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
 				  <div class="span4">Alamat :</div>
 				  <div class="span8">
-					Jl. Dimana<br/>
-					Semarang<br/>
-					50001
+					{{ nl2br($data['address']) }}
 				  </div>
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
 				  <div class="span4">No. HP :</div>
 				  <div class="span8">
-					1234567890
+					{{ $data['handphone'] }}
 				  </div>
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
 				  <div class="span4">Email :</div>
 				  <div class="span8">
-					aaa@aaa.com
+					{{ $data['email'] }}
 				  </div>
 				</li>
 				<li class="clearfix">
 				  <!-- Text input-->
 				  <div class="span4">Supervisor :</div>
 				  <div class="span8">
-					-
+					{{ $data['supervisor']?$data['supervisor']:"-" }}
 				  </div>
 				</li>
 			</ul>

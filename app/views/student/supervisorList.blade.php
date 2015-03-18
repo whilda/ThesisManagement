@@ -56,7 +56,7 @@
     
 </div>
 	@if(isset($pagination))
-	<div class="pagination">
+	<div class="fancy pagination">
 	<center>
 	  <ul>
 		{{ $pagination }}

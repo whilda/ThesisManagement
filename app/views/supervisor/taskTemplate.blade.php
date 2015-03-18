@@ -284,7 +284,7 @@ function notifMsg(){
   <div id="blog-posts">
   <img class="loading" alt="loading" src="{{ URL::to('/') }}/images/loading-icons/loading11.gif">   
 </div>
-	<div class="pagination">
+	<div class="fancy pagination">
 	<center>
 	  <ul>
 	  </ul>

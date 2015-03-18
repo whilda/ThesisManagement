@@ -3,11 +3,7 @@
 class SupervisorController extends Controller {
 	 
 	public function home(){
-		$input=array(
-			"appkey"=>REST::$appkey,
-			"token"=>Session::get('token')
-		);
-		$output=REST::POSTRequest('su/getstudentprogress',json_encode($input));
+		$output=REST::GETRequest('su/getstudentprogress/'.REST::$appkey.'/'.Session::get('token'));
 		$data_output=json_decode($output,true);
 		if(isset($data_output['code'])&&$data_output['code']!=-1){
 			return View::make('supervisor/dashboard', array('data'=>$data_output['data']));
@@ -353,6 +349,51 @@ class SupervisorController extends Controller {
 				return $output['code'];
 			else
 				return -1;
+		}
+	}
+	public function StudentList($page=1){
+		$output=REST::GETRequest("s/getall/".REST::$appkey."/".Session::get('token'));
+		$output=json_decode($output,true);
+		$maxperpage=5;
+		if(isset($output["code"])&&$output["code"]!=-1){
+			$maxpage=ceil(count($output['data'])/$maxperpage);
+			if($maxpage==0)
+				$maxpage=1;
+			if($page>$maxpage)
+				return Redirect::to('/supervisor/studentList');
+			else{
+				$dataSupervisor=array();
+				for($i=$maxperpage*($page-1);$i<($maxperpage*$page)&&$i<count($output['data']);$i++){
+					$dataSupervisor[$i]=$output['data'][$i];
+				}
+				$generate="";
+				if($page==1){
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-backward\"></i></a></li>";
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-left\"></i></a></li>";
+				}else{
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."'><i class=\"icon-backward\"></i></a></li>";
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."/".($page-1)."'><i class=\"icon-chevron-left\"></i></a></li>";
+				}
+				for($i=$page-4;$i<$page;$i++){
+					if($i<1)
+						continue;
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."/".$i."'>".$i."</a></li>";
+				}
+				$generate.="<li class=\"disabled\"><a>".$page."</a></li>";
+				for($i=$page+1;$i<($page+5)&&$i<=$maxpage;$i++){
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."/".$i."'>".$i."</a></li>";
+				}
+				if($page==$maxpage){
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-chevron-right\"></i></a></li>";
+					$generate.="<li class=\"disabled\"><a><i class=\"icon-forward\"></i></a></li>";
+				}else{
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."/".($page+1)."'><i class=\"icon-chevron-right\"></i></a></li>";
+					$generate.="<li><a href='".URL::to('/supervisor/studentList')."/".$maxpage."'><i class=\"icon-forward\"></i></a></li>";
+				}
+				return View::make('supervisor/studentList',array('data'=>$dataSupervisor,'pagination'=>$generate));
+			}
+		}else{
+			return View::make('supervisor/studentList',array('data'=>array()));
 		}
 	}
 	public function getData(){

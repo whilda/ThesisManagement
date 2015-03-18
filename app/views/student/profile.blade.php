@@ -1,7 +1,7 @@
 @extends('student/layout')
 
 @section('pageTitle')
-	Nama Student
+	Profile
 @stop
 
 @section('profile.nav') selected="selected" @stop
@@ -59,7 +59,7 @@
 				  <!-- Text input-->
 				  <div class="span4">Supervisor :</div>
 				  <div class="span8">
-					{{ $data['supervisor'] }}
+					{{ $data['supervisor']?$data['supervisor']:"-" }}
 				  </div>
 				</li>
 				<li class="clearfix">

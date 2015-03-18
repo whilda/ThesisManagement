@@ -53,38 +53,17 @@ Route::group(array('before'=>'student'), function(){
 
 //khusus supervisor
 Route::group(array('before'=>'supervisor'), function(){
-	Route::get('student/{name}/',function($name)
-	{ 
-		return Redirect::to('student/'.$name.'/profile')->with('name',$name);
-	});
-	Route::get('student/{name}/tasks',function($name)
-	{ 
-		return View::make('supervisor/student/tasks')->with('name',$name);
-	});
-	Route::get('student/{name}/addTask',function($name)
+	Route::get('student/{username}',"ViewStudentController@profile");
+	Route::get('student/{username}/tasks',"ViewStudentController@tasks");
+	Route::get('student/{username}/addTask',function($name)
 	{ 
 		return View::make('supervisor/student/addTask')->with('name',$name);
 	});
-	Route::get('student/{name}/thesis',function($name)
-	{ 
-		return View::make('supervisor/student/thesis')->with('name',$name);
-	});
-	Route::get('student/{name}/timeline',function($name)
-	{ 
-		return View::make('supervisor/student/timeline')->with('name',$name);
-	});
-	Route::get('student/{name}/report',function($name)
-	{ 
-		return View::make('supervisor/student/report')->with('name',$name);
-	});
-	Route::get('student/{name}/profile',function($name)
-	{ 
-		return View::make('supervisor/student/profile')->with('name',$name);
-	});
-	Route::get('student/{name}/view/{taskname}',function($name)
-	{ 
-		return View::make('supervisor/student/viewTask')->with('name',$name);
-	});
+	Route::get('student/{username}/thesis',"ViewStudentController@thesis");
+	Route::get('student/{username}/timeline',"ViewStudentController@timeline");
+	Route::get('student/{username}/report',"ViewStudentController@report");
+	Route::get('student/{username}/profile',"ViewStudentController@profile");
+	Route::get('student/{username}/view/{taskname}',"ViewStudentController@viewTask");
 	
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');
@@ -93,14 +72,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('supervisor/proposal/accept/{username}','SupervisorController@AcceptPropose');
 	Route::get('supervisor/proposal/decline/{username}','SupervisorController@DeclinePropose');
 	Route::get('supervisor/proposal/{number?}','SupervisorController@ProposalList');
-	Route::get('supervisor/studentList',function()
-	{ 
-		return View::make('supervisor/studentList');
-	});
-	Route::get('supervisor/student',function()
-	{ 
-		return View::make('supervisor/student');
-	});
+	Route::get('supervisor/studentList/{number?}','SupervisorController@StudentList');
 	Route::get('supervisor/report',function()
 	{ 
 		return View::make('supervisor/report');

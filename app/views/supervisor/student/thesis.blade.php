@@ -1,14 +1,14 @@
 @extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Thesis
+	{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Thesis
 @stop
 
 @section('thesis.nav') selected="selected" @stop
 @section('thesis.menu') active @stop
 
 @section('content')
-    <h2>Student Name Thesis</h2>
+    <h2>{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Thesis</h2>
   <div class="form-horizontal">
     <fieldset>
 		<div class="control-group">
@@ -16,7 +16,11 @@
           <!-- Text input-->
           <div class="control-label">Topic</div>
           <div class="controls input-xlarge" style="padding-top:5px">
-            Topik
+			@if($data['thesis']['topic']=="")
+			-
+			@else
+            {{ $data['thesis']['topic'] }}
+			@endif
           </div>
         </div>
 		<div class="control-group">
@@ -24,7 +28,11 @@
           <!-- Text input-->
           <div class="control-label">Title</div>
           <div class="controls input-xlarge" style="padding-top:5px">
-            Judul
+			@if($data['thesis']['title']=="")
+			-
+			@else
+            {{ $data['thesis']['title'] }}
+			@endif
           </div>
         </div>
 		<div class="control-group">
@@ -32,7 +40,11 @@
           <!-- Text input-->
           <div class="control-label">Abstract</div>
           <div class="controls input-xxlarge" style="padding-top:5px">
-            Abstract aklsjdklasd asldkjaslkd askljdaskjd askdljaslkdjaslkjdaskljdlkasjdlkasj dlksajdklasjdlksjadlkaaksjdklasjdlkjaskldjslkadj daskljdklasjdkljaskdljaskldjkals klasjdkljsakdl
+			@if($data['thesis']['description']=="")
+			-
+			@else
+            {{ nl2br($data['thesis']['description']) }}
+			@endif
           </div>
         </div>
 		<div class="control-group">
@@ -40,8 +52,13 @@
           <!-- Text input-->
           <div class="control-label">Field</div>
           <div class="controls input-xlarge" style="padding-top:5px">
-            <a href="#"><span class="label label-info">asd</span></a> 
-			<a href="#"><span class="label label-info">def</span></a> 
+			@if(count($data['thesis']['field']==0))
+			-
+			@else
+			@foreach($data['thesis']['field'] as $field)
+            <a href="#"><span class="label label-info">{{ $field }}</span></a> 
+			@endforeach
+			@endif
           </div>
         </div>
     </fieldset>
