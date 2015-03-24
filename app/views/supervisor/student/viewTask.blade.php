@@ -1,7 +1,7 @@
 @extends('supervisor/student/layout')
 
 @section('pageTitle')
-	Final Report
+	{{ $task['name'] }}
 @stop
 
 @section('task.nav') selected="selected" @stop
@@ -59,48 +59,50 @@
 	<br/>
   <div class="well">
 	<div style="position:absolute;right:30px;top:30px;"><a href="#" class="btn btn-info">Edit</a> <a href="#" class="btn btn-info">Delete</a></div>
-	<h2>Judul Task</h2>
+	<h2>{{ $task['name'] }}</h2>
 	<table>
 		<tbody>
 			<tr>
 				<td style="min-width:140px">Status :</td>
-				<td>active (<a href="#">Validate</a>)</td>
+				<td>{{ ($task['status']==1)?"Done":"Ongoing" }} (<a href="#">Change</a>)</td>
 			</tr>
 			<tr>
+			<?php $date=new DateTime($task['created_date']['$date']); ?>
 				<td>Created Date :</td>
-				<td>...</td>
+				<td>{{ $date->format('M jS') }}</td>
 			</tr>
 			<tr>
 				<td>End Date :</td>
-				<td>...</td>
+				<td>{{ ($task['duration']>0)?$date->modify("+".$task['duration']." day")->format('M jS'):"???" }}</td>
 			</tr>
 		</tbody>
 	</table>
 	<hr/>
 	Description:
 	<p>
-		deskripsi panjaaaaaaang...
+		{{ $task['description'] }}
 	</p>
 	File:
 	<table class="table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Upload Date</th>
-		  <th style="width:30px">Action</th>
+          <th class="span6">Name</th>
+          <th class="span5">Upload Date</th>
+		  <th class="span1">Action</th>
         </tr>
       </thead>
        <tbody>
+	   @if(count($task['file'])>0)
+	   @foreach($task['file'] as $file)
 	    <tr>
-          <td><a href="#">asd.jpg</a></td>
-          <td>1-1-15</td>
+          <td><a href="#">{{ $file['filename'] }}</a></td>
+          <td>{{ (new DateTime($file['upload_date']['$date']))->format("j F Y") }}</td>
 		  <td><a href="#"><i class="icon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a></td>
         </tr>
-        <tr>
-          <td><a href="#">asd.pdf</a></td>
-          <td>1-1-15</td>
-		  <td><a href="#"><i class="icon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a></td>
-        </tr>
+		@endforeach
+		@else
+		<tr><td colspan="3"><center><i>-No Attachment-<i></center></td></tr>
+		@endif
        </tbody>
     </table>
 	<form>

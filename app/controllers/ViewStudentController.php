@@ -46,9 +46,32 @@ class ViewStudentController extends Controller {
 	public function viewTask($username,$id){
 		$student=$this->getStudent($username);
 		if(isset($student['code'])&&$student['code']==1){
-			return View::make('supervisor/student/viewTask',array('data'=>$student['data'],'id_task'=>$id));
+			foreach($student['data']['task'] as $task){
+				if($task['id_task']==$id)
+					$data=$task;
+			}
+			return View::make('supervisor/student/viewTask',array('data'=>$student['data'],'task'=>$data));
 		}else{
 			return Redirect::to('/supervisor/home');
+		}
+	}
+	public function getStudentTasks($username){
+		$student=$this->getStudent($username);
+		if(isset($student['code'])&&$student['code']==1){
+			$data=array();
+			foreach($student['data']['task'] as $task){
+				$new['name']=$task['name'];
+				$new['description']=$task['description'];
+				$new['status']=$task['status'];
+				$new['comment']=$task['comment'];
+				$new['id_task']=$task['id_task'];
+				$date=new DateTime($task['created_date']['$date']);
+				$new['date']=date_format($date, 'M jS');
+				array_push($data,$new);
+			}
+			return json_encode($data);
+		}else{
+			return "{\"code\":-1}";
 		}
 	}
 	public function getData(){
