@@ -13,11 +13,12 @@
 	border-bottom: 2px dotted #6F3A3A;
 }
 </style>
+<link rel="stylesheet" href="{{ URL::to('/') }}/app-css/task.css">
 @stop
 
 @section('addResource')
 <style>
-.alert {
+.alert.comment {
   padding: 8px 35px 8px 14px;
   margin-bottom: 20px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -30,35 +31,215 @@
 .alert, .alert h4 {
   color: #c09853;
 }
-.alert.alert-info {
+.alert.alert-info.comment {
   background: #d9edf7;
   border-color: #bce8f1;
   color: #3a87ad;
 }
-.alert.alert-danger, .alert.alert-error {
+.alert.alert-danger.comment, .alert.alert-error.comment {
   background: #f2dede;
   border-color: #eed3d7;
   color: #b94a48;
   text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);;
 }
-.alert.alert-success {
+.alert.alert-success.comment {
   background: #dff0d8;
   border-color: #d6e9c6;
   color: #468847;
 }
 
 </style>
+<script src="{{ URL::to('/') }}/javascripts/overlay.js" type="text/javascript"></script>
+<script src="{{ URL::to('/') }}/javascripts/task.js" type="text/javascript"></script>
+<script src="{{ URL::to('/') }}/javascripts/jquery.form.min.js" type="text/javascript"></script>
 <script>
-	$(function () {
-	  $('[data-toggle="tooltip"]').tooltip()
-	})
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+function confirmDelTask(){
+	$("#confirmText").html("Apakah anda yakin menghapus task ini?");
+	$("#confirmYes").attr("onclick","delThisTask()");
+	displayConfirm();
+}
+function editTask(button){
+	if(!$("#tasks").is(":visible")){
+		$('#judulTipe').html("Edit Task");
+		button.disabled=true;
+		$("#loading").show();
+		$.ajax({  
+			type: 'GET',  
+			url: '<?php echo URL::to('/'); ?>/student/{{ $data["_id"]}}/task/{{ $task['id_task'] }}',
+			contentType: 'application/json',
+			success: function(data){
+				try{
+					var task=JSON.parse(data);
+					document.task.name.value=task.name;
+					document.task.description.value=task.description;
+					$(document.task).prop("action","{{ URL::to('/student/'.$data['_id'].'/task/'.$task['id_task'].'/edit') }}");
+					document.task.duration.value=task.duration;
+					$('#fileContainer').html("");
+					$('#delFile').html("");
+					for(var i=0;i<task.file.length;i++){
+						var element=document.createElement("div");
+						var child1=document.createElement("div");
+						child1.className="input-prepend";
+						$(child1).html("<span class=\"add-on\">"+task.file[i].filename+"</span>");
+						var child2=document.createElement("div");
+						child2.className="input-append";
+						$(child2).html("<span class=\"add-on\"><a href=\"javascript:void(0)\" fileID=\""+task.file[i].fileid+"\" onclick=\"confirmDelFile(this)\"><i class=\"icon-remove\"></i></a></span>");
+						$(element).append(child1,child2);
+						$("#fileContainer").append(element);
+					}
+					var file = $("#file");
+					file.replaceWith(file.val('').clone(true));
+					$("#loading").hide();
+					$("#tasks").slideToggle();
+				}catch(err){
+					$("#loading").hide();
+					$("#notif").attr("class", "alert alert-error closeNotif");
+					$("#notif").html("Internal Server error");
+					displayNotif();
+				}
+			},  
+			error: function(ex) {
+				$("#loading").hide();
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Koneksi error");
+				displayNotif();
+			},  
+			timeout:60000  
+		});
+	}else{
+		$("#loading").hide();
+		$("#tasks").slideUp();
+	}
+}
+$("#task").ajaxForm({
+	dataType: 'json',
+	beforeSubmit: function(a,f,o) {
+		var name=document.task.name.value;
+		var description=document.task.description.value;
+		var duration=document.task.duration.value;
+		var error="";
+		if(name==""){
+			error+="<li>Name tidak boleh kosong</li>";
+		}
+		if(description==""){
+			error+="<li>Description tidak boleh kosong</li>";
+		}
+		if(duration!=""&&(isNaN(duration)||duration<0)){
+			error+="<li>Duration harus berbentuk angka dan &gt0</li>";
+		}
+		if(error!=""){
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("<ul>"+error+"</ul>");
+			displayNotif();
+			return false;
+		}
+		$(document.task.simpan).prop("disabled",true);
+		$(document.task.batal).prop("disabled",true);
+	},
+	success: function(data) {
+		if(data.code==1){
+			$("#notif").attr("class", "alert alert-success closeNotif");
+			$("#notif").html("Sukses merubah task");
+			displayNotif();
+			setTimeout(function(){ window.location.reload(); },500);
+		}else{
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Gagal merubah task");
+			displayNotif();
+		}
+		$(document.task.simpan).prop("disabled",false);
+		$(document.task.batal).prop("disabled",false);
+		$("#tasks").slideToggle();
+	},
+	error: function(ex) {
+		$("#notif").attr("class", "alert alert-error closeNotif");
+		$("#notif").html("Gagal merubah task");
+		displayNotif();
+		$(document.task.simpan).prop("disabled",false);
+		$(document.task.batal).prop("disabled",false);
+		$("#tasks").slideToggle();
+	}  
+});
 </script>
 @stop
 
 @section('content')
 	<br/>
+	<div id="overlay" style="display:none"></div>
+	<div id="overlayBox" class="offset3 span6" style="display:none">
+		<div class="alert alert-success closeNotif" id="notif">
+			<center><b></b></center>
+		</div>
+	</div>
+	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
+		<div class="alert alert-warning notif">
+			<center>
+				<b id="confirmText"></b><br/>
+				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
+				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
+			</center>
+		</div>
+	</div>
+	<div id="tasks" style="display:none">
+		<h2 id="judulTipe"></h2>
+		<form class="form-horizontal overlay-content" name="task" id="task" action="" method="POST" enctype="multipart/form-data">
+			<fieldset>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="name">Name</label>
+				  <div class="controls">
+					<input type="text" name="name" id="name" class="input-xlarge">
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="description">Description</label>
+				  <div class="controls">
+					<textarea name="description" id="description" class="input-xlarge"></textarea>
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="duration">Duration</label>
+				  <div class="controls">
+					<input type="text" maxlength="3" name="duration" id="duration" class="input-small"> hari
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <div class="control-label">Files</div>
+				  <div id="delFile"></div>
+				  <div class="controls" id="fileContainer">
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <label class="control-label" for="file">File</label>
+				  <div class="controls">
+					<input type="file" name="file[]" id="file" class="input-xlarge" multiple>
+				  </div>
+				</div>
+				<div class="control-group">
+
+				  <!-- Text input-->
+				  <div class="controls">
+					<input type="submit" class="btn btn-success" name="simpan" value="Simpan"> <input type="button" class="btn closeBtn" name="batal" value="Batal">
+				  </div>
+				</div>
+				
+			</fieldset>
+		</form>
+	</div>
   <div class="well">
-	<div style="position:absolute;right:30px;top:30px;"><a href="#" class="btn btn-info">Edit</a> <a href="#" class="btn btn-info">Delete</a></div>
+	<div style="float:right;"><img class="loading" id="loading" style="display:none" alt="loading" src="{{ URL::to('/') }}/images/loading-icons/loading8.gif"> <a href="#" onclick="editTask(this)" class="btn btn-info">Edit</a> <a href="#" onclick="confirmDelTask()" class="btn btn-info">Delete</a></div>
 	<h2>{{ $task['name'] }}</h2>
 	<table>
 		<tbody>
@@ -141,22 +322,22 @@
         </div>
 	</form>
   </div>
-  <div class="alert alert-info">
+  <div class="alert alert-info comment">
 	<div class="comment-header">Comment by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
 	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
-  <div class="alert alert-error">
+  <div class="alert alert-error comment">
 	<div class="comment-header">Instruction by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
 	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
-  <div class="alert alert-success">
+  <div class="alert alert-success comment">
 	<div class="comment-header">Clarify by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
 	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
   </div>
-  <div class="alert alert-block">
+  <div class="alert alert-block comment">
 	<div class="comment-header">Ask by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
 	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>

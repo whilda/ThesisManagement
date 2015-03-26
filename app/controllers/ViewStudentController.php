@@ -55,23 +55,43 @@ class ViewStudentController extends Controller {
 			return Redirect::to('/supervisor/home');
 		}
 	}
-	public function getStudentTasks($username){
-		$student=$this->getStudent($username);
-		if(isset($student['code'])&&$student['code']==1){
-			$data=array();
-			foreach($student['data']['task'] as $task){
-				$new['name']=$task['name'];
-				$new['description']=$task['description'];
-				$new['status']=$task['status'];
-				$new['comment']=$task['comment'];
-				$new['id_task']=$task['id_task'];
-				$date=new DateTime($task['created_date']['$date']);
-				$new['date']=date_format($date, 'M jS');
-				array_push($data,$new);
+	public function getAllTasks($username){
+		if(Request::ajax()){
+			$student=$this->getStudent($username);
+			if(isset($student['code'])&&$student['code']==1){
+				$data=array();
+				foreach($student['data']['task'] as $task){
+					$new['name']=$task['name'];
+					$new['description']=$task['description'];
+					$new['status']=$task['status'];
+					$new['comment']=$task['comment'];
+					$new['id_task']=$task['id_task'];
+					$date=new DateTime($task['created_date']['$date']);
+					$new['date']=date_format($date, 'M jS');
+					array_push($data,$new);
+				}
+				return json_encode($data);
+			}else{
+				return "{\"code\":-1}";
 			}
-			return json_encode($data);
-		}else{
-			return "{\"code\":-1}";
+		}
+	}
+	public function getTask($username,$id){
+		if(Request::ajax()){
+			$student=$this->getStudent($username);
+			if(isset($student['code'])&&$student['code']==1&&$student['data']['supervisor']==Session::get('username')){
+				$data=array();
+				foreach($student['data']['task'] as $task){
+					if($task['id_task']==$id){
+						if($task['duration']==-1)
+							$task['duration']="";
+						return json_encode($task);
+					}
+				}
+				return "{\"code\":-1}";
+			}else{
+				return "{\"code\":-1}";
+			}
 		}
 	}
 	public function getData(){

@@ -37,7 +37,7 @@ $(document.task.duration).on("keydown",function(e){
 		e.preventDefault();
 	}
 })
-var taskElement;
+var taskElement=[];
 $("#task").ajaxForm({
 	dataType: 'json',
 	beforeSubmit: function(a,f,o) {
@@ -70,7 +70,7 @@ $("#task").ajaxForm({
 			displayNotif();
 		}else{
 			$("#notif").attr("class", "alert alert-error closeNotif");
-			$("#notif").html("Gagal ");
+			$("#notif").html("Gagal menambah task");
 			displayNotif();
 		}
 		reloadTask();
@@ -111,6 +111,7 @@ function showTask(){
 		text+="</li>";
 	}
 	$("#task-items").html(text);
+	$("#info").html("Ada "+taskElement.length+" Task yang harus diselesaikan.")
 }
 function reloadTask(){
 	$("#task-items").html("<img class=\"loading\" alt=\"loading\" src=\"{{ URL::to('/') }}/images/loading-icons/loading11.gif\">");
@@ -123,7 +124,9 @@ function reloadTask(){
 				taskElement=JSON.parse(data);
 				showTask();
 			}catch(err){
-				alert(err);
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Internal Server Error");
+				displayNotif();
 			}
 		},  
 		error: function(ex) {
@@ -176,7 +179,7 @@ function tambahTask(){
 				  <!-- Text input-->
 				  <label class="control-label" for="name">Name</label>
 				  <div class="controls">
-					<input type="text" name="name" id="name" class="input-xlarge" value="Nama task">
+					<input type="text" name="name" id="name" class="input-xlarge">
 				  </div>
 				</div>
 				<div class="control-group">
@@ -201,20 +204,6 @@ function tambahTask(){
 				  <div class="control-label">Files</div>
 				  <div id="delFile"></div>
 				  <div class="controls" id="fileContainer">
-					<div>
-						<div class="input-prepend">
-							<span class="add-on">asd.png</span>
-						</div><div class="input-append">
-							<span class="add-on"><a href="javascript:void(0)" taskFile="1" onclick="confirmDelFile(this)"><i class="icon-remove"></i></a></span>
-						</div>
-					</div>
-					<div>
-						<div class="input-prepend">
-							<span class="add-on">def.pdf</span>
-						</div><div class="input-append">
-							<span class="add-on"><a href="javascript:void(0)" taskFile="2" onclick="confirmDelFile(this)"><i class="icon-remove"></i></a></span>
-						</div>
-					</div>
 				  </div>
 				</div>
 				<div class="control-group">
@@ -241,7 +230,7 @@ function tambahTask(){
     <div class="row-fluid">
         <div class="row-fluid">
             <h2>{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Tasks
-                <span class="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>
+                <span class="info" id="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>
             </h2>
 			@if($isSupervisor&&$data['status']==2)
 			<a href="javascript:void(0)" onclick="tambahTask()" class="btn btn-mini">Tambah Task</a><br/><br/>

@@ -64,8 +64,10 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('student/{username}/report',"ViewStudentController@report");
 	Route::get('student/{username}/profile',"ViewStudentController@profile");
 	Route::get('student/{username}/view/{taskname}',"ViewStudentController@viewTask");
-	Route::get('student/{username}/getTasks',"ViewStudentController@getStudentTasks");
+	Route::get('student/{username}/getTasks',"ViewStudentController@getAllTasks");
+	Route::get('student/{username}/task/{id}',"ViewStudentController@getTask");
 	Route::post('student/{username}/task/add',"SupervisorController@addTask");
+	Route::post('student/{username}/task/{id}/edit',"SupervisorController@updateTask");
 	
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');

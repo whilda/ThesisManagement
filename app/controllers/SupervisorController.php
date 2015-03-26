@@ -360,17 +360,57 @@ class SupervisorController extends Controller {
 		}
 	}
 	public function addTask($student){
+		if(Request::ajax()){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+				$duration=(Input::get('duration')=="")?"":(int)Input::get('duration');
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$student,
+					"name"=>Input::get('name'),
+					"description"=>Input::get('description'),
+					"duration"=>$duration,
+				);
+				if(Input::hasFile("file")){
+					$count=0;
+					foreach(Input::file("file") as $file){
+						if($file->isValid()){
+							$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+							$count++;
+						}
+					}
+				}
+				$output=REST::ServletRequest('su/createtask',$data);
+				return $output;
+			}else{
+				return "{\"code\":-1}";
+			}
+		}
+	}
+	public function updateTask($student,$id){
 		$supervisor=$this->getData();
-		if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+		if(Request::ajax()&&isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)&&
+		Input::has('name')&&Input::has('description')&&(Input::get('duration')>0||Input::get('duration')=="")){
 			$duration=(Input::get('duration')=="")?"":(int)Input::get('duration');
 			$data=array(
 				"appkey"=>REST::$appkey,
 				"token"=>Session::get('token'),
 				"student"=>$student,
+				"id_task"=>$id,
 				"name"=>Input::get('name'),
 				"description"=>Input::get('description'),
 				"duration"=>$duration,
+				"remove"=>""
 			);
+			if(Input::has("deleted")){
+				$count=0;
+				foreach(Input::get("deleted") as $deleted){
+					$data["remove"][$count]=$deleted;
+					$count++;
+				}
+				$data["remove"]=json_encode($data["remove"]);
+			}
 			if(Input::hasFile("file")){
 				$count=0;
 				foreach(Input::file("file") as $file){
@@ -380,10 +420,8 @@ class SupervisorController extends Controller {
 					}
 				}
 			}
-			$output=REST::ServletRequest('su/createtask',$data);
+			$output=REST::ServletRequest('su/updatetask',$data);
 			return $output;
-		}else{
-			return "{\"code\":-1}";
 		}
 	}
 	public function StudentList($page=1){
