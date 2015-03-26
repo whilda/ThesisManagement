@@ -360,7 +360,7 @@ class SupervisorController extends Controller {
 		}
 	}
 	public function addTask($student){
-		if(Request::ajax()){
+		if(Request::ajax()&&Input::has('name')&&Input::has('description')&&(Input::get('duration')>0||Input::get('duration')=="")){
 			$supervisor=$this->getData();
 			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
 				$duration=(Input::get('duration')=="")?"":(int)Input::get('duration');
@@ -422,6 +422,64 @@ class SupervisorController extends Controller {
 			}
 			$output=REST::ServletRequest('su/updatetask',$data);
 			return $output;
+		}
+	}
+	public function delTask($student){
+		if(Request::ajax()&&Input::has('task')){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$student,
+					"id_task"=>Input::get('task'),
+				);
+				$output=REST::POSTRequest('su/deletetask',json_encode($data));
+				return $output;
+			}else{
+				return "{\"code\":-1}";
+			}
+		}
+	}
+	public function validateTask($student){
+		if(Request::ajax()&&Input::has('task')){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$student,
+					"id_task"=>Input::get('task'),
+				);
+				$output=REST::POSTRequest('su/validation',json_encode($data));
+				return $output;
+			}else{
+				return "{\"code\":-1}";
+			}
+		}
+	}
+	public function createWork($student,$task){
+		if(Request::ajax()&&Input::hasFile('file')){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$student,
+					"id_task"=>Input::get('task'),
+				);
+				$count=0;
+				foreach(Input::file("file") as $file){
+					if($file->isValid()){
+						$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+						$count++;
+					}
+				}
+				$output=REST::ServletRequest('f/creatework',$data);
+				return $output;
+			}else{
+				return "{\"code\":-1}";
+			}
 		}
 	}
 	public function StudentList($page=1){

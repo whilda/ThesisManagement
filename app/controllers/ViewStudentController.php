@@ -46,11 +46,15 @@ class ViewStudentController extends Controller {
 	public function viewTask($username,$id){
 		$student=$this->getStudent($username);
 		if(isset($student['code'])&&$student['code']==1){
+			$data="";
 			foreach($student['data']['task'] as $task){
 				if($task['id_task']==$id)
 					$data=$task;
 			}
-			return View::make('supervisor/student/viewTask',array('data'=>$student['data'],'task'=>$data));
+			if($data=="")
+				return Redirect::to('student/'.$username.'/tasks');
+			else
+				return View::make('supervisor/student/viewTask',array('data'=>$student['data'],'task'=>$data));
 		}else{
 			return Redirect::to('/supervisor/home');
 		}

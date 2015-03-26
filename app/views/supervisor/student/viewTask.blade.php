@@ -61,6 +61,87 @@ function confirmDelTask(){
 	$("#confirmYes").attr("onclick","delThisTask()");
 	displayConfirm();
 }
+function delThisTask(){
+	cancelConfirm();
+	var model={
+		"task":"{{ $task['id_task'] }}",
+	}
+	$.ajax({  
+		type: 'POST',  
+		url: '<?php echo URL::to('/'); ?>/student/{{ $data['_id']}}/task/del',
+		data: JSON.stringify(model),  
+		dataType: 'text',
+		contentType: 'application/json',
+		success: function(data){
+			try{
+				var output=JSON.parse(data);
+				if(output.code==1){
+					$("#notif").attr("class", "alert alert-success closeNotif");
+					$("#notif").html("Sukses menghapus task");
+					displayNotif();
+					setTimeout(function(){ window.location.href="{{ URL::to('/student/'.$data['_id'].'/tasks') }}"; },500);
+				}else{
+					$("#notif").attr("class", "alert alert-error closeNotif");
+					$("#notif").html("Gagal menghapus task");
+					displayNotif();
+				}
+			}catch(err){
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Gagal menghapus task");
+				displayNotif();
+			}
+		},  
+		error: function(ex) {
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Gagal menghapus task");
+			displayNotif();
+		},  
+		timeout:60000  
+	});
+}
+function confirmValidation(){
+	$("#confirmText").html("Apakah anda yakin mengubah status task ini?");
+	$("#confirmYes").attr("onclick","validateTask()");
+	displayConfirm();
+}
+function validateTask(){
+	cancelConfirm();
+	var model={
+		"task":"{{ $task['id_task'] }}",
+	}
+	$.ajax({  
+		type: 'POST',  
+		url: '<?php echo URL::to('/'); ?>/student/{{ $data['_id']}}/task/validation',
+		data: JSON.stringify(model),  
+		dataType: 'text',
+		contentType: 'application/json',
+		success: function(data){
+			try{
+				var output=JSON.parse(data);
+				if(output.code==1){
+					$("#notif").attr("class", "alert alert-success closeNotif");
+					$("#notif").html("Sukses");
+					displayNotif();
+					setTimeout(function(){ window.location.reload(); },500);
+				}else{
+					$("#notif").attr("class", "alert alert-error closeNotif");
+					$("#notif").html("Gagal");
+					displayNotif();
+				}
+			}catch(err){
+				$("#notif").attr("class", "alert alert-error closeNotif");
+				$("#notif").html("Gagal");
+				displayNotif();
+			}
+		},  
+		error: function(ex) {
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Gagal");
+			displayNotif();
+		},  
+		timeout:60000  
+	});
+}
 function editTask(button){
 	if(!$("#tasks").is(":visible")){
 		$('#judulTipe').html("Edit Task");
@@ -114,6 +195,36 @@ function editTask(button){
 		$("#tasks").slideUp();
 	}
 }
+$("#work").ajaxForm({
+	dataType: 'json',
+	beforeSubmit: function(a,f,o) {
+		var file=document.work.elements["file[]"];
+		if(file.files.length>0){
+		}else{
+			return false;
+		}
+		$(document.work.submitBtn).prop("disabled",true);
+	},
+	success: function(data) {
+		if(data.code==1){
+			$("#notif").attr("class", "alert alert-success closeNotif");
+			$("#notif").html("Sukses menambah file");
+			displayNotif();
+			setTimeout(function(){ window.location.reload(); },500);
+		}else{
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Gagal menambah file");
+			displayNotif();
+		}
+		$(document.work.submitBtn).prop("disabled",false);
+	},
+	error: function(ex) {
+		$("#notif").attr("class", "alert alert-error closeNotif");
+		$("#notif").html("Gagal menambah file");
+		displayNotif();
+		$(document.work.submitBtn).prop("disabled",false);
+	}  
+});
 $("#task").ajaxForm({
 	dataType: 'json',
 	beforeSubmit: function(a,f,o) {
@@ -245,7 +356,7 @@ $("#task").ajaxForm({
 		<tbody>
 			<tr>
 				<td style="min-width:140px">Status :</td>
-				<td>{{ ($task['status']==1)?"Done":"Ongoing" }} (<a href="#">Change</a>)</td>
+				<td>{{ ($task['status']==1)?"Done":"Ongoing" }} <button class="btn btn-info btn-mini" onclick="confirmValidation()">Change</button></td>
 			</tr>
 			<tr>
 			<?php $date=new DateTime($task['created_date']['$date']); ?>
@@ -268,8 +379,7 @@ $("#task").ajaxForm({
       <thead>
         <tr>
           <th class="span6">Name</th>
-          <th class="span5">Upload Date</th>
-		  <th class="span1">Action</th>
+          <th class="span6">Upload Date</th>
         </tr>
       </thead>
        <tbody>
@@ -278,16 +388,15 @@ $("#task").ajaxForm({
 	    <tr>
           <td><a href="#">{{ $file['filename'] }}</a></td>
           <td>{{ (new DateTime($file['upload_date']['$date']))->format("j F Y") }}</td>
-		  <td><a href="#"><i class="icon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a></td>
         </tr>
 		@endforeach
 		@else
-		<tr><td colspan="3"><center><i>-No Attachment-<i></center></td></tr>
+		<tr><td colspan="2"><center><i>-No Attachment-<i></center></td></tr>
 		@endif
        </tbody>
     </table>
-	<form>
-		Tambah File: <input type="file" name="file"/><input type="submit" class="btn btn-primary" value="Tambah">
+	<form name="work" id="work" action="{{ URL::to('/') }}/student/{{ $data['_id'] }}/task/{{ $task['id_task'] }}/creatework" method="POST" enctype="multipart/form-data">
+		Tambah File: <input type="file" name="file[]"/><input name="submitBtn" type="submit" class="btn btn-primary" value="Tambah">
 	</form>
   </div>
   <h2>Comments</h2>
