@@ -274,6 +274,42 @@ $("#task").ajaxForm({
 		$("#tasks").slideToggle();
 	}  
 });
+$("#comment").ajaxForm({
+	dataType: 'json',
+	beforeSubmit: function(a,f,o) {
+		var text=document.comment.text.value;
+		var error="";
+		if(text==""){
+			error+="Mohon isi text sebelum menambah komentar.";
+		}
+		if(error!=""){
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html(error);
+			displayNotif();
+			return false;
+		}
+		$(document.comment.submitBtn).prop("disabled",true);
+	},
+	success: function(data) {
+		if(data.code==1){
+			$("#notif").attr("class", "alert alert-success closeNotif");
+			$("#notif").html("Sukses menambah komentar");
+			displayNotif();
+			setTimeout(function(){ window.location.reload(); },500);
+		}else{
+			$("#notif").attr("class", "alert alert-error closeNotif");
+			$("#notif").html("Gagal menambah komentar");
+			displayNotif();
+		}
+		$(document.comment.submitBtn).prop("disabled",false);
+	},
+	error: function(ex) {
+		$("#notif").attr("class", "alert alert-error closeNotif");
+		$("#notif").html("Gagal menambah komentar");
+		displayNotif();
+		$(document.comment.submitBtn).prop("disabled",false);
+	}  
+});
 </script>
 @stop
 
@@ -386,7 +422,7 @@ $("#task").ajaxForm({
 	   @if(count($task['file'])>0)
 	   @foreach($task['file'] as $file)
 	    <tr>
-          <td><a href="#">{{ $file['filename'] }}</a></td>
+          <td><a href="{{ URL::to('/download/'.$file['fileid']) }}">{{ $file['filename'] }}</a></td>
           <td>{{ (new DateTime($file['upload_date']['$date']))->format("j F Y") }}</td>
         </tr>
 		@endforeach
@@ -396,45 +432,81 @@ $("#task").ajaxForm({
        </tbody>
     </table>
 	<form name="work" id="work" action="{{ URL::to('/') }}/student/{{ $data['_id'] }}/task/{{ $task['id_task'] }}/creatework" method="POST" enctype="multipart/form-data">
-		Tambah File: <input type="file" name="file[]"/><input name="submitBtn" type="submit" class="btn btn-primary" value="Tambah">
+		Attachment: <input type="file" name="file[]" multiple /><input name="submitBtn" type="submit" class="btn btn-primary" value="Tambah">
 	</form>
   </div>
   <h2>Comments</h2>
   <div class="well">
 	<h2 class="comment-header">Tambah Comment</h2>
-	<form class="form-horizontal">
+	<form class="form-horizontal" name="comment" id="comment" action="{{ URL::to('/') }}/student/{{ $data['_id'] }}/task/{{ $task['id_task'] }}/comment" method="POST" enctype="multipart/form-data">
 		<div class="control-group">
 
           <!-- Text input-->
           <label class="control-label" for="type">Type</label>
           <div class="controls">
             <select name="type" id="type" class="input-xlarge">
-				<option value="1">Instruct</option>
-				<option value="2">Comment</option>
-				<option value="3">Clarify</option>
-				<option value="3">Ask</option>
+				<option value="11">Instruct</option>
+				<option value="12">Comment</option>
+				<option value="13">Clarify</option>
 			</select>
           </div>
         </div>
 		<div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="alamat">Text</label>
+          <label class="control-label" for="text">Text</label>
           <div class="controls">
-            <textarea name="alamat" id="alamat" class="input-xxlarge" rows="6">Komentar</textarea>
+            <textarea name="text" id="text" class="input-xxlarge" rows="6" placeholder="Masukkan pesan disini..."></textarea>
+          </div>
+        </div>
+		<div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="file">Attachment</label>
+          <div class="controls">
+            <input type="file" name="file[]" multiple />
           </div>
         </div>
 		<div class="control-group">
           <div class="controls">
-            <input type="submit" class="btn btn-success" value="Add Comment">
+            <input name="submitBtn" type="submit" class="btn btn-success" value="Add Comment">
           </div>
         </div>
 	</form>
   </div>
+  @foreach($task['comment'] as $comment)
+  <div class="alert @if($comment['type']=='12'||$comment['type']=='21')
+		{{ 'alert-info' }}
+	@elseif($comment['type']=='11')
+		{{ 'alert-error' }}
+	@elseif($comment['type']=='13')
+		{{ 'alert-success' }}
+	@elseif($comment['type']=='22')
+		{{ 'alert-block' }} 
+	@endif comment">
+	<div class="comment-header">@if($comment['type']=='12'||$comment['type']=='21')
+		{{ 'Comment' }}
+	@elseif($comment['type']=='11')
+		{{ 'Instruct' }}
+	@elseif($comment['type']=='13')
+		{{ 'Clarify' }}
+	@elseif($comment['type']=='22')
+		{{ 'Ask' }}
+	@endif
+	by {{ $comment['by'] }} on {{ date_format(new DateTime(),"j F Y") }}</div><br/>
+	<p>{{ nl2br(htmlentities($comment['text'])) }}</p>
+	@foreach($comment['file'] as $file)
+	<div class="span3"><a href="{{ URL::to('/download/'.$file['fileid']) }}"><i class="icon-paper-clip"></i> {{ $file['filename'] }}</a></div>
+	@endforeach
+	<div class="clearfix"></div>
+  </div>
+  @endforeach
   <div class="alert alert-info comment">
 	<div class="comment-header">Comment by Username on 01-01-15</div><br/>
 	<p>Komentar panjang....</p>
-	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
+	<div class="span3"><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></div>
+	<div class="span3"><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></div>
+	<div class="clearfix"></div>
   </div>
   <div class="alert alert-error comment">
 	<div class="comment-header">Instruction by Username on 01-01-15</div><br/>

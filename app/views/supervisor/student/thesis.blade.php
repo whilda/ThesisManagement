@@ -43,7 +43,7 @@
 			@if($data['thesis']['description']=="")
 			-
 			@else
-            {{ nl2br($data['thesis']['description']) }}
+            {{ nl2br(htmlentities($data['thesis']['description'])) }}
 			@endif
           </div>
         </div>

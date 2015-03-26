@@ -25,6 +25,7 @@ Route::group(array('before'=>'guest'), function(){
 Route::group(array('before'=>'auth'), function(){
 	Route::get('logout','AuthController@logOut');
 	Route::get('field/get/{search?}', 'GeneralController@getField');
+	Route::get('download/{id}','GeneralController@getFile');
 });
 
 //khusus student
@@ -71,6 +72,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::post('student/{username}/task/validation',"SupervisorController@validateTask");
 	Route::post('student/{username}/task/{id}/creatework',"SupervisorController@createWork");
 	Route::post('student/{username}/task/{id}/edit',"SupervisorController@updateTask");
+	Route::post('student/{username}/task/{id}/comment',"SupervisorController@addComment");
 	
 	Route::post('supervisor/field/add', 'SupervisorController@addField');
 	Route::post('supervisor/field/del', 'SupervisorController@delField');

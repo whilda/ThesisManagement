@@ -31,7 +31,7 @@
 				  <!-- Text input-->
 				  <div class="span4">Alamat :</div>
 				  <div class="span8">
-					{{ nl2br($data['address']) }}
+					{{ nl2br(htmlentities($data['address'])) }}
 				  </div>
 				</li>
 				<li class="clearfix">

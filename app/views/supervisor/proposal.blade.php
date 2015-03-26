@@ -24,7 +24,7 @@
                 </p>
                 Deskripsi:
 				<p>
-                  {{ nl2br($proposal['description']) }}
+                  {{ nl2br(htmlentities($proposal['description'])) }}
                 </p>
                 <p><a class="btn btn-mini" href="{{ URL::to('/') }}/supervisor/proposal/accept/{{ $proposal['username'] }}">Accept</a> <a class="btn btn-mini" href="{{ URL::to('/') }}/supervisor/proposal/decline/{{ $proposal['username'] }}">Decline</a></p>
             </div>

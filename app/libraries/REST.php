@@ -28,6 +28,18 @@ class REST{
 		$result = curl_exec($ch);
 		return $result;
 	}
+	static function FILERequest($path){
+		$ch = curl_init(REST::$url.$path);                                                                      
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		$result = curl_exec($ch);
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$data["header"] = substr($result, 0, $header_size);
+		$data["body"] = substr($result, $header_size);
+		return $data;
+	}
 	static function ServletRequest($path, $data){
 		$ch = curl_init(REST::$url.$path);
 		curl_setopt($ch, CURLOPT_POST,true);

@@ -18,4 +18,11 @@ class GeneralController extends Controller {
 			}
 		}
 	}
+	public function getFile($id){
+		$data=REST::FILERequest("f/download?id=".$id);
+		if(preg_match("/Content-Disposition: .*filename {0,1}= {0,1}([^(\n)]+)/i",$data['header'],$matches)){
+			header($matches[0]);
+		}
+		return $data['body'];
+	}
 }

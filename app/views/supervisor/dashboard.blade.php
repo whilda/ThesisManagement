@@ -49,7 +49,7 @@
 						  <!-- Text input-->
 						  <div class="span3">Description :</div>
 						  <div class="span9">
-							{{ nl2br($student['thesis']['title']) }}
+							{{ nl2br(htmlentities($student['thesis']['title'])) }}
 						  </div>
 						</div>
 						<div>
