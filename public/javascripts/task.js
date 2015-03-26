@@ -15,7 +15,7 @@ function confirmDelFile(dataFile){
 	var fileName=dataFile.getAttribute("fileName");
 	if(fileName!=""){
 		data=dataFile;
-		$("#confirmText").html("Apakah anda yakin menghapus file "+fileName+"?");
+		$("#confirmText").html("Apakah anda yakin menghapus file ini?");
 		$("#confirmYes").attr("onclick","delFile()");
 		displayConfirm();
 	}

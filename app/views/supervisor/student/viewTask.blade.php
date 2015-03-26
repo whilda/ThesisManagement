@@ -474,7 +474,7 @@ $("#comment").ajaxForm({
         </div>
 	</form>
   </div>
-  @foreach($task['comment'] as $comment)
+  @foreach(array_reverse($task['comment']) as $comment)
   <div class="alert @if($comment['type']=='12'||$comment['type']=='21')
 		{{ 'alert-info' }}
 	@elseif($comment['type']=='11')
@@ -501,26 +501,4 @@ $("#comment").ajaxForm({
 	<div class="clearfix"></div>
   </div>
   @endforeach
-  <div class="alert alert-info comment">
-	<div class="comment-header">Comment by Username on 01-01-15</div><br/>
-	<p>Komentar panjang....</p>
-	<div class="span3"><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></div>
-	<div class="span3"><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></div>
-	<div class="clearfix"></div>
-  </div>
-  <div class="alert alert-error comment">
-	<div class="comment-header">Instruction by Username on 01-01-15</div><br/>
-	<p>Komentar panjang....</p>
-	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
-  </div>
-  <div class="alert alert-success comment">
-	<div class="comment-header">Clarify by Username on 01-01-15</div><br/>
-	<p>Komentar panjang....</p>
-	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
-  </div>
-  <div class="alert alert-block comment">
-	<div class="comment-header">Ask by Username on 01-01-15</div><br/>
-	<p>Komentar panjang....</p>
-	<p><a href="#"><i class="icon-paper-clip"></i> asd.pdf</a></p>
-  </div>
 @stop
