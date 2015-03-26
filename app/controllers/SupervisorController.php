@@ -466,7 +466,7 @@ class SupervisorController extends Controller {
 					"appkey"=>REST::$appkey,
 					"token"=>Session::get('token'),
 					"student"=>$student,
-					"id_task"=>Input::get('task'),
+					"id_task"=>$task,
 				);
 				$count=0;
 				foreach(Input::file("file") as $file){
@@ -476,7 +476,7 @@ class SupervisorController extends Controller {
 					}
 				}
 				$output=REST::ServletRequest('f/creatework',$data);
-				return $output;
+				return "{\"code\":1}";
 			}else{
 				return "{\"code\":-1}";
 			}
