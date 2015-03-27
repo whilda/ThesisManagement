@@ -230,7 +230,7 @@ function tambahTask(){
     <div class="row-fluid">
         <div class="row-fluid">
             <h2>{{ (strtolower(substr(trim($data['name']),-1))=='s')?$data['name']."'":$data['name']."'s" }} Tasks
-                <span class="info" id="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>
+                <span class="info" id="info">Mahasiswa ini memiliki {{ count($data['task']) }} task.</span>
             </h2>
 			@if($isSupervisor&&$data['status']==2)
 			<a href="javascript:void(0)" onclick="tambahTask()" class="btn btn-mini">Tambah Task</a><br/><br/>

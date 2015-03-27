@@ -37,10 +37,8 @@ Route::group(array('before'=>'student'), function(){
 	Route::get('student/supervisorList/{number?}',"StudentController@SupervisorList");
 	Route::get('student/supervisor/{username}',"StudentController@SupervisorView");
 	Route::get('student/supervisor/select/{username}',"StudentController@SelectSupervisor");
-	Route::get('student/report',function()
-	{ 
-		return View::make('student/report');
-	});
+	Route::get('student/report',"StudentController@finalReport");
+	Route::post('student/report/upload',"StudentController@uploadReport");
 	Route::get('student/profile/edit',"StudentController@EditProfile");
 	Route::post('student/profile/save',"StudentController@SaveProfile");
 	Route::get('student/profile',"StudentController@Profile");
@@ -66,6 +64,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('student/{username}/thesis',"ViewStudentController@thesis");
 	Route::get('student/{username}/timeline',"ViewStudentController@timeline");
 	Route::get('student/{username}/report',"ViewStudentController@report");
+	Route::get('student/{username}/report/{response}',"SupervisorController@responseFinal");
 	Route::get('student/{username}/profile',"ViewStudentController@profile");
 	Route::get('student/{username}/view/{taskname}',"ViewStudentController@viewTask");
 	Route::get('student/{username}/getTasks',"ViewStudentController@getAllTasks");

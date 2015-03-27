@@ -318,6 +318,32 @@ class StudentController extends Controller {
 			return $output;
 		}
 	}
+	public function finalReport(){
+		$student=$this->getData();
+		if(isset($student['code'])&&$student['code']==1){
+			$open=false;
+			foreach($student['data']['task'] as $task){
+				$open=true;
+				if($task['status']==0){
+					$open=false;
+					break;
+				}
+			}
+			return View::make('student/report', array('open'=>$open,'status'=>$student['data']['status']));
+		}
+	}
+	public function uploadReport(){
+		if(Request::ajax()&&Input::hasFile('report')){
+			$file=Input::file('report');
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"file"=>new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName()),
+			);
+			$output=REST::ServletRequest('s/claim',$data);
+			return $output;
+		}
+	}
 	public function getData(){
 		$path="s/get/".Session::get('username')."/".REST::$appkey."/".Session::get('token');
 		$output=REST::GETRequest($path);

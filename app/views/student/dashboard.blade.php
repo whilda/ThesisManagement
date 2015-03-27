@@ -30,7 +30,7 @@
 			<div class="alert">Anda belum mengisi kode. Mintalah kode pada supervisor anda dan klik link berikut untuk mengisi <a href="{{ URL::to('/student/code') }}">kode</a>.</div>
 			@else
             <h2>Available Tasks
-                <span class="info">Ada {{ count($data['task']) }} Task yang harus diselesaikan.</span>
+                <span class="info">Anda mempunyai {{ count($data['task']) }} task.</span>
             </h2>
             <ul class="item-summary">
             

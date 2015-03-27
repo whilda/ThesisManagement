@@ -510,6 +510,21 @@ class SupervisorController extends Controller {
 			}
 		}
 	}
+	public function responseFinal($student,$response){
+		if($response=="approve"||$response=="reject"){
+			$supervisor=$this->getData();
+			if(isset($supervisor['code'])&&$supervisor['code']==1&&(array_search($student,$supervisor['data']['student'])!==false)){
+				$data=array(
+					"appkey"=>REST::$appkey,
+					"token"=>Session::get('token'),
+					"student"=>$student,
+					"code"=>($response=="approve")?1:0,
+				);
+				$output=REST::ServletRequest('su/claim',$data);
+			}
+		}
+		return Redirect::to('/student/'.$student.'/report');
+	}
 	public function StudentList($page=1){
 		$output=REST::GETRequest("s/getall/".REST::$appkey."/".Session::get('token'));
 		$output=json_decode($output,true);

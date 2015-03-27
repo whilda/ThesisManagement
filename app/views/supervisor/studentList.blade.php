@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="row-fluid details">
-            <i class="icon-tags"></i> Field <a href="#">
+            <i class="icon-tags"></i> Field 
 			@if(count($student['thesis']['field'])!=0)
 			@foreach($student['thesis']['field'] as $field)
 			<a href="{{ URL::to('/') }}/student/supervisorList/field/{{ $field }}"><span class="label label-info">{{ $field }}</span></a> 

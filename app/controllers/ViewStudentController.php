@@ -12,8 +12,17 @@ class ViewStudentController extends Controller {
 	}
 	public function report($username){
 		$student=$this->getStudent($username);
-		if(isset($student['code'])&&$student['code']==1){
-			return View::make('supervisor/student/report',array('data'=>$student['data']));
+		$supervisor=$this->getData();
+		if(isset($student['code'])&&$student['code']==1&&isset($supervisor['code'])&&$supervisor['code']==1){
+			$isSupervisor=$student['data']['supervisor']==Session::get('username');
+			$report="";
+			if($isSupervisor){
+				foreach($supervisor['data']['claim'] as $claim){
+					if($claim['username']==$username)
+						$report=$claim;
+				}
+			}
+			return View::make('supervisor/student/report',array('data'=>$student['data'],'isSupervisor'=>$isSupervisor,'report'=>$report));
 		}else{
 			return Redirect::to('/supervisor/home');
 		}
