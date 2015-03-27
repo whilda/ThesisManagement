@@ -50,6 +50,9 @@ Route::group(array('before'=>'student'), function(){
 	{ 
 		return View::make('student/timeline');
 	});
+	Route::get('student/task/{id}',"StudentController@viewTask");
+	Route::post('student/task/{id}/creatework',"StudentController@createWork");
+	Route::post('student/task/{id}/comment',"StudentController@addComment");
 });
 
 //khusus supervisor

@@ -260,6 +260,64 @@ class StudentController extends Controller {
 			return -1;
 		}
 	}
+	public function viewTask($id){
+		$student=$this->getData();
+		if(isset($student['code'])&&$student['code']==1){
+			$data="";
+			foreach($student['data']['task'] as $task){
+				if($task['id_task']==$id)
+					$data=$task;
+			}
+			if($data=="")
+				return Redirect::to('student/home');
+			else
+				return View::make('student/viewTask',array('data'=>$student['data'],'task'=>$data));
+		}else{
+			return Redirect::to('/student/home');
+		}
+	}
+	public function createWork($task){
+		if(Request::ajax()&&Input::hasFile('file')){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"student"=>Session::get('username'),
+				"id_task"=>$task,
+			);
+			$count=0;
+			foreach(Input::file("file") as $file){
+				if($file->isValid()){
+					$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+					$count++;
+				}
+			}
+			$output=REST::ServletRequest('f/creatework',$data);
+			return "{\"code\":1}";
+		}
+	}
+	public function addComment($task){
+		if(Request::ajax()&&Input::has('text')&&Input::has('type')&&Input::get('type')>20&&Input::get('type')<23){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"student"=>Session::get('username'),
+				"id_task"=>$task,
+				"type"=>Input::get('type'),
+				"text"=>Input::get('text')
+			);
+			if(Input::hasFile("file")){
+				$count=0;
+				foreach(Input::file("file") as $file){
+					if($file->isValid()){
+						$data["file[".$count."]"]=new CURLFile($file->getRealPath(), $file->getMimeType(), $file->getClientOriginalName());
+						$count++;
+					}
+				}
+			}
+			$output=REST::ServletRequest('f/createcomment',$data);
+			return $output;
+		}
+	}
 	public function getData(){
 		$path="s/get/".Session::get('username')."/".REST::$appkey."/".Session::get('token');
 		$output=REST::GETRequest($path);

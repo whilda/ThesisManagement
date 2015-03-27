@@ -250,7 +250,7 @@ function tambahTask(){
 						@if($task['status']==0)
                         <span class="label label-success">Active</span>
 						@endif
-						@if(count($task['comment'])==0)
+						@if(count($task['comment'])==0&&$task['status']==0)
 						<span class="label label-info">New</span>
 						@endif
                     </div>
