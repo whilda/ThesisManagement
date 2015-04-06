@@ -22,8 +22,11 @@ Route::group(array('before'=>'guest'), function(){
 	Route::post('doAuth','AuthController@Auth');
 	Route::post('exist','AuthController@isExist');
 });
+
+//grup login
 Route::group(array('before'=>'auth'), function(){
 	Route::get('logout','AuthController@logOut');
+	Route::post('password/save',"GeneralController@ChangePassword");
 	Route::get('field/get/{search?}', 'GeneralController@getField');
 	Route::get('download/{id}','GeneralController@getFile');
 });
@@ -41,6 +44,7 @@ Route::group(array('before'=>'student'), function(){
 	Route::post('student/report/upload',"StudentController@uploadReport");
 	Route::get('student/profile/edit',"StudentController@EditProfile");
 	Route::post('student/profile/save',"StudentController@SaveProfile");
+	Route::get('student/profile/password',"StudentController@Password");
 	Route::get('student/profile',"StudentController@Profile");
 	Route::get('student/thesis',"StudentController@EditThesis");
 	Route::post('student/thesis/save',"StudentController@SaveThesis");
@@ -84,6 +88,7 @@ Route::group(array('before'=>'supervisor'), function(){
 	Route::get('supervisor/proposal/decline/{username}','SupervisorController@DeclinePropose');
 	Route::get('supervisor/proposal/{number?}','SupervisorController@ProposalList');
 	Route::get('supervisor/studentList/{number?}','SupervisorController@StudentList');
+	Route::get('supervisor/profile/password',"SupervisorController@Password");
 	Route::get('supervisor/report',function()
 	{ 
 		return View::make('supervisor/report');

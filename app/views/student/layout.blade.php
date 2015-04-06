@@ -53,7 +53,6 @@
         <div class="navbar-inner">
                 <ul class="nav pull-right">
                     
-                    <li class="hidden-phone"><a href="#" role="button">Settings</a></li>
                     <li id="fat-menu" class="dropdown">
                         <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon-user"></i> {{ Session::get('name') }}
@@ -63,7 +62,6 @@
                         <ul class="dropdown-menu">
                             <li><a tabindex="-1" href="{{ URL::to('/') }}/student/profile">Profile</a></li>
                             <li class="divider"></li>
-                            <li><a tabindex="-1" class="visible-phone" href="#">Settings</a></li>
                             <li class="divider visible-phone"></li>
                             <li><a tabindex="-1" href="{{ URL::to('/') }}/logout">Log Out</a></li>
                         </ul>
@@ -147,7 +145,7 @@
 				<footer>
                     <hr>
                     <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-                    <p>&copy; 2013 <a href="#">Your Company</a></p>
+                    <p>&copy; 2014-{{ date('Y') }} <a href="#">UDINUS</a></p>
                 </footer>
                 
             </div>

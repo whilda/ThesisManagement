@@ -225,6 +225,14 @@ class StudentController extends Controller {
 			return -1;
 		}
 	}
+	public function Password(){
+		$data_output=$this->getData();
+		if(isset($data_output['code'])&&$data_output['code']==1){
+			return View::make('student/password', array('data'=>$data_output['data']));
+		}else{
+			return "Internal Server Error";
+		}
+	}
 	public function Code(){
 		$data_output=$this->getData();
 		if(isset($data_output['code'])&&$data_output['code']==1){

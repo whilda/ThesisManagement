@@ -66,6 +66,7 @@
 				</li>
 				<li class="clearfix">
 				<a class="btn btn-mini" href="{{ URL::to('/')}}/supervisor/profile/edit">Edit</a>
+				<a class="btn btn-mini" href="{{ URL::to('/')}}/supervisor/profile/password">Change Password</a>
 				</li>
 			</ul>
 			</div>
