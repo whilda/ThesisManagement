@@ -79,7 +79,7 @@ class ViewStudentController extends Controller {
 					$new['status']=$task['status'];
 					$new['comment']=$task['comment'];
 					$new['id_task']=$task['id_task'];
-					$date=new DateTime($task['created_date']['$date']);
+					$date=new DateTime($task['created_date']);
 					$new['date']=date_format($date, 'M jS');
 					array_push($data,$new);
 				}

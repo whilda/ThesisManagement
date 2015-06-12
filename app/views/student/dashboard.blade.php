@@ -38,7 +38,7 @@
 				@foreach($data['task'] as $task)
                 <li>
 				<?php
-					$date=new DateTime($task['created_date']['$date']);
+					$date=new DateTime($task['created_date']);
 				?>
                     <div class="overview span4">
                         <p class="main-detail">{{ date_format($date, 'M jS') }}</p>

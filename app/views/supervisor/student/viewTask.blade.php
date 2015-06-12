@@ -395,7 +395,7 @@ $("#comment").ajaxForm({
 				<td>{{ ($task['status']==1)?"Done":"Ongoing" }} <button class="btn btn-info btn-mini" onclick="confirmValidation()">Change</button></td>
 			</tr>
 			<tr>
-			<?php $date=new DateTime($task['created_date']['$date']); ?>
+			<?php $date=new DateTime($task['created_date']); ?>
 				<td>Created Date :</td>
 				<td>{{ $date->format('M jS') }}</td>
 			</tr>
@@ -423,7 +423,7 @@ $("#comment").ajaxForm({
 	   @foreach($task['file'] as $file)
 	    <tr>
           <td><a href="{{ URL::to('/download/'.$file['fileid']) }}">{{ $file['filename'] }}</a></td>
-          <td>{{ (new DateTime($file['upload_date']['$date']))->format("j F Y") }}</td>
+          <td>{{ (new DateTime($file['upload_date']))->format("j F Y") }}</td>
         </tr>
 		@endforeach
 		@else

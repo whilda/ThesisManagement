@@ -52,7 +52,7 @@
           <!-- Text input-->
           <div class="control-label">Field</div>
           <div class="controls input-xlarge" style="padding-top:5px">
-			@if(count($data['thesis']['field']==0))
+			@if(count($data['thesis']['field'])==0)
 			-
 			@else
 			@foreach($data['thesis']['field'] as $field)

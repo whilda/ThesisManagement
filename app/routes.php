@@ -13,6 +13,11 @@
 
 
 Route::pattern('number', '[0-9]+');
+
+
+Route::get('supervisor/laporan','PlagiasiController@getLaporan');
+Route::get('plagiasi/{file}','PlagiasiController@cekPlagiasi');
+
 //grup non-login
 Route::group(array('before'=>'guest'), function(){
 	Route::get('/', 'AuthController@logIn');

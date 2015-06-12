@@ -1,6 +1,6 @@
 <?php
 class REST{
-	public static $url = "http://localhost:8080/RESTfulWS/rest/"; 
+	public static $url = "http://localhost:8080/thesismanagement/rest/"; 
 	public static $appkey = "P0DyxGkgKComHAz0AhJJ";
  
 	static function POSTRequest($path, $data_string){
