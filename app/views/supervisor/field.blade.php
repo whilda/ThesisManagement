@@ -350,7 +350,16 @@
         </form>
     </div>
 	<form class="form-horizontal" name="field" style="position:relative">
-	<div class="overlay" id="loading"></div>
+	<div id="overlay" style="display:none"></div>
+	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
+		<div class="alert alert-warning notif">
+			<center>
+				<b id="confirmText"></b><br/>
+				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
+				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
+			</center>
+		</div>
+	</div>
     <table class="table table-first-column-check" id="fieldData">
       <thead>
         <tr>
