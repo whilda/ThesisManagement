@@ -84,6 +84,8 @@
                 <option value="{{ URL::to('/') }}/supervisor/studentList" @yield('student.nav')> Student List</option>
                     
                 <option value="{{ URL::to('/') }}/supervisor/field" @yield('field.nav')> Field List</option>
+                
+                <option value="{{ URL::to('/') }}/supervisor/library" @yield('report.nav')>Library</option>
                     
                 <option value="{{ URL::to('/') }}/supervisor/proposal" @yield('proposal.nav')> Student Proposal</option>
                     
@@ -117,6 +119,9 @@
             
 			<li class="@yield('field.menu') "><a href="{{ URL::to('/') }}/supervisor/field"><i class="icon-pencil"></i> <span>Field List</span></a></li>
 			            
+            
+            <li class="@yield('library.menu') "><a href="{{ URL::to('/') }}/supervisor/library"><i class="icon-tags"></i> <span>Library</span></a></li>
+            
             
             <li class="@yield('proposal.menu') "><a href="{{ URL::to('/') }}/supervisor/proposal"><i class="icon-group"></i> <span>Student Proposal</span></a></li>
             

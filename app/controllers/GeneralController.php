@@ -7,7 +7,7 @@ class GeneralController extends Controller {
 			if($search=="")
 				$json=REST::GETRequest("f/getallfield/".REST::$appkey."/".Session::get('token'));
 			else
-				$json=REST::GETRequest("f/searchfield/".$search."/".REST::$appkey."/".Session::get('token'));
+				$json=REST::GETRequest("f/searchfield/".rawurlencode($search)."/".REST::$appkey."/".Session::get('token'));
 			$output=json_decode($json,true);
 			if(isset($output['code'])){
 				if($output['code']==1){
@@ -46,5 +46,22 @@ class GeneralController extends Controller {
 			header($matches[0]);
 		}
 		return $data['body'];
+	}
+    
+    public function getReference($search=""){
+		if(Request::ajax()){
+			if($search=="")
+				$json=REST::GETRequest("f/getallreference/".REST::$appkey."/".Session::get('token'));
+			else
+				$json=REST::GETRequest("f/searchreference/".rawurlencode($search)."/".REST::$appkey."/".Session::get('token'));
+			$output=json_decode($json,true);
+			if(isset($output['code'])){
+				if($output['code']==1){
+					return json_encode($output['data']);
+				}else if($output['code']==0){
+					return "[]";
+				}
+			}
+		}
 	}
 }

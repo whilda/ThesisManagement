@@ -33,6 +33,7 @@ Route::group(array('before'=>'auth'), function(){
 	Route::get('logout','AuthController@logOut');
 	Route::post('password/save',"GeneralController@ChangePassword");
 	Route::get('field/get/{search?}', 'GeneralController@getField');
+    Route::get('reference/get/{search?}', 'GeneralController@getReference');
 	Route::get('download/{id}','GeneralController@getFile');
 });
 
@@ -60,6 +61,24 @@ Route::group(array('before'=>'student'), function(){
 	Route::get('student/task/{id}',"StudentController@viewTask");
 	Route::post('student/task/{id}/creatework',"StudentController@createWork");
 	Route::post('student/task/{id}/comment',"StudentController@addComment");
+    Route::get('student/library',function()
+	{ 
+		return View::make('student/library');
+	});
+    Route::get('student/library/reccomendation',function()
+	{ 
+		return View::make('student/reccomendation');
+	});
+    Route::get('student/mylibrary',function()
+	{ 
+		return View::make('student/mylibrary');
+	});
+    Route::post('student/reference/add', 'StudentController@addReference');
+    Route::get('student/reference/get/{search?}', 'StudentController@getAllReference');
+    Route::get('student/reference/reccomendation', 'StudentController@getRefReccomendation');
+    Route::post('student/reference/del', 'StudentController@delReference');
+    Route::post('student/reference/create', 'StudentController@createReference');
+    Route::get('student/reference/view/{id}', 'StudentController@getReference');
 });
 
 //khusus supervisor
@@ -118,4 +137,12 @@ Route::group(array('before'=>'supervisor'), function(){
 	{ 
 		return View::make('supervisor/field');
 	});
+    Route::get('supervisor/library',function()
+	{ 
+		return View::make('supervisor/library');
+	});
+    Route::post('supervisor/reference/create', 'SupervisorController@createReference');
+    Route::post('supervisor/reference/del', 'SupervisorController@delReference');
+    Route::get('supervisor/reference/edit/{id}', 'SupervisorController@getReference');
+    Route::post('supervisor/reference/edit/{id}/save', 'SupervisorController@updateReference');
 });

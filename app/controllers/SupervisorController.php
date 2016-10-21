@@ -584,4 +584,78 @@ class SupervisorController extends Controller {
 		$data_output=json_decode($output,true);
 		return $data_output;
 	}
+    
+    public function createReference(){
+		if(Input::has('author')&&Input::has('title')&&Input::has('year')&&Input::has('keywords')&&Request::ajax()){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"author"=>Input::get('author'),
+				"title"=>Input::get('title'),
+                "year"=>Input::get('year'),
+                "abstract"=>Input::get('abstract', ''),
+                "keywords"=>Input::get('keywords'),
+			);
+			$data_string=json_encode($data);
+			$json=REST::POSTRequest('f/createreference',$data_string);
+			//$output=json_decode($json,true);
+			return $json;
+		}else{
+			return "Internal Server Error";
+		}
+	}
+    
+    public function delReference(){
+		if(Request::ajax()&&Input::has("delete")){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get("token"),
+			);
+			$deleted=Input::get("delete");
+			$retval=1;
+			foreach($deleted as $id){
+				$data["id"]=$id;
+				$data_string=json_encode($data);
+				$output=REST::POSTRequest('su/deletereference',$data_string);
+				$output=json_decode($output,true);
+				if(!(isset($output["code"])&&$output['code']==1)){
+					$retval=-1;
+				}
+			}
+			return $retval;
+		}
+		return -1;
+	}
+    
+    public function updateReference($id){
+        if(Input::has('author')&&Input::has('title')&&Input::has('year')&&Input::has('keywords')&&Request::ajax()){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+                "id"=>$id,
+				"author"=>Input::get('author'),
+				"title"=>Input::get('title'),
+                "year"=>Input::get('year'),
+                "abstract"=>Input::get('abstract', ''),
+                "keywords"=>Input::get('keywords'),
+			);
+			$data_string=json_encode($data);
+			$json=REST::POSTRequest('su/updatereference',$data_string);
+			$output=json_decode($json,true);
+			return $output['code'];
+		}else{
+			return "Internal Server Error";
+		}
+    }
+    
+    public function getReference($id){
+        $path="f/getreference/".$id."/".REST::$appkey."/".Session::get('token');
+		$output=REST::GETRequest($path);
+		$ref=json_decode($output,true);
+		if(isset($ref['code'])&&$ref['code']==1){
+			return View::make('supervisor/editReference',array('data'=>$ref['data']));
+		}else{
+			return Redirect::to('/supervisor/library');
+		}
+	}
 }

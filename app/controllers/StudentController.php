@@ -358,4 +358,122 @@ class StudentController extends Controller {
 		$data_output=json_decode($output,true);
 		return $data_output;
 	}
+    
+    public function addReference(){
+		if(Request::ajax()&&Input::has("add")){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get("token"),
+			);
+			$added=Input::get("add");
+			$retval=1;
+			foreach($added as $id){
+				$data["id"]=$id;
+				$data_string=json_encode($data);
+				$output=REST::POSTRequest('s/addreference',$data_string);
+				$output=json_decode($output,true);
+				if(!(isset($output["code"])&&$output['code']==1)){
+					$retval=-1;
+				}
+			}
+			return $retval;
+		}
+		return -1;
+	}
+    
+    public function getAllReference($search=""){
+		if(Request::ajax()){
+			if($search=="")
+				$json=REST::GETRequest("s/getallreference/".REST::$appkey."/".Session::get('token'));
+			else
+				$json=REST::GETRequest("s/searchreference/".rawurlencode($search)."/".REST::$appkey."/".Session::get('token'));
+			$output=json_decode($json,true);
+			if(isset($output['code'])){
+				if($output['code']==1){
+					return json_encode($output['data']);
+				}else if($output['code']==0){
+					return "[]";
+				}
+			}
+		}
+	}
+    
+    public function delReference(){
+		if(Request::ajax()&&Input::has("delete")){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get("token"),
+			);
+			$deleted=Input::get("delete");
+			$retval=1;
+			foreach($deleted as $id){
+				$data["id"]=$id;
+				$data_string=json_encode($data);
+				$output=REST::POSTRequest('s/removereference',$data_string);
+				$output=json_decode($output,true);
+				if(!(isset($output["code"])&&$output['code']==1)){
+					$retval=-1;
+				}
+			}
+			return $retval;
+		}
+		return -1;
+	}
+    
+    public function createReference(){
+		if(Input::has('author')&&Input::has('title')&&Input::has('year')&&Input::has('keywords')&&Request::ajax()){
+			$data=array(
+				"appkey"=>REST::$appkey,
+				"token"=>Session::get('token'),
+				"author"=>Input::get('author'),
+				"title"=>Input::get('title'),
+                "year"=>Input::get('year'),
+                "abstract"=>Input::get('abstract', ''),
+                "keywords"=>Input::get('keywords'),
+			);
+			$data_string=json_encode($data);
+			$json=REST::POSTRequest('f/createreference',$data_string);
+			$output=json_decode($json,true);
+            if(isset($output['code'])&&$output['code']==1){
+                $data=array(
+                    "appkey"=>REST::$appkey,
+                    "token"=>Session::get("token"),
+                    "id"=>$output['data']
+                );
+                $data_string=json_encode($data);
+				$output=REST::POSTRequest('s/addreference',$data_string);
+				$output=json_decode($output,true);
+				return $output;
+            }else{
+                return $json;
+            }
+		}else{
+			return "Internal Server Error";
+		}
+	}
+    
+    public function getReference($id){
+        $path="f/getreference/".$id."/".REST::$appkey."/".Session::get('token');
+		$output=REST::GETRequest($path);
+		$ref=json_decode($output,true);
+		if(isset($ref['code'])&&$ref['code']==1){
+			return View::make('student/viewReference',array('data'=>$ref['data']));
+		}else{
+			return Redirect::to('/student/library');
+		}
+	}
+    
+    public function getRefReccomendation(){
+		if(Request::ajax()){
+            $json=REST::GETRequest("s/reccomender/".REST::$appkey."/".Session::get('token'));
+			$output=json_decode($json,true);
+			if(isset($output['code'])){
+				if($output['code']==1){
+					return json_encode($output['data']);
+				}else if($output['code']==0){
+					return "[]";
+				}
+			}
+		}
+	}
 }

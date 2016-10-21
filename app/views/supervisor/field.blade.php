@@ -332,6 +332,16 @@
 @section('field.menu') active @stop
 
 @section('content')
+    <div id="overlay" style="display:none"></div>
+	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
+		<div class="alert alert-warning notif">
+			<center>
+				<b id="confirmText"></b><br/>
+				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
+				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
+			</center>
+		</div>
+	</div>
     <h2>Field List</h2>
 	<div class="alert alert-error" id="notifMsg" style="display:none" onclick="notifMsg()"></div>
 	<div class="well widget">
@@ -343,23 +353,14 @@
         </form>
     </div>
 	<div class="well widget">
-        <form class="form-inline" style="margin-bottom: 0px;" name="search">
+        <form class="form-inline" style="margin-bottom: 0px;" name="search" onsubmit="return false;">
             <input class="input-xlarge" placeholder="Search Field..." type="text" name="search">
             <button class="btn" type="button" onclick="searchField()"><i class="icon-search"></i> Go</button>
 			<button class="btn" type="button" onclick="resetField()"><i class="icon-refresh"></i> Reset</button>
         </form>
     </div>
 	<form class="form-horizontal" name="field" style="position:relative">
-	<div id="overlay" style="display:none"></div>
-	<div id="confirm" class="overlayBoxes offset3 span6" style="display:none">
-		<div class="alert alert-warning notif">
-			<center>
-				<b id="confirmText"></b><br/>
-				<input type="button" id="confirmYes" class="btn btn-success" value="Ya">
-				<input type="button" class="btn btn-info" onclick="cancelConfirm()" value="Tidak">
-			</center>
-		</div>
-	</div>
+    <div class="overlay" id="loading"></div>
     <table class="table table-first-column-check" id="fieldData">
       <thead>
         <tr>

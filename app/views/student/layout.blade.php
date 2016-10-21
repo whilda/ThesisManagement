@@ -88,6 +88,10 @@
                 <option value="{{ URL::to('/') }}/student/timeline" @yield('timeline.nav')> Time Line</option>
                     
                 <option value="{{ URL::to('/') }}/student/report" @yield('report.nav')>Final Report</option>
+                
+                <option value="{{ URL::to('/') }}/student/library" @yield('report.nav')>Library</option>
+                
+                <option value="{{ URL::to('/') }}/student/mylibrary" @yield('report.nav')>My Library</option>
                     
                 <option value="{{ URL::to('/') }}/student/profile" @yield('profile.nav')>Profile</option>
                     
@@ -130,6 +134,10 @@
             
             
             <li class="@yield('report.menu') "><a href="{{ URL::to('/') }}/student/report"><i class="icon-pushpin"></i> <span>Final Report</span></a></li>
+            
+            <li class="@yield('library.menu') "><a href="{{ URL::to('/') }}/student/library"><i class="icon-tags"></i> <span>Library</span></a></li>
+            
+            <li class="@yield('mylibrary.menu') "><a href="{{ URL::to('/') }}/student/mylibrary"><i class="icon-star"></i> <span>My Library</span></a></li>
             
             
             <li class="@yield('profile.menu') "><a href="{{ URL::to('/') }}/student/profile"><i class="icon-user"></i> <span>Profile</span></a></li>
